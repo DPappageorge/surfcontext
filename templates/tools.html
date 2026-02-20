@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Tools - SurfContext{% endblock %}
+{% block description %}Tools for creating and managing SurfContext projects: TaskSurf export, CLI, and manual setup.{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <!-- Header -->
+    <div class="page-header">
+        <h1 class="page-title">Tools</h1>
+        <p class="page-subtitle">
+            Create and manage SurfContext projects with these tools, or set
+            everything up by hand.
+        </p>
+    </div>
+
+    <!-- TaskSurf -->
+    <section class="tool-section">
+        <div class="tool-card">
+            <div class="tool-card-header">
+                <div class="tool-card-header-left">
+                    <h2 class="tool-card-title">TaskSurf</h2>
+                    <p class="tool-card-subtitle">Export your workspace as a SurfContext package</p>
+                </div>
+                <span class="badge badge-available">
+                    <span class="badge-dot badge-dot-green"></span>
+                    Available
+                </span>
+            </div>
+            <div class="tool-card-body">
+                <p class="tool-card-desc">
+                    TaskSurf is an AI-native task management platform that can export
+                    your entire workspace -- tasks, team context, agent configurations
+                    -- as a SurfContext-conformant package. The exported
+                    <code class="inline-code">CONTEXT.md</code> and
+                    <code class="inline-code">.context/</code>
+                    directory can be dropped directly into any code repository.
+                </p>
+                <ul class="tool-feature-list">
+                    <li>Generates ARDS v3.0 conformant output</li>
+                    <li>Includes version ledger for change tracking</li>
+                    <li>Exports agent definitions with proper frontmatter</li>
+                    <li>Maps team knowledge to .context/docs/ format</li>
+                </ul>
+                <a href="https://tasksurf.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    Visit tasksurf.com
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLI -->
+    <section class="tool-section">
+        <div class="tool-card">
+            <div class="tool-card-header">
+                <div class="tool-card-header-left">
+                    <h2 class="tool-card-title">SurfContext CLI</h2>
+                    <p class="tool-card-subtitle">Command-line tool for initializing and managing projects</p>
+                </div>
+                <span class="badge badge-coming-soon">
+                    <span class="badge-dot badge-dot-yellow"></span>
+                    Coming April 2026
+                </span>
+            </div>
+            <div class="tool-card-body">
+                <p class="tool-card-desc">
+                    The SurfContext CLI will provide quick project scaffolding,
+                    platform file generation, and structure validation from the
+                    command line.
+                </p>
+                <div class="code-block">
+                    <div class="code-block-header">Terminal</div>
+<pre><code># Initialize a new SurfContext project
+npx surfcontext init
+
+# Generate platform files from CONTEXT.md
+npx surfcontext generate
+
+# Validate your SurfContext structure
+npx surfcontext validate</code></pre>
+                </div>
+                <p class="tool-card-desc" style="margin-top: 1rem;">Planned features:</p>
+                <ul class="tool-feature-list">
+                    <li>
+                        <code class="inline-code">init</code>
+                        -- Scaffold a new SurfContext project with interactive prompts
+                    </li>
+                    <li>
+                        <code class="inline-code">generate</code>
+                        -- Generate platform files from CONTEXT.md using surfcontext.json config
+                    </li>
+                    <li>
+                        <code class="inline-code">validate</code>
+                        -- Check project structure against ARDS v3.0 requirements
+                    </li>
+                    <li>
+                        <code class="inline-code">sync</code>
+                        -- Detect drift between canonical and generated files
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- MCP Server -->
+    <section class="tool-section">
+        <div class="tool-card">
+            <div class="tool-card-header">
+                <div class="tool-card-header-left">
+                    <h2 class="tool-card-title">MCP Server</h2>
+                    <p class="tool-card-subtitle">Expose .context/ content as MCP tools for any AI agent</p>
+                </div>
+                <span class="badge badge-coming-soon">
+                    <span class="badge-dot badge-dot-yellow"></span>
+                    Coming Q2 2026
+                </span>
+            </div>
+            <div class="tool-card-body">
+                <p class="tool-card-desc">
+                    The SurfContext MCP server bridges ARDS documentation into any
+                    MCP-compatible AI agent. It exposes your project context,
+                    agents, docs, guides, and plans as standardized tools.
+                </p>
+                <p class="tool-card-desc">
+                    <strong>Standard tool names (ARDS v3.0):</strong>
+                </p>
+                <div class="mcp-table-wrapper">
+                    <table class="mcp-table">
+                        <thead>
+                            <tr>
+                                <th>Tool</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code class="inline-code">surfcontext_read_context</code></td>
+                                <td>Read the root context file</td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline-code">surfcontext_list_agents</code></td>
+                                <td>List available agent definitions</td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline-code">surfcontext_list_docs</code></td>
+                                <td>List knowledge docs with last-updated dates</td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline-code">surfcontext_list_guides</code></td>
+                                <td>List guides with confidence levels</td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline-code">surfcontext_list_plans</code></td>
+                                <td>List plans by category</td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline-code">surfcontext_search</code></td>
+                                <td>Search across all ARDS content</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="tool-card-desc">
+                    Configure in <code class="inline-code">surfcontext.json</code>
+                    under the <code class="inline-code">mcp</code> field. See the
+                    <a href="/spec#mcp-integration" class="link-accent">MCP Integration spec</a>.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Manual Setup -->
+    <section class="tool-section">
+        <div class="tool-card">
+            <div class="tool-card-header">
+                <div class="tool-card-header-left">
+                    <h2 class="tool-card-title">Manual Setup</h2>
+                    <p class="tool-card-subtitle">Create files by hand following the specification</p>
+                </div>
+                <span class="badge badge-available">
+                    <span class="badge-dot badge-dot-green"></span>
+                    Available
+                </span>
+            </div>
+            <div class="tool-card-body">
+                <p class="tool-card-desc">
+                    SurfContext requires no dependencies or tooling. You can set up a
+                    conforming project with just a text editor and a terminal.
+                </p>
+                <div class="code-block">
+                    <div class="code-block-header">Terminal</div>
+<pre><code># 1. Create the root context
+touch CONTEXT.md
+
+# 2. Create the context directory structure
+mkdir -p .context/agents .context/docs .context/skills
+
+# 3. Create the manifest
+touch surfcontext.json
+
+# 4. (Optional) Generate platform files
+cp CONTEXT.md CLAUDE.md
+cp CONTEXT.md AGENTS.md</code></pre>
+                </div>
+                <p class="tool-card-desc" style="margin-top: 1rem;">
+                    See the <a href="/getting-started" class="link-accent">Getting Started guide</a>
+                    for complete file content examples, or the
+                    <a href="/spec" class="link-accent">specification</a>
+                    for the full format reference.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Building a tool? -->
+    <section class="callout-box">
+        <h2 class="callout-title">Building a tool?</h2>
+        <p class="callout-desc">
+            SurfContext is an open standard. If you are building a developer tool
+            or AI coding agent, you can add SurfContext support by reading
+            <code class="inline-code">CONTEXT.md</code> and
+            <code class="inline-code">surfcontext.json</code>
+            from the project root. The format is
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" class="link-accent">CC-BY-SA 4.0</a>
+            licensed -- free to implement and distribute.
+        </p>
+    </section>
+</div>
+{% endblock %}
