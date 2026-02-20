@@ -478,3 +478,217 @@
     .superset-label { min-width: auto; }
     .discovery-tokens { margin-left: 0; }
 }
+
+/* ============================================================
+   SURFDOC BLOCK OVERRIDES
+   ============================================================ */
+
+/* Sections */
+.surfdoc-section {
+    border-top: 1px solid var(--border);
+}
+
+.surfdoc-section-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 96px 24px;
+}
+
+.surfdoc-section-headline {
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.surfdoc-section-subtitle {
+    color: var(--text-muted);
+    font-size: 1.0625rem;
+    margin-bottom: 48px;
+}
+
+.section-dark {
+    background: var(--surface);
+}
+
+/* Hero */
+.surfdoc-hero {
+    padding-top: 52px;
+    padding-bottom: 80px;
+}
+
+.surfdoc-hero-headline {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    line-height: 1.1;
+}
+
+.surfdoc-hero-subtitle {
+    max-width: 560px;
+}
+
+.surfdoc-hero-btn {
+    border-radius: var(--radius-sm);
+}
+
+/* Features */
+.surfdoc-features {
+    border: none;
+    padding: 0;
+}
+
+.surfdoc-feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    transition: border-color 200ms ease;
+}
+
+.surfdoc-feature-card:hover {
+    border-color: var(--border-light, var(--accent));
+}
+
+.surfdoc-feature-icon {
+    color: var(--accent);
+}
+
+.surfdoc-feature-title {
+    font-weight: 700;
+    font-size: 1.0625rem;
+}
+
+.surfdoc-feature-body {
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-size: 0.9375rem;
+}
+
+/* Stats */
+.surfdoc-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 32px 24px;
+    max-width: 960px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.surfdoc-stat {
+    text-align: center;
+}
+
+.surfdoc-stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.surfdoc-stat-label {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* Steps */
+.surfdoc-steps {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.surfdoc-step {
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+}
+
+/* Comparison */
+.surfdoc-comparison {
+    max-width: 960px;
+    margin: 0 auto;
+    font-size: 0.875rem;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.surfdoc-comparison th,
+.surfdoc-comparison td {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+}
+
+.surfdoc-comparison th {
+    background: var(--surface);
+    font-weight: 600;
+    text-align: left;
+}
+
+.surfdoc-comparison-highlight {
+    background: rgba(59, 130, 246, 0.06);
+}
+
+/* Before-After */
+.surfdoc-before-after {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* Pipeline */
+.surfdoc-pipeline {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 16px 0;
+}
+
+/* Product cards */
+.surfdoc-product-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 24px;
+}
+
+/* Data tables */
+.surfdoc-data {
+    max-width: 960px;
+    margin: 0 auto;
+    font-size: 0.875rem;
+}
+
+.surfdoc-data th,
+.surfdoc-data td {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+}
+
+.surfdoc-data th {
+    background: var(--surface);
+    font-weight: 600;
+}
+
+/* Code blocks */
+.surfdoc-code {
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+/* CTA buttons */
+.surfdoc-cta {
+    border-radius: var(--radius-sm);
+}
+
+/* Callout blocks */
+.surfdoc-callout {
+    border-radius: var(--radius);
+    max-width: 720px;
+    margin: 24px auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .surfdoc-section-inner {
+        padding: 64px 16px;
+    }
+}

@@ -3,7 +3,7 @@
 mod html;
 mod routes;
 
-use axum::Router;
+use axum::{Router, routing::get};
 use tower_http::services::ServeDir;
 use tracing_subscriber::EnvFilter;
 
@@ -15,6 +15,7 @@ async fn main() {
 
     let app = Router::new()
         .merge(routes::router())
+        .route("/static/css/surf-ui.css", get(surf_parse::serve::surfdoc_css))
         .nest_service("/static", ServeDir::new("static"))
         .nest_service("/assets", ServeDir::new("assets"));
 

@@ -1,0 +1,80 @@
+---
+title: SurfContext — One Spec. Every AI Coding Tool.
+description: One format. Every AI coding agent. Define your project context once — Claude Code, Cursor, Codex, and Copilot understand it automatically.
+---
+
+::style
+accent: #3b82f6
+font: inter
+::
+
+::hero[badge="ARDS v3.0 Specification" align=left image="/assets/structure-preview.svg"]
+# The open standard for agent-ready project documentation
+
+One format. Every AI coding agent. Define your project context once — Claude Code, Cursor, Codex, and Copilot understand it automatically.
+
+[Read the Spec](/spec){primary}
+[Quick Start](/getting-started)
+::
+
+::section[bg=dark]
+## 5 AI tools. 5 config formats. 0 standards.
+
+Every AI coding agent invented its own way to read project context. Your team maintains duplicate files that drift out of sync.
+
+::before-after[transition="SurfContext"]
+### Before
+- Claude Code | CLAUDE.md
+- Codex CLI | AGENTS.md
+- Cursor | .cursorrules
+- GitHub Copilot | .github/copilot-instructions.md
+- Windsurf | .windsurfrules
+
+### After
+- SurfContext | CONTEXT.md + .context/ + surfcontext.json
+::
+::
+
+::section
+## How it works
+
+Three files. Universal compatibility. Zero lock-in.
+
+::steps
+### Write your context {time="5 min"}
+Create `CONTEXT.md` and a `.context/` directory with your agent definitions and knowledge docs.
+
+### Target platforms {time="2 min"}
+Add `surfcontext.json` to declare which AI platforms to generate config files for.
+
+### AI auto-discovers {time="0 min"}
+Open your project in any supported AI tool. It reads your context automatically — no copy-paste, no per-tool config.
+::
+::
+
+::section[bg=dark]
+## Platform compatibility
+
+SurfContext generates the right config file for each platform from a single source of truth.
+
+::comparison[highlight="Status"]
+| Platform | Generated File | Status |
+|----------|---------------|--------|
+| Claude Code | CLAUDE.md | yes |
+| Codex CLI | AGENTS.md | yes |
+| Cursor | .cursorrules | yes |
+| GitHub Copilot | .github/copilot-instructions.md | yes |
+| Windsurf | .windsurfrules | yes |
+::
+::
+
+::section
+## Ready to standardize your AI context?
+
+Get started in under 5 minutes. No dependencies, no build step, no lock-in.
+
+::cta[label="Get Started" href="/getting-started" primary icon=arrow-right]
+::
+::cta[label="Read the Full Spec" href="/spec" icon=book]
+::
+::

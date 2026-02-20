@@ -3,11 +3,13 @@ use axum::{Router, response::Html, routing::get};
 use crate::html;
 
 async fn tools_page() -> Html<String> {
+    let result = surf_parse::parse(include_str!("../../content/tools.surf"));
+    let content = result.doc.to_html();
     Html(html::page(
         "Tools - SurfContext",
-        "Tools for creating and managing SurfContext projects: TaskSurf export, CLI, and manual setup.",
-        r#"<link rel="stylesheet" href="/static/css/tools.css">"#,
-        include_str!("../../content/tools.html"),
+        "Tools for creating and managing SurfContext projects: SurfTask export, CLI, and manual setup.",
+        "",
+        &content,
     ))
 }
 

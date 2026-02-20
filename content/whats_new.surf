@@ -1,0 +1,141 @@
+---
+title: What's New in ARDS v3.0 - SurfContext
+description: Nine new capabilities for structuring AI-agent-ready repositories. Living guides, session checkpoints, evidence epistemology, IP safety, context budget management, and more.
+---
+
+::style
+accent: #3b82f6
+font: inter
+::
+
+::hero[badge="ARDS v3.0 — February 2026" align=center]
+# What's new in ARDS v3.0
+
+Nine new capabilities for structuring AI-agent-ready repositories. Living guides, session checkpoints, evidence epistemology, IP safety, context budget management, and more.
+
+[Read the Full Spec](/spec){primary}
+[Quick Start](/getting-started)
+::
+
+::stats
+- 1,398 {label="Spec lines" color="#3b82f6"}
+- 27 {label="Sections" color="#a855f7"}
+- 9 {label="New in v3" color="#22c55e"}
+- 7 {label="Doc types" color="#f59e0b"}
+- 6+ {label="Platforms" color="#ec4899"}
+- 17 {label="OSS files" color="#06b6d4"}
+::
+
+::section
+## 9 new capabilities
+
+Each addresses a real problem discovered in 3+ months of daily production use across 15 repositories with 54 AI agents.
+
+::features[cols=3]
+### Living Guides {icon=book}
+How-to docs with confidence levels and gotcha callouts that grow with each implementation. Located in `.context/guides/`.
+
+### Session Checkpoints {icon=file}
+Structured handoff protocol for context boundary crossings — conversation ends, agent swaps, machine switches.
+
+### Evidence Epistemology {icon=info}
+4-tier claim tagging, evidence hierarchy, bias ledger. Prevents strategy built on unverified claims.
+
+### IP Safety {icon=check}
+Pre-write verification checks — no misattribution, no AI co-author, no leaked secrets, no internal paths.
+
+### Context Budget Management {icon=settings}
+Treats context window as finite computational resource. Budget allocation and progressive disclosure.
+
+### Multi-Agent Coordination {icon=user}
+Task queue format, agent contracts, cross-agent handoff, parallel execution rules.
+
+### Cross-Repo References {icon=globe}
+Hub-and-spoke model with repo registry, explicit relative paths, no-duplication rules.
+
+### Discovery Order {icon=search}
+Formalized 10-step navigation sequence with token-aware loading strategy.
+
+### MCP Integration {icon=code}
+Standard tool names for exposing .context/ content as MCP tools. Bridges knowledge to capabilities.
+::
+::
+
+::section[bg=dark]
+## 7 document types
+
+Each type has a distinct purpose, mutability pattern, and read frequency. Agents load them at different times to optimize context window usage.
+
+::data[format=table sortable]
+Type | Location | Mutability | Read Frequency
+Root Context | CONTEXT.md | Updated weekly | Every turn
+Agent Config | .context/agents/*.md | Stable | On dispatch
+Skill Config | .context/skills/*/SKILL.md | Stable | On invocation
+Knowledge Doc | .context/docs/*.md | Updated on change | On demand
+Guide | .context/guides/*.md | Living (grows) | On demand
+Plan Doc | plans/**/*.md | Immutable | On demand
+Research Doc | research/**/* | Versioned | On demand
+::
+::
+
+::section
+## Feature comparison
+
+ARDS is the only format covering the full documentation architecture. It generates files for every other format.
+
+::comparison[highlight="ARDS"]
+| Feature | ARDS | AGENTS.md | CLAUDE.md | Cursor | Copilot | Gemini |
+|---------|------|-----------|-----------|--------|---------|--------|
+| Root context file | yes | yes | yes | no | yes | yes |
+| Agent definitions | yes | no | yes | no | no | no |
+| Skill/rule definitions | yes | no | yes | yes | yes | no |
+| Knowledge doc hierarchy | yes | no | no | no | no | no |
+| Living guides | yes | no | no | no | no | no |
+| Session checkpoints | yes | no | no | no | no | no |
+| Cross-repo references | yes | no | no | no | no | no |
+| Evidence epistemology | yes | no | no | no | no | no |
+| IP safety rules | yes | no | no | no | no | no |
+| Token budget guidance | yes | no | no | no | no | no |
+| Discovery order | yes | no | no | no | no | yes |
+| Quality scoring rubric | yes | no | no | no | no | no |
+| Multi-platform generation | yes | no | no | no | no | no |
+| Machine-readable config | yes | no | no | yes | no | yes |
+::
+::
+
+::section[bg=dark]
+## Fully backward-compatible
+
+All v3 additions are optional. A valid v2 project is already a valid v3 project. Adopt features incrementally.
+
+::steps
+### Bump version {time="30 sec"}
+Change version in surfcontext.json from "2.0" to "3.0"
+
+### Add guides directory {time="2 min"}
+Create .context/guides/ and add guidesDir to surfcontext.json
+
+### Add discovery order {time="1 min"}
+Document your project's navigation sequence in surfcontext.json
+
+### Start checkpointing {time="Ongoing"}
+Write session checkpoints to plans/sessions/ when context gets long
+
+### Tag evidence {time="Ongoing"}
+Add [verified], [unverified], [assumption] tags to claims
+
+### Configure IP safety {time="1 min"}
+Add ipSafety block to surfcontext.json if relevant
+::
+::
+
+::section
+## Ready to upgrade to v3?
+
+All new features are opt-in. Start with a version bump and adopt capabilities as you need them.
+
+::cta[label="Get Started" href="/getting-started" primary icon=arrow-right]
+::
+::cta[label="Full Specification" href="/spec" icon=book]
+::
+::
