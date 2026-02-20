@@ -1,62 +1,52 @@
-/* SurfContext — Vanilla JS */
+/* SurfContext — Minimal vanilla JS */
 (function () {
     "use strict";
 
-    /* --- Theme --- */
-
-    function getPreferredTheme() {
-        var saved = localStorage.getItem("surfcontext-theme");
-        if (saved) return saved;
-        return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    // 1. Theme toggle
+    function initTheme() {
+        var saved = localStorage.getItem("theme");
+        if (!saved) {
+            saved = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+        document.documentElement.setAttribute("data-theme", saved);
     }
-
-    function applyTheme(theme) {
-        document.documentElement.setAttribute("data-theme", theme);
-        localStorage.setItem("surfcontext-theme", theme);
-    }
-
-    applyTheme(getPreferredTheme());
-
-    /* --- DOM Ready --- */
+    initTheme();
 
     document.addEventListener("DOMContentLoaded", function () {
-
-        /* Theme toggle */
-        var themeBtn = document.querySelector(".nav-theme-toggle");
-        if (themeBtn) {
-            themeBtn.addEventListener("click", function () {
+        var toggle = document.querySelector(".theme-toggle");
+        if (toggle) {
+            toggle.addEventListener("click", function () {
                 var current = document.documentElement.getAttribute("data-theme");
-                applyTheme(current === "dark" ? "light" : "dark");
+                var next = current === "dark" ? "light" : "dark";
+                document.documentElement.setAttribute("data-theme", next);
+                localStorage.setItem("theme", next);
+                toggle.textContent = next === "dark" ? "\u263E" : "\u2600";
             });
+            var theme = document.documentElement.getAttribute("data-theme");
+            toggle.textContent = theme === "dark" ? "\u263E" : "\u2600";
         }
 
-        /* Mobile menu */
+        // 2. Mobile menu
         var navToggle = document.querySelector(".nav-toggle");
         var navLinks = document.querySelector(".nav-links");
-
         if (navToggle && navLinks) {
             navToggle.addEventListener("click", function (e) {
                 e.stopPropagation();
-                var open = navLinks.classList.toggle("open");
-                navToggle.setAttribute("aria-expanded", open);
+                navLinks.classList.toggle("open");
             });
-
             navLinks.querySelectorAll("a").forEach(function (link) {
                 link.addEventListener("click", function () {
                     navLinks.classList.remove("open");
-                    navToggle.setAttribute("aria-expanded", "false");
                 });
             });
-
             document.addEventListener("click", function (e) {
                 if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
                     navLinks.classList.remove("open");
-                    navToggle.setAttribute("aria-expanded", "false");
                 }
             });
         }
 
-        /* Code copy buttons */
+        // 3. Code copy buttons
         document.querySelectorAll(".code-block").forEach(function (block) {
             if (block.querySelector(".code-copy")) return;
             var btn = document.createElement("button");
@@ -73,7 +63,7 @@
             block.appendChild(btn);
         });
 
-        /* Spec TOC tracking */
+        // 4. Spec TOC tracking (only when .spec-toc exists)
         var toc = document.querySelector(".spec-toc");
         if (toc) {
             var sections = document.querySelectorAll(".spec-section");
@@ -93,7 +83,7 @@
             }
         }
 
-        /* Stack selector (getting-started page) */
+        // 5. Stack selector (getting-started page)
         var stackSelector = document.querySelector(".stack-selector");
         if (stackSelector) {
             var hidden = stackSelector.parentElement.querySelector("input[type=hidden]");

@@ -5,19 +5,20 @@
 
 {% block content %}
 <!-- Hero -->
-<section class="hero">
-    <div class="hero-inner">
-        <div class="hero-grid">
+<section class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="hero-container">
+        <div class="hero-content">
             <div class="hero-badge">
-                <span class="hero-badge-dot"></span>
+                <span class="badge-dot badge-dot-green"></span>
                 ARDS v3.0 &mdash; February 2026
             </div>
 
-            <h1 class="hero-headline">
-                What's new in <span class="hero-accent">ARDS v3.0</span>
+            <h1 class="hero-title">
+                What's new in <span class="text-accent">ARDS v3.0</span>
             </h1>
 
-            <p class="hero-subtitle">
+            <p class="hero-desc">
                 Nine new capabilities for structuring AI-agent-ready repositories.
                 Living guides, session checkpoints, evidence epistemology, IP safety,
                 context budget management, and more.
@@ -30,37 +31,37 @@
 
             <div class="hero-actions">
                 <a href="/spec" class="btn btn-primary">Read the Full Spec</a>
-                <a href="/getting-started" class="btn btn-ghost">Quick Start</a>
+                <a href="/getting-started" class="btn btn-outline">Quick Start</a>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Stats -->
-<section class="section section-muted">
-    <div class="section-inner">
-        <div class="stats-grid stats-grid-6">
-            <div class="stat-item">
+<section class="stats-section">
+    <div class="stats-container">
+        <div class="stats-grid">
+            <div class="stat-card">
                 <div class="stat-value" style="color: #3b82f6;">1,398</div>
                 <div class="stat-label">Spec Lines</div>
             </div>
-            <div class="stat-item">
+            <div class="stat-card">
                 <div class="stat-value" style="color: #a855f7;">27</div>
                 <div class="stat-label">Sections</div>
             </div>
-            <div class="stat-item">
+            <div class="stat-card">
                 <div class="stat-value" style="color: #22c55e;">9</div>
                 <div class="stat-label">New in v3</div>
             </div>
-            <div class="stat-item">
+            <div class="stat-card">
                 <div class="stat-value" style="color: #f59e0b;">7</div>
                 <div class="stat-label">Doc Types</div>
             </div>
-            <div class="stat-item">
+            <div class="stat-card">
                 <div class="stat-value" style="color: #ec4899;">6+</div>
                 <div class="stat-label">Platforms</div>
             </div>
-            <div class="stat-item">
+            <div class="stat-card">
                 <div class="stat-value" style="color: #06b6d4;">17</div>
                 <div class="stat-label">OSS Files</div>
             </div>
@@ -69,132 +70,150 @@
 </section>
 
 <!-- 9 Capabilities -->
-<section class="section">
-    <div class="section-inner">
+<section class="capabilities-section">
+    <div class="section-container">
         <div class="section-header">
-            <h2 class="section-headline">9 new capabilities</h2>
-            <p class="section-subtitle">
+            <h2 class="section-title">9 new capabilities</h2>
+            <p class="section-desc">
                 Each addresses a real problem discovered in 3+ months of daily production use
                 across 15 repositories with 54 AI agents.
             </p>
         </div>
 
-        <div class="capability-grid capability-grid-3">
+        <div class="capability-grid">
             <div class="capability-card" style="border-color: rgba(34, 197, 94, 0.2);">
-                <div class="capability-header">
-                    <div class="capability-icon" style="background: rgba(34, 197, 94, 0.08); color: #22c55e;">&#x1f4d6;</div>
+                <div class="capability-card-header">
+                    <div class="capability-icon" style="background: rgba(34, 197, 94, 0.08);">
+                        <span style="color: #22c55e;">&#x1f4d6;</span>
+                    </div>
                     <div>
-                        <h3>Living Guides</h3>
+                        <h3 class="capability-name">Living Guides</h3>
                         <span class="capability-location">.context/guides/</span>
                     </div>
                 </div>
-                <p>How-to docs with confidence levels and gotcha callouts that grow with each implementation.</p>
+                <p class="capability-desc">How-to docs with confidence levels and gotcha callouts that grow with each implementation.</p>
             </div>
 
             <div class="capability-card" style="border-color: rgba(59, 130, 246, 0.2);">
-                <div class="capability-header">
-                    <div class="capability-icon" style="background: rgba(59, 130, 246, 0.08); color: #3b82f6;">&#x23F0;</div>
+                <div class="capability-card-header">
+                    <div class="capability-icon" style="background: rgba(59, 130, 246, 0.08);">
+                        <span style="color: #3b82f6;">&#x23F0;</span>
+                    </div>
                     <div>
-                        <h3>Session Checkpoints</h3>
+                        <h3 class="capability-name">Session Checkpoints</h3>
                         <span class="capability-location">plans/sessions/</span>
                     </div>
                 </div>
-                <p>Structured handoff protocol for context boundary crossings -- conversation ends, agent swaps, machine switches.</p>
+                <p class="capability-desc">Structured handoff protocol for context boundary crossings -- conversation ends, agent swaps, machine switches.</p>
             </div>
 
             <div class="capability-card" style="border-color: rgba(245, 158, 11, 0.2);">
-                <div class="capability-header">
-                    <div class="capability-icon" style="background: rgba(245, 158, 11, 0.08); color: #f59e0b;">&#x1f441;</div>
+                <div class="capability-card-header">
+                    <div class="capability-icon" style="background: rgba(245, 158, 11, 0.08);">
+                        <span style="color: #f59e0b;">&#x1f441;</span>
+                    </div>
                     <div>
-                        <h3>Evidence Epistemology</h3>
+                        <h3 class="capability-name">Evidence Epistemology</h3>
                         <span class="capability-location">Inline tags</span>
                     </div>
                 </div>
-                <p>4-tier claim tagging, evidence hierarchy, bias ledger. Prevents strategy built on unverified claims.</p>
+                <p class="capability-desc">4-tier claim tagging, evidence hierarchy, bias ledger. Prevents strategy built on unverified claims.</p>
             </div>
 
             <div class="capability-card" style="border-color: rgba(239, 68, 68, 0.2);">
-                <div class="capability-header">
-                    <div class="capability-icon" style="background: rgba(239, 68, 68, 0.08); color: #ef4444;">&#x1f6e1;</div>
+                <div class="capability-card-header">
+                    <div class="capability-icon" style="background: rgba(239, 68, 68, 0.08);">
+                        <span style="color: #ef4444;">&#x1f6e1;</span>
+                    </div>
                     <div>
-                        <h3>IP Safety</h3>
+                        <h3 class="capability-name">IP Safety</h3>
                         <span class="capability-location">surfcontext.json</span>
                     </div>
                 </div>
-                <p>Pre-write verification checks -- no misattribution, no AI co-author, no leaked secrets, no internal paths.</p>
+                <p class="capability-desc">Pre-write verification checks -- no misattribution, no AI co-author, no leaked secrets, no internal paths.</p>
             </div>
 
             <div class="capability-card" style="border-color: rgba(168, 85, 247, 0.2);">
-                <div class="capability-header">
-                    <div class="capability-icon" style="background: rgba(168, 85, 247, 0.08); color: #a855f7;">&#x2699;</div>
+                <div class="capability-card-header">
+                    <div class="capability-icon" style="background: rgba(168, 85, 247, 0.08);">
+                        <span style="color: #a855f7;">&#x2699;</span>
+                    </div>
                     <div>
-                        <h3>Context Budget Management</h3>
+                        <h3 class="capability-name">Context Budget Management</h3>
                         <span class="capability-location">Spec Section 19</span>
                     </div>
                 </div>
-                <p>Treats context window as finite computational resource. Budget allocation and progressive disclosure.</p>
+                <p class="capability-desc">Treats context window as finite computational resource. Budget allocation and progressive disclosure.</p>
             </div>
 
             <div class="capability-card" style="border-color: rgba(236, 72, 153, 0.2);">
-                <div class="capability-header">
-                    <div class="capability-icon" style="background: rgba(236, 72, 153, 0.08); color: #ec4899;">&#x1f465;</div>
+                <div class="capability-card-header">
+                    <div class="capability-icon" style="background: rgba(236, 72, 153, 0.08);">
+                        <span style="color: #ec4899;">&#x1f465;</span>
+                    </div>
                     <div>
-                        <h3>Multi-Agent Coordination</h3>
+                        <h3 class="capability-name">Multi-Agent Coordination</h3>
                         <span class="capability-location">.context/queue.md</span>
                     </div>
                 </div>
-                <p>Task queue format, agent contracts, cross-agent handoff, parallel execution rules.</p>
+                <p class="capability-desc">Task queue format, agent contracts, cross-agent handoff, parallel execution rules.</p>
             </div>
 
             <div class="capability-card" style="border-color: rgba(6, 182, 212, 0.2);">
-                <div class="capability-header">
-                    <div class="capability-icon" style="background: rgba(6, 182, 212, 0.08); color: #06b6d4;">&#x1f500;</div>
+                <div class="capability-card-header">
+                    <div class="capability-icon" style="background: rgba(6, 182, 212, 0.08);">
+                        <span style="color: #06b6d4;">&#x1f500;</span>
+                    </div>
                     <div>
-                        <h3>Cross-Repo References</h3>
+                        <h3 class="capability-name">Cross-Repo References</h3>
                         <span class="capability-location">repo-registry.md</span>
                     </div>
                 </div>
-                <p>Hub-and-spoke model with repo registry, explicit relative paths, no-duplication rules.</p>
+                <p class="capability-desc">Hub-and-spoke model with repo registry, explicit relative paths, no-duplication rules.</p>
             </div>
 
             <div class="capability-card" style="border-color: rgba(139, 92, 246, 0.2);">
-                <div class="capability-header">
-                    <div class="capability-icon" style="background: rgba(139, 92, 246, 0.08); color: #8b5cf6;">&#x1f4da;</div>
+                <div class="capability-card-header">
+                    <div class="capability-icon" style="background: rgba(139, 92, 246, 0.08);">
+                        <span style="color: #8b5cf6;">&#x1f4da;</span>
+                    </div>
                     <div>
-                        <h3>Discovery Order</h3>
+                        <h3 class="capability-name">Discovery Order</h3>
                         <span class="capability-location">surfcontext.json</span>
                     </div>
                 </div>
-                <p>Formalized 10-step navigation sequence with token-aware loading strategy.</p>
+                <p class="capability-desc">Formalized 10-step navigation sequence with token-aware loading strategy.</p>
             </div>
 
             <div class="capability-card" style="border-color: rgba(20, 184, 166, 0.2);">
-                <div class="capability-header">
-                    <div class="capability-icon" style="background: rgba(20, 184, 166, 0.08); color: #14b8a6;">&#x1f50c;</div>
+                <div class="capability-card-header">
+                    <div class="capability-icon" style="background: rgba(20, 184, 166, 0.08);">
+                        <span style="color: #14b8a6;">&#x1f50c;</span>
+                    </div>
                     <div>
-                        <h3>MCP Integration</h3>
+                        <h3 class="capability-name">MCP Integration</h3>
                         <span class="capability-location">surfcontext.json</span>
                     </div>
                 </div>
-                <p>Standard tool names for exposing .context/ content as MCP tools. Bridges knowledge to capabilities.</p>
+                <p class="capability-desc">Standard tool names for exposing .context/ content as MCP tools. Bridges knowledge to capabilities.</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Document Types -->
-<section class="section section-muted">
-    <div class="section-inner">
+<section class="doc-types-section">
+    <div class="section-container">
         <div class="section-header">
-            <h2 class="section-headline">7 document types</h2>
-            <p class="section-subtitle">
+            <h2 class="section-title">7 document types</h2>
+            <p class="section-desc">
                 Each type has a distinct purpose, mutability pattern, and read frequency.
                 Agents load them at different times to optimize context window usage.
             </p>
         </div>
 
-        <div class="table-scroll">
-            <table class="platform-table">
+        <div class="doc-types-table-wrapper">
+            <table class="doc-types-table">
                 <thead>
                     <tr>
                         <th>Type</th>
@@ -211,9 +230,9 @@
                                 Root Context
                             </span>
                         </td>
-                        <td class="platform-file">CONTEXT.md</td>
+                        <td class="mono-cell">CONTEXT.md</td>
                         <td class="hide-mobile">Updated weekly</td>
-                        <td><span class="status-badge status-supported"><span class="status-dot"></span>Every turn</span></td>
+                        <td><span class="freq-badge freq-badge-active">Every turn</span></td>
                     </tr>
                     <tr>
                         <td>
@@ -222,9 +241,9 @@
                                 Agent Config
                             </span>
                         </td>
-                        <td class="platform-file">.context/agents/*.md</td>
+                        <td class="mono-cell">.context/agents/*.md</td>
                         <td class="hide-mobile">Stable</td>
-                        <td><span class="status-badge status-planned"><span class="status-dot"></span>On dispatch</span></td>
+                        <td><span class="freq-badge">On dispatch</span></td>
                     </tr>
                     <tr>
                         <td>
@@ -233,9 +252,9 @@
                                 Skill Config
                             </span>
                         </td>
-                        <td class="platform-file">.context/skills/*/SKILL.md</td>
+                        <td class="mono-cell">.context/skills/*/SKILL.md</td>
                         <td class="hide-mobile">Stable</td>
-                        <td><span class="status-badge status-planned"><span class="status-dot"></span>On invocation</span></td>
+                        <td><span class="freq-badge">On invocation</span></td>
                     </tr>
                     <tr>
                         <td>
@@ -244,9 +263,9 @@
                                 Knowledge Doc
                             </span>
                         </td>
-                        <td class="platform-file">.context/docs/*.md</td>
+                        <td class="mono-cell">.context/docs/*.md</td>
                         <td class="hide-mobile">Updated on change</td>
-                        <td><span class="status-badge status-planned"><span class="status-dot"></span>On demand</span></td>
+                        <td><span class="freq-badge">On demand</span></td>
                     </tr>
                     <tr>
                         <td>
@@ -255,9 +274,9 @@
                                 Guide
                             </span>
                         </td>
-                        <td class="platform-file">.context/guides/*.md</td>
+                        <td class="mono-cell">.context/guides/*.md</td>
                         <td class="hide-mobile">Living (grows)</td>
-                        <td><span class="status-badge status-planned"><span class="status-dot"></span>On demand</span></td>
+                        <td><span class="freq-badge">On demand</span></td>
                     </tr>
                     <tr>
                         <td>
@@ -266,9 +285,9 @@
                                 Plan Doc
                             </span>
                         </td>
-                        <td class="platform-file">plans/**/*.md</td>
+                        <td class="mono-cell">plans/**/*.md</td>
                         <td class="hide-mobile">Immutable</td>
-                        <td><span class="status-badge status-planned"><span class="status-dot"></span>On demand</span></td>
+                        <td><span class="freq-badge">On demand</span></td>
                     </tr>
                     <tr>
                         <td>
@@ -277,9 +296,9 @@
                                 Research Doc
                             </span>
                         </td>
-                        <td class="platform-file">research/**/*</td>
+                        <td class="mono-cell">research/**/*</td>
                         <td class="hide-mobile">Versioned</td>
-                        <td><span class="status-badge status-planned"><span class="status-dot"></span>On demand</span></td>
+                        <td><span class="freq-badge">On demand</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -288,134 +307,123 @@
 </section>
 
 <!-- Discovery Order -->
-<section class="section">
-    <div class="section-inner">
+<section class="discovery-section">
+    <div class="section-container">
         <div class="section-header">
-            <h2 class="section-headline">Formalized discovery order</h2>
-            <p class="section-subtitle">
+            <h2 class="section-title">Formalized discovery order</h2>
+            <p class="section-desc">
                 A 10-step sequence agents follow to navigate any ARDS-compliant repository.
                 Token-aware loading minimizes context window waste.
             </p>
         </div>
 
-        <div class="discovery-list">
-            <div class="discovery-list-item">
-                <span class="step-number">1</span>
-                <div class="discovery-list-body">
-                    <div class="discovery-list-top">
-                        <code>CONTEXT.md</code>
-                        <span class="status-badge status-supported"><span class="status-dot"></span>Always</span>
-                        <span class="discovery-tokens">~800/turn</span>
-                    </div>
-                    <p>Project identity, key files, architecture, active state</p>
+        <div class="discovery-steps">
+            <div class="discovery-step">
+                <div class="discovery-step-inner">
+                    <span class="discovery-step-num">1</span>
+                    <span class="discovery-step-path">CONTEXT.md</span>
+                    <span class="discovery-loading discovery-loading-always">Always</span>
+                    <span class="discovery-purpose">Project identity, key files, architecture, active state</span>
+                    <span class="discovery-tokens">~800/turn</span>
                 </div>
             </div>
+            <div class="discovery-arrow">&#x2193;</div>
 
-            <div class="discovery-list-item">
-                <span class="step-number">2</span>
-                <div class="discovery-list-body">
-                    <div class="discovery-list-top">
-                        <code>surfcontext.json</code>
-                        <span class="status-badge status-supported"><span class="status-dot"></span>Always</span>
-                        <span class="discovery-tokens">~200</span>
-                    </div>
-                    <p>Machine-readable config, platform targets, discovery hints</p>
+            <div class="discovery-step">
+                <div class="discovery-step-inner">
+                    <span class="discovery-step-num">2</span>
+                    <span class="discovery-step-path">surfcontext.json</span>
+                    <span class="discovery-loading discovery-loading-always">Always</span>
+                    <span class="discovery-purpose">Machine-readable config, platform targets, discovery hints</span>
+                    <span class="discovery-tokens">~200</span>
                 </div>
             </div>
+            <div class="discovery-arrow">&#x2193;</div>
 
-            <div class="discovery-list-item">
-                <span class="step-number">3</span>
-                <div class="discovery-list-body">
-                    <div class="discovery-list-top">
-                        <code>.context/docs/</code>
-                        <span class="status-badge status-planned"><span class="status-dot"></span>On demand</span>
-                        <span class="discovery-tokens">~600 each</span>
-                    </div>
-                    <p>Evergreen knowledge -- architecture, conventions, schemas</p>
+            <div class="discovery-step">
+                <div class="discovery-step-inner">
+                    <span class="discovery-step-num">3</span>
+                    <span class="discovery-step-path">.context/docs/</span>
+                    <span class="discovery-loading discovery-loading-demand">On demand</span>
+                    <span class="discovery-purpose">Evergreen knowledge -- architecture, conventions, schemas</span>
+                    <span class="discovery-tokens">~600 each</span>
                 </div>
             </div>
+            <div class="discovery-arrow">&#x2193;</div>
 
-            <div class="discovery-list-item">
-                <span class="step-number">4</span>
-                <div class="discovery-list-body">
-                    <div class="discovery-list-top">
-                        <code>.context/guides/</code>
-                        <span class="status-badge status-planned"><span class="status-dot"></span>On demand</span>
-                        <span class="discovery-tokens">~800 each</span>
-                    </div>
-                    <p>Living how-to documents -- patterns, gotchas</p>
+            <div class="discovery-step">
+                <div class="discovery-step-inner">
+                    <span class="discovery-step-num">4</span>
+                    <span class="discovery-step-path">.context/guides/</span>
+                    <span class="discovery-loading discovery-loading-demand">On demand</span>
+                    <span class="discovery-purpose">Living how-to documents -- patterns, gotchas</span>
+                    <span class="discovery-tokens">~800 each</span>
                 </div>
             </div>
+            <div class="discovery-arrow">&#x2193;</div>
 
-            <div class="discovery-list-item">
-                <span class="step-number">5</span>
-                <div class="discovery-list-body">
-                    <div class="discovery-list-top">
-                        <code>.context/agents/</code>
-                        <span class="status-badge status-planned"><span class="status-dot"></span>On dispatch</span>
-                        <span class="discovery-tokens">~400</span>
-                    </div>
-                    <p>Agent definitions -- only the dispatched agent</p>
+            <div class="discovery-step">
+                <div class="discovery-step-inner">
+                    <span class="discovery-step-num">5</span>
+                    <span class="discovery-step-path">.context/agents/</span>
+                    <span class="discovery-loading discovery-loading-dispatch">On dispatch</span>
+                    <span class="discovery-purpose">Agent definitions -- only the dispatched agent</span>
+                    <span class="discovery-tokens">~400</span>
                 </div>
             </div>
+            <div class="discovery-arrow">&#x2193;</div>
 
-            <div class="discovery-list-item">
-                <span class="step-number">6</span>
-                <div class="discovery-list-body">
-                    <div class="discovery-list-top">
-                        <code>.context/skills/</code>
-                        <span class="status-badge status-planned"><span class="status-dot"></span>On invoke</span>
-                        <span class="discovery-tokens">~400</span>
-                    </div>
-                    <p>Skill definitions -- progressive disclosure</p>
+            <div class="discovery-step">
+                <div class="discovery-step-inner">
+                    <span class="discovery-step-num">6</span>
+                    <span class="discovery-step-path">.context/skills/</span>
+                    <span class="discovery-loading discovery-loading-dispatch">On invoke</span>
+                    <span class="discovery-purpose">Skill definitions -- progressive disclosure</span>
+                    <span class="discovery-tokens">~400</span>
                 </div>
             </div>
+            <div class="discovery-arrow">&#x2193;</div>
 
-            <div class="discovery-list-item">
-                <span class="step-number">7</span>
-                <div class="discovery-list-body">
-                    <div class="discovery-list-top">
-                        <code>.context/queue.md</code>
-                        <span class="status-badge status-planned"><span class="status-dot"></span>On request</span>
-                        <span class="discovery-tokens">~300</span>
-                    </div>
-                    <p>Multi-agent task queue</p>
+            <div class="discovery-step">
+                <div class="discovery-step-inner">
+                    <span class="discovery-step-num">7</span>
+                    <span class="discovery-step-path">.context/queue.md</span>
+                    <span class="discovery-loading discovery-loading-demand">On request</span>
+                    <span class="discovery-purpose">Multi-agent task queue</span>
+                    <span class="discovery-tokens">~300</span>
                 </div>
             </div>
+            <div class="discovery-arrow">&#x2193;</div>
 
-            <div class="discovery-list-item">
-                <span class="step-number">8</span>
-                <div class="discovery-list-body">
-                    <div class="discovery-list-top">
-                        <code>plans/</code>
-                        <span class="status-badge status-planned"><span class="status-dot"></span>On demand</span>
-                        <span class="discovery-tokens">~800 each</span>
-                    </div>
-                    <p>Time-stamped work -- glob for relevant files</p>
+            <div class="discovery-step">
+                <div class="discovery-step-inner">
+                    <span class="discovery-step-num">8</span>
+                    <span class="discovery-step-path">plans/</span>
+                    <span class="discovery-loading discovery-loading-demand">On demand</span>
+                    <span class="discovery-purpose">Time-stamped work -- glob for relevant files</span>
+                    <span class="discovery-tokens">~800 each</span>
                 </div>
             </div>
+            <div class="discovery-arrow">&#x2193;</div>
 
-            <div class="discovery-list-item">
-                <span class="step-number">9</span>
-                <div class="discovery-list-body">
-                    <div class="discovery-list-top">
-                        <code>research/</code>
-                        <span class="status-badge status-planned"><span class="status-dot"></span>On demand</span>
-                        <span class="discovery-tokens">~800 each</span>
-                    </div>
-                    <p>Academic manuscripts</p>
+            <div class="discovery-step">
+                <div class="discovery-step-inner">
+                    <span class="discovery-step-num">9</span>
+                    <span class="discovery-step-path">research/</span>
+                    <span class="discovery-loading discovery-loading-demand">On demand</span>
+                    <span class="discovery-purpose">Academic manuscripts</span>
+                    <span class="discovery-tokens">~800 each</span>
                 </div>
             </div>
+            <div class="discovery-arrow">&#x2193;</div>
 
-            <div class="discovery-list-item">
-                <span class="step-number">10</span>
-                <div class="discovery-list-body">
-                    <div class="discovery-list-top">
-                        <code>Source code</code>
-                        <span class="status-badge status-planned"><span class="status-dot"></span>On demand</span>
-                        <span class="discovery-tokens">varies</span>
-                    </div>
-                    <p>Follow architecture guidelines from CONTEXT.md</p>
+            <div class="discovery-step">
+                <div class="discovery-step-inner">
+                    <span class="discovery-step-num">10</span>
+                    <span class="discovery-step-path">Source code</span>
+                    <span class="discovery-loading discovery-loading-demand">On demand</span>
+                    <span class="discovery-purpose">Follow architecture guidelines from CONTEXT.md</span>
+                    <span class="discovery-tokens">varies</span>
                 </div>
             </div>
         </div>
@@ -423,22 +431,22 @@
 </section>
 
 <!-- Comparison Matrix -->
-<section class="section section-muted">
-    <div class="section-inner">
+<section class="comparison-section">
+    <div class="section-container">
         <div class="section-header">
-            <h2 class="section-headline">Feature comparison</h2>
-            <p class="section-subtitle">
+            <h2 class="section-title">Feature comparison</h2>
+            <p class="section-desc">
                 ARDS is the only format covering the full documentation architecture.
                 It generates files for every other format.
             </p>
         </div>
 
-        <div class="table-scroll">
+        <div class="comparison-table-wrapper">
             <table class="comparison-table">
                 <thead>
                     <tr>
-                        <th>Feature</th>
-                        <th class="comparison-highlight">ARDS</th>
+                        <th class="comparison-feature-col">Feature</th>
+                        <th class="comparison-ards-col">ARDS</th>
                         <th>AGENTS.md</th>
                         <th>CLAUDE.md</th>
                         <th>Cursor</th>
@@ -449,129 +457,129 @@
                 <tbody>
                     <tr>
                         <td>Root context file</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&#x2705;</td>
-                        <td>&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&#x2705;</td>
-                        <td>&#x2705;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&#x2705;</td>
                     </tr>
                     <tr>
                         <td>Agent definitions</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
                     </tr>
                     <tr>
                         <td>Skill/rule definitions</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&#x2705;</td>
-                        <td>&#x2705;</td>
-                        <td>&#x2705;</td>
-                        <td>&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
                     </tr>
                     <tr>
                         <td>Knowledge doc hierarchy</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
                     </tr>
                     <tr>
                         <td>Living guides</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
                     </tr>
                     <tr>
                         <td>Session checkpoints</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
                     </tr>
                     <tr>
                         <td>Cross-repo references</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
                     </tr>
                     <tr>
                         <td>Evidence epistemology</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
                     </tr>
                     <tr>
                         <td>IP safety rules</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
                     </tr>
                     <tr>
                         <td>Token budget guidance</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
                     </tr>
                     <tr>
                         <td>Discovery order</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&#x2705;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
                     </tr>
                     <tr>
                         <td>Quality scoring rubric</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
                     </tr>
                     <tr>
                         <td>Multi-platform generation</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
                     </tr>
                     <tr>
                         <td>Machine-readable config</td>
-                        <td class="comparison-highlight">&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&mdash;</td>
-                        <td>&#x2705;</td>
-                        <td>&mdash;</td>
-                        <td>&#x2705;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
+                        <td class="check-cell">&mdash;</td>
+                        <td class="check-cell">&#x2705;</td>
                     </tr>
                 </tbody>
             </table>
@@ -580,158 +588,158 @@
 </section>
 
 <!-- ARDS as Superset -->
-<section class="section">
-    <div class="section-inner">
+<section class="superset-section">
+    <div class="section-container">
         <div class="section-header">
-            <h2 class="section-headline">ARDS as superset</h2>
-            <p class="section-subtitle">
+            <h2 class="section-title">ARDS as superset</h2>
+            <p class="section-desc">
                 Not competing with existing formats. ARDS defines the full documentation
                 architecture and generates platform-specific files from a single source.
             </p>
         </div>
 
         <div class="superset-list">
-            <div class="superset-item" style="border-color: rgba(59, 130, 246, 0.2);">
+            <div class="superset-item" style="background: rgba(59, 130, 246, 0.03); border-color: rgba(59, 130, 246, 0.12);">
                 <span class="superset-label" style="color: #3b82f6;">Root Context</span>
                 <span class="superset-arrow">&rarr;</span>
-                <span class="superset-target">AGENTS.md, CLAUDE.md, copilot-instructions.md</span>
+                <span class="superset-maps">AGENTS.md, CLAUDE.md, copilot-instructions.md</span>
             </div>
-            <div class="superset-item" style="border-color: rgba(168, 85, 247, 0.2);">
+            <div class="superset-item" style="background: rgba(168, 85, 247, 0.03); border-color: rgba(168, 85, 247, 0.12);">
                 <span class="superset-label" style="color: #a855f7;">Agents / Skills</span>
                 <span class="superset-arrow">&rarr;</span>
-                <span class="superset-target">Agent Skills (SKILL.md), .cursor/rules/*.mdc</span>
+                <span class="superset-maps">Agent Skills (SKILL.md), .cursor/rules/*.mdc</span>
             </div>
-            <div class="superset-item" style="border-color: rgba(245, 158, 11, 0.2);">
+            <div class="superset-item" style="background: rgba(245, 158, 11, 0.03); border-color: rgba(245, 158, 11, 0.12);">
                 <span class="superset-label" style="color: #f59e0b;">Knowledge Docs</span>
                 <span class="superset-arrow">&rarr;</span>
-                <span class="superset-target">unique to ARDS</span>
-                <span class="badge badge-available">unique</span>
+                <span class="superset-maps">unique to ARDS</span>
+                <span class="superset-unique-badge">unique</span>
             </div>
-            <div class="superset-item" style="border-color: rgba(34, 197, 94, 0.2);">
+            <div class="superset-item" style="background: rgba(34, 197, 94, 0.03); border-color: rgba(34, 197, 94, 0.12);">
                 <span class="superset-label" style="color: #22c55e;">Living Guides</span>
                 <span class="superset-arrow">&rarr;</span>
-                <span class="superset-target">unique to ARDS</span>
-                <span class="badge badge-available">unique</span>
+                <span class="superset-maps">unique to ARDS</span>
+                <span class="superset-unique-badge">unique</span>
             </div>
-            <div class="superset-item" style="border-color: rgba(6, 182, 212, 0.2);">
+            <div class="superset-item" style="background: rgba(6, 182, 212, 0.03); border-color: rgba(6, 182, 212, 0.12);">
                 <span class="superset-label" style="color: #06b6d4;">Plan Docs</span>
                 <span class="superset-arrow">&rarr;</span>
-                <span class="superset-target">PLANS.md (Codex)</span>
+                <span class="superset-maps">PLANS.md (Codex)</span>
             </div>
-            <div class="superset-item" style="border-color: rgba(139, 92, 246, 0.2);">
+            <div class="superset-item" style="background: rgba(139, 92, 246, 0.03); border-color: rgba(139, 92, 246, 0.12);">
                 <span class="superset-label" style="color: #8b5cf6;">Research Docs</span>
                 <span class="superset-arrow">&rarr;</span>
-                <span class="superset-target">unique to ARDS</span>
-                <span class="badge badge-available">unique</span>
+                <span class="superset-maps">unique to ARDS</span>
+                <span class="superset-unique-badge">unique</span>
             </div>
-            <div class="superset-item" style="border-color: rgba(59, 130, 246, 0.2);">
+            <div class="superset-item" style="background: rgba(59, 130, 246, 0.03); border-color: rgba(59, 130, 246, 0.12);">
                 <span class="superset-label" style="color: #3b82f6;">Session Checkpoints</span>
                 <span class="superset-arrow">&rarr;</span>
-                <span class="superset-target">unique to ARDS</span>
-                <span class="badge badge-available">unique</span>
+                <span class="superset-maps">unique to ARDS</span>
+                <span class="superset-unique-badge">unique</span>
             </div>
-            <div class="superset-item" style="border-color: rgba(6, 182, 212, 0.2);">
+            <div class="superset-item" style="background: rgba(6, 182, 212, 0.03); border-color: rgba(6, 182, 212, 0.12);">
                 <span class="superset-label" style="color: #06b6d4;">Cross-Repo Refs</span>
                 <span class="superset-arrow">&rarr;</span>
-                <span class="superset-target">unique to ARDS</span>
-                <span class="badge badge-available">unique</span>
+                <span class="superset-maps">unique to ARDS</span>
+                <span class="superset-unique-badge">unique</span>
             </div>
-            <div class="superset-item" style="border-color: rgba(245, 158, 11, 0.2);">
+            <div class="superset-item" style="background: rgba(245, 158, 11, 0.03); border-color: rgba(245, 158, 11, 0.12);">
                 <span class="superset-label" style="color: #f59e0b;">Evidence System</span>
                 <span class="superset-arrow">&rarr;</span>
-                <span class="superset-target">unique to ARDS</span>
-                <span class="badge badge-available">unique</span>
+                <span class="superset-maps">unique to ARDS</span>
+                <span class="superset-unique-badge">unique</span>
             </div>
-            <div class="superset-item" style="border-color: rgba(239, 68, 68, 0.2);">
+            <div class="superset-item" style="background: rgba(239, 68, 68, 0.03); border-color: rgba(239, 68, 68, 0.12);">
                 <span class="superset-label" style="color: #ef4444;">IP Safety</span>
                 <span class="superset-arrow">&rarr;</span>
-                <span class="superset-target">unique to ARDS</span>
-                <span class="badge badge-available">unique</span>
+                <span class="superset-maps">unique to ARDS</span>
+                <span class="superset-unique-badge">unique</span>
             </div>
-            <div class="superset-item" style="border-color: rgba(20, 184, 166, 0.2);">
+            <div class="superset-item" style="background: rgba(20, 184, 166, 0.03); border-color: rgba(20, 184, 166, 0.12);">
                 <span class="superset-label" style="color: #14b8a6;">MCP Integration</span>
                 <span class="superset-arrow">&rarr;</span>
-                <span class="superset-target">bridges ARDS content to MCP tools</span>
+                <span class="superset-maps">bridges ARDS content to MCP tools</span>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Backward Compatibility -->
-<section class="section section-muted">
-    <div class="section-inner">
+<section class="compat-section">
+    <div class="section-container">
         <div class="section-header">
-            <h2 class="section-headline">Fully backward-compatible</h2>
-            <p class="section-subtitle">
+            <h2 class="section-title">Fully backward-compatible</h2>
+            <p class="section-desc">
                 All v3 additions are optional. A valid v2 project is already a valid v3 project.
                 Adopt features incrementally.
             </p>
         </div>
 
-        <div class="steps-list">
-            <div class="step-card">
-                <span class="step-number">1</span>
-                <div>
-                    <div class="step-card-row">
-                        <h3>Bump version</h3>
-                        <span class="badge badge-coming">30 seconds</span>
+        <div class="compat-steps">
+            <div class="compat-step">
+                <span class="compat-step-num">1</span>
+                <div class="compat-step-body">
+                    <div class="compat-step-row">
+                        <h3 class="compat-step-title">Bump version</h3>
+                        <span class="compat-step-time">30 seconds</span>
                     </div>
-                    <p>Change version in surfcontext.json from "2.0" to "3.0"</p>
+                    <p class="compat-step-desc">Change version in surfcontext.json from "2.0" to "3.0"</p>
                 </div>
             </div>
 
-            <div class="step-card">
-                <span class="step-number">2</span>
-                <div>
-                    <div class="step-card-row">
-                        <h3>Add guides directory</h3>
-                        <span class="badge badge-coming">2 minutes</span>
+            <div class="compat-step">
+                <span class="compat-step-num">2</span>
+                <div class="compat-step-body">
+                    <div class="compat-step-row">
+                        <h3 class="compat-step-title">Add guides directory</h3>
+                        <span class="compat-step-time">2 minutes</span>
                     </div>
-                    <p>Create .context/guides/ and add guidesDir to surfcontext.json</p>
+                    <p class="compat-step-desc">Create .context/guides/ and add guidesDir to surfcontext.json</p>
                 </div>
             </div>
 
-            <div class="step-card">
-                <span class="step-number">3</span>
-                <div>
-                    <div class="step-card-row">
-                        <h3>Add discovery order</h3>
-                        <span class="badge badge-coming">1 minute</span>
+            <div class="compat-step">
+                <span class="compat-step-num">3</span>
+                <div class="compat-step-body">
+                    <div class="compat-step-row">
+                        <h3 class="compat-step-title">Add discovery order</h3>
+                        <span class="compat-step-time">1 minute</span>
                     </div>
-                    <p>Document your project's navigation sequence in surfcontext.json</p>
+                    <p class="compat-step-desc">Document your project's navigation sequence in surfcontext.json</p>
                 </div>
             </div>
 
-            <div class="step-card">
-                <span class="step-number">4</span>
-                <div>
-                    <div class="step-card-row">
-                        <h3>Start checkpointing</h3>
-                        <span class="badge badge-coming">Ongoing</span>
+            <div class="compat-step">
+                <span class="compat-step-num">4</span>
+                <div class="compat-step-body">
+                    <div class="compat-step-row">
+                        <h3 class="compat-step-title">Start checkpointing</h3>
+                        <span class="compat-step-time">Ongoing</span>
                     </div>
-                    <p>Write session checkpoints to plans/sessions/ when context gets long</p>
+                    <p class="compat-step-desc">Write session checkpoints to plans/sessions/ when context gets long</p>
                 </div>
             </div>
 
-            <div class="step-card">
-                <span class="step-number">5</span>
-                <div>
-                    <div class="step-card-row">
-                        <h3>Tag evidence</h3>
-                        <span class="badge badge-coming">Ongoing</span>
+            <div class="compat-step">
+                <span class="compat-step-num">5</span>
+                <div class="compat-step-body">
+                    <div class="compat-step-row">
+                        <h3 class="compat-step-title">Tag evidence</h3>
+                        <span class="compat-step-time">Ongoing</span>
                     </div>
-                    <p>Add [verified], [unverified], [assumption] tags to claims</p>
+                    <p class="compat-step-desc">Add [verified], [unverified], [assumption] tags to claims</p>
                 </div>
             </div>
 
-            <div class="step-card">
-                <span class="step-number">6</span>
-                <div>
-                    <div class="step-card-row">
-                        <h3>Configure IP safety</h3>
-                        <span class="badge badge-coming">1 minute</span>
+            <div class="compat-step">
+                <span class="compat-step-num">6</span>
+                <div class="compat-step-body">
+                    <div class="compat-step-row">
+                        <h3 class="compat-step-title">Configure IP safety</h3>
+                        <span class="compat-step-time">1 minute</span>
                     </div>
-                    <p>Add ipSafety block to surfcontext.json if relevant</p>
+                    <p class="compat-step-desc">Add ipSafety block to surfcontext.json if relevant</p>
                 </div>
             </div>
         </div>
@@ -740,16 +748,16 @@
 
 <!-- CTA -->
 <section class="cta-section">
-    <div class="section-inner">
+    <div class="section-container">
         <div class="cta-content">
-            <h2 class="section-headline">Ready to upgrade to v3?</h2>
-            <p class="section-subtitle">
+            <h2 class="section-title">Ready to upgrade to v3?</h2>
+            <p class="cta-desc">
                 All new features are opt-in. Start with a version bump and adopt
                 capabilities as you need them.
             </p>
             <div class="cta-actions">
                 <a href="/getting-started" class="btn btn-primary">Get Started</a>
-                <a href="/spec" class="btn btn-ghost">Full Specification</a>
+                <a href="/spec" class="btn btn-outline">Full Specification</a>
             </div>
         </div>
     </div>
