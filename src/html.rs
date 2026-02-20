@@ -1,10 +1,15 @@
-<!DOCTYPE html>
+/// Base HTML layout — replaces Askama base.html template.
+/// All pages use `page()` to wrap content in the full document shell.
+
+pub fn page(title: &str, description: &str, extra_head: &str, content: &str) -> String {
+    format!(
+        r##"<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}SurfContext — The Open Standard for Agent-Ready Project Documentation{% endblock %}</title>
-    <meta name="description" content="{% block description %}One format. Every AI coding agent. Define your project context once — Claude Code, Cursor, Codex, and Copilot understand it automatically.{% endblock %}">
+    <title>{title}</title>
+    <meta name="description" content="{description}">
     <meta property="og:title" content="SurfContext — The Open Standard for Agent-Ready Project Documentation">
     <meta property="og:description" content="One format. Every AI coding agent. Define your project context once — Claude Code, Cursor, Codex, and Copilot understand it automatically.">
     <meta property="og:type" content="website">
@@ -14,17 +19,19 @@
     <meta name="twitter:title" content="SurfContext">
     <meta name="twitter:description" content="The open standard for agent-ready project documentation.">
     <link rel="canonical" href="https://surfcontext.org">
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="stylesheet" href="/static/css/surf-ui.css">
     <link rel="stylesheet" href="/static/css/app.css">
     <script src="/static/js/app.js" defer></script>
     <script>
-        (function() {
+        (function() {{
             var theme = localStorage.getItem('surfcontext-theme');
-            if (theme) {
+            if (theme) {{
                 document.documentElement.setAttribute('data-theme', theme);
-            }
-        })();
+            }}
+        }})();
     </script>
-    {% block head %}{% endblock %}
+    {extra_head}
 </head>
 <body>
     <nav class="nav" aria-label="Main navigation">
@@ -42,38 +49,22 @@
                 <a href="https://github.com/cloudsurf-software/surfcontext" target="_blank" rel="noopener noreferrer" class="nav-link nav-github" aria-label="GitHub">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 </a>
-                <button class="nav-theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
+            </div>
+
+            <div class="nav-actions">
+                <button class="nav-theme-toggle" aria-label="Toggle theme">
                     <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                     <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                 </button>
-            </div>
-
-            <div class="nav-mobile-controls">
-                <button class="nav-theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
-                    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                </button>
-                <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="toggleMobileMenu()">
-                    <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-                    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
                 </button>
             </div>
-        </div>
-
-        <div class="nav-mobile-menu">
-            <a href="/whats-new" class="nav-mobile-link">What's New</a>
-            <a href="/spec" class="nav-mobile-link">Spec</a>
-            <a href="/getting-started" class="nav-mobile-link">Getting Started</a>
-            <a href="/tools" class="nav-mobile-link">Tools</a>
-            <a href="https://github.com/cloudsurf-software/surfcontext" target="_blank" rel="noopener noreferrer" class="nav-mobile-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                GitHub
-            </a>
         </div>
     </nav>
 
     <main>
-        {% block content %}{% endblock %}
+        {content}
     </main>
 
     <footer class="footer">
@@ -115,7 +106,41 @@
             </div>
         </div>
     </footer>
-
-    {% block scripts %}{% endblock %}
 </body>
-</html>
+</html>"##
+    )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn page_renders_title_and_content() {
+        let html = page("Test Title", "Test desc", "", "<p>Hello</p>");
+        assert!(html.contains("<title>Test Title</title>"));
+        assert!(html.contains("<p>Hello</p>"));
+        assert!(html.contains("Test desc"));
+    }
+
+    #[test]
+    fn page_includes_extra_head() {
+        let html = page("T", "D", r#"<link rel="stylesheet" href="/static/css/spec.css">"#, "");
+        assert!(html.contains("spec.css"));
+    }
+
+    #[test]
+    fn page_includes_nav_and_footer() {
+        let html = page("T", "D", "", "");
+        assert!(html.contains("nav-brand"));
+        assert!(html.contains("footer"));
+        assert!(html.contains("SurfContext"));
+    }
+
+    #[test]
+    fn page_loads_surf_ui_css() {
+        let html = page("T", "D", "", "");
+        assert!(html.contains("surf-ui.css"));
+        assert!(html.contains("app.css"));
+    }
+}

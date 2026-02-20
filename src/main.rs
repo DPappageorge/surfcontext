@@ -1,3 +1,4 @@
+mod html;
 mod routes;
 
 use axum::Router;

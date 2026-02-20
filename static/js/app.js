@@ -1,52 +1,78 @@
-/* SurfContext — Minimal vanilla JS */
+/* SurfContext — Vanilla JS */
+
+// Global copyCode for spec page inline onclick handlers
+function copyCode(btn) {
+    var codeBlock = btn.closest('.code-block');
+    var code = codeBlock.querySelector('code');
+    var text = code.textContent;
+    navigator.clipboard.writeText(text).then(function() {
+        var span = btn.querySelector('span');
+        if (span) {
+            var original = span.textContent;
+            span.textContent = 'Copied';
+            setTimeout(function() { span.textContent = original; }, 2000);
+        }
+    });
+}
+
 (function () {
     "use strict";
 
-    // 1. Theme toggle
-    function initTheme() {
-        var saved = localStorage.getItem("theme");
-        if (!saved) {
-            saved = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-        }
-        document.documentElement.setAttribute("data-theme", saved);
+    /* --- Theme --- */
+
+    function getPreferredTheme() {
+        var saved = localStorage.getItem("surfcontext-theme");
+        if (saved) return saved;
+        return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
     }
-    initTheme();
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("surfcontext-theme", theme);
+    }
+
+    applyTheme(getPreferredTheme());
+
+    /* --- DOM Ready --- */
 
     document.addEventListener("DOMContentLoaded", function () {
-        var toggle = document.querySelector(".theme-toggle");
-        if (toggle) {
-            toggle.addEventListener("click", function () {
+
+        /* Theme toggle */
+        var themeBtn = document.querySelector(".nav-theme-toggle");
+        if (themeBtn) {
+            themeBtn.addEventListener("click", function () {
                 var current = document.documentElement.getAttribute("data-theme");
-                var next = current === "dark" ? "light" : "dark";
-                document.documentElement.setAttribute("data-theme", next);
-                localStorage.setItem("theme", next);
-                toggle.textContent = next === "dark" ? "\u263E" : "\u2600";
+                applyTheme(current === "dark" ? "light" : "dark");
             });
-            var theme = document.documentElement.getAttribute("data-theme");
-            toggle.textContent = theme === "dark" ? "\u263E" : "\u2600";
         }
 
-        // 2. Mobile menu
+        /* Mobile menu */
         var navToggle = document.querySelector(".nav-toggle");
         var navLinks = document.querySelector(".nav-links");
+
         if (navToggle && navLinks) {
             navToggle.addEventListener("click", function (e) {
                 e.stopPropagation();
-                navLinks.classList.toggle("open");
+                var open = navLinks.classList.toggle("open");
+                navToggle.setAttribute("aria-expanded", open);
             });
+
             navLinks.querySelectorAll("a").forEach(function (link) {
                 link.addEventListener("click", function () {
                     navLinks.classList.remove("open");
+                    navToggle.setAttribute("aria-expanded", "false");
                 });
             });
+
             document.addEventListener("click", function (e) {
                 if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
                     navLinks.classList.remove("open");
+                    navToggle.setAttribute("aria-expanded", "false");
                 }
             });
         }
 
-        // 3. Code copy buttons
+        /* Code copy buttons */
         document.querySelectorAll(".code-block").forEach(function (block) {
             if (block.querySelector(".code-copy")) return;
             var btn = document.createElement("button");
@@ -63,7 +89,7 @@
             block.appendChild(btn);
         });
 
-        // 4. Spec TOC tracking (only when .spec-toc exists)
+        /* Spec TOC tracking */
         var toc = document.querySelector(".spec-toc");
         if (toc) {
             var sections = document.querySelectorAll(".spec-section");
@@ -83,7 +109,7 @@
             }
         }
 
-        // 5. Stack selector (getting-started page)
+        /* Stack selector (getting-started page) */
         var stackSelector = document.querySelector(".stack-selector");
         if (stackSelector) {
             var hidden = stackSelector.parentElement.querySelector("input[type=hidden]");

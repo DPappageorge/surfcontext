@@ -1,0 +1,343 @@
+<!-- Hero -->
+<section class="hero" style="padding-bottom: 48px;">
+    <div class="hero-inner">
+        <h1 class="hero-headline">Getting Started</h1>
+        <p class="hero-subtitle">
+            Add SurfContext to your project in under 5 minutes. No dependencies,
+            no build step, no lock-in.
+        </p>
+    </div>
+</section>
+
+<!-- Quick Start Download -->
+<section class="section">
+    <div class="section-inner" style="padding-top: 48px;">
+        <div class="section-header">
+            <span class="hero-badge"><span class="hero-badge-dot"></span> Fastest way to start</span>
+        </div>
+
+        <div class="card" style="max-width: 720px; margin: 0 auto;">
+            <h3 class="card-title">Generate your SurfContext starter kit</h3>
+            <p class="card-body" style="margin-bottom: 20px;">
+                Fill in your project details and download a ready-to-use SurfContext package.
+            </p>
+
+            <form action="/api/download" method="POST" class="download-form">
+                <div class="form-group">
+                    <label for="project_name">Project name</label>
+                    <input
+                        id="project_name"
+                        name="project_name"
+                        type="text"
+                        placeholder="my-project"
+                        class="form-input"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="description">What is your project about?</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="A brief description of what your project does and why it exists..."
+                        rows="3"
+                        class="form-textarea"
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Tech stack <span style="color: var(--text-muted); font-weight: 400;">(optional)</span>
+                    </label>
+                    <div class="stack-selector" id="stack-buttons">
+                        <button type="button" class="stack-btn" data-stack="TypeScript" onclick="toggleStack(this)">TypeScript</button>
+                        <button type="button" class="stack-btn" data-stack="JavaScript" onclick="toggleStack(this)">JavaScript</button>
+                        <button type="button" class="stack-btn" data-stack="Python" onclick="toggleStack(this)">Python</button>
+                        <button type="button" class="stack-btn" data-stack="Rust" onclick="toggleStack(this)">Rust</button>
+                        <button type="button" class="stack-btn" data-stack="Go" onclick="toggleStack(this)">Go</button>
+                        <button type="button" class="stack-btn" data-stack="Java" onclick="toggleStack(this)">Java</button>
+                        <button type="button" class="stack-btn" data-stack="React" onclick="toggleStack(this)">React</button>
+                        <button type="button" class="stack-btn" data-stack="Next.js" onclick="toggleStack(this)">Next.js</button>
+                        <button type="button" class="stack-btn" data-stack="Node.js" onclick="toggleStack(this)">Node.js</button>
+                        <button type="button" class="stack-btn" data-stack="Django" onclick="toggleStack(this)">Django</button>
+                        <button type="button" class="stack-btn" data-stack="Rails" onclick="toggleStack(this)">Rails</button>
+                        <button type="button" class="stack-btn" data-stack="Swift" onclick="toggleStack(this)">Swift</button>
+                        <button type="button" class="stack-btn" data-stack="Kotlin" onclick="toggleStack(this)">Kotlin</button>
+                        <button type="button" class="stack-btn" data-stack="C#" onclick="toggleStack(this)">C#</button>
+                        <button type="button" class="stack-btn" data-stack=".NET" onclick="toggleStack(this)">.NET</button>
+                        <button type="button" class="stack-btn" data-stack="Vue" onclick="toggleStack(this)">Vue</button>
+                        <button type="button" class="stack-btn" data-stack="Svelte" onclick="toggleStack(this)">Svelte</button>
+                        <button type="button" class="stack-btn" data-stack="Tailwind CSS" onclick="toggleStack(this)">Tailwind CSS</button>
+                        <button type="button" class="stack-btn" data-stack="PostgreSQL" onclick="toggleStack(this)">PostgreSQL</button>
+                        <button type="button" class="stack-btn" data-stack="MongoDB" onclick="toggleStack(this)">MongoDB</button>
+                        <button type="button" class="stack-btn" data-stack="Redis" onclick="toggleStack(this)">Redis</button>
+                        <button type="button" class="stack-btn" data-stack="Docker" onclick="toggleStack(this)">Docker</button>
+                        <button type="button" class="stack-btn" data-stack="AWS" onclick="toggleStack(this)">AWS</button>
+                        <button type="button" class="stack-btn" data-stack="Vercel" onclick="toggleStack(this)">Vercel</button>
+                    </div>
+                    <input type="hidden" name="stack" id="stack-input" value="">
+                </div>
+
+                <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 16px;">
+                    Generates CONTEXT.md, CLAUDE.md, AGENTS.md, surfcontext.json, and .context/ directory
+                </p>
+                <button type="submit" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download SurfContext
+                </button>
+            </form>
+        </div>
+
+        <div class="callout callout-info" style="max-width: 720px; margin: 24px auto 0;">
+            <strong>After downloading:</strong>
+            <ol style="margin: 8px 0 0; padding-left: 20px; color: var(--text-muted);">
+                <li>Unzip into your project root</li>
+                <li>Edit CONTEXT.md with your full project details</li>
+                <li>Open your project in Claude Code, Cursor, or any supported AI tool — it discovers your context automatically</li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<!-- Manual Setup Divider + Steps -->
+<section>
+    <div class="section-inner" style="padding-top: 0;">
+        <div class="fragmentation-divider" style="margin-bottom: 48px;">
+            <span class="fragmentation-divider-line"></span>
+            <span class="fragmentation-divider-label">Or set up manually</span>
+            <span class="fragmentation-divider-line"></span>
+        </div>
+        <div class="steps-list" style="max-width: 720px; margin: 0 auto;">
+
+            <!-- Step 1 -->
+            <div class="step-card">
+                <div class="card-step">
+                    <span class="card-step-number">1</span>
+                    <h2 style="font-size: 1.25rem; font-weight: 700;">Create CONTEXT.md</h2>
+                </div>
+                <p class="card-body" style="margin-bottom: 16px;">
+                    Create a <code>CONTEXT.md</code> file in your project root. This is your canonical project context —
+                    the single source of truth that all AI agents will read.
+                </p>
+                <div class="code-block">
+                    <div class="code-header">CONTEXT.md</div>
+<pre><code><span class="cm"># My Project</span>
+
+Brief description of what this project does and why it exists.
+
+<span class="cm">## Key Files</span>
+
+| Path | Purpose |
+|------|---------|
+| `src/` | Application source code |
+| `tests/` | Test files |
+| `.context/agents/` | Agent definitions |
+| `.context/docs/` | Knowledge documents |
+
+<span class="cm">## Architecture</span>
+
+Describe your system architecture at a high level. Include
+frameworks, data flow, and deployment targets.
+
+<span class="cm">## Stack &amp; Development</span>
+
+**Stack**: TypeScript, React, Node.js
+**Run locally**: `npm run dev`
+**Run tests**: `npm test`
+**Lint**: `npm run lint`
+
+<span class="cm">## Conventions</span>
+
+- List any coding conventions your project follows
+- Include naming patterns, file organization rules, etc.</code></pre>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-card">
+                <div class="card-step">
+                    <span class="card-step-number">2</span>
+                    <h2 style="font-size: 1.25rem; font-weight: 700;">Create .context/ directory</h2>
+                </div>
+                <p class="card-body" style="margin-bottom: 16px;">
+                    Set up the context directory with subdirectories for agents,
+                    knowledge docs, and guides.
+                </p>
+                <div class="code-block">
+                    <div class="code-header">Terminal</div>
+<pre><code>mkdir -p .context/agents .context/docs .context/guides</code></pre>
+                </div>
+                <p class="card-body" style="margin-top: 16px; margin-bottom: 16px;">
+                    Add your first agent definition:
+                </p>
+                <div class="code-block">
+                    <div class="code-header">.context/agents/code-reviewer.md</div>
+<pre><code><span class="attr">---</span>
+<span class="attr">name</span>: code-reviewer
+<span class="attr">description</span>: Reviews code for quality, security, and best practices
+<span class="attr">tools</span>:
+  - Read
+  - Grep
+  - Glob
+<span class="attr">model</span>: sonnet
+<span class="attr">---</span>
+
+<span class="cm"># Code Reviewer</span>
+
+You review pull requests and code changes for:
+
+- Security vulnerabilities
+- Performance issues
+- Code style consistency
+- Test coverage gaps
+
+<span class="cm">## Rules</span>
+
+- Always explain *why* something is a problem, not just *what*
+- Suggest specific fixes, not vague improvements
+- Check for proper error handling in all async operations</code></pre>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-card">
+                <div class="card-step">
+                    <span class="card-step-number">3</span>
+                    <h2 style="font-size: 1.25rem; font-weight: 700;">Add surfcontext.json</h2>
+                </div>
+                <p class="card-body" style="margin-bottom: 16px;">
+                    Create a <code>surfcontext.json</code> manifest to declare your target platforms and generation settings.
+                </p>
+                <div class="code-block">
+                    <div class="code-header">surfcontext.json</div>
+<pre><code>{
+  <span class="str">"version"</span>: <span class="str">"3.0"</span>,
+  <span class="str">"source"</span>: <span class="str">"manual"</span>,
+  <span class="str">"platforms"</span>: [<span class="str">"claude"</span>, <span class="str">"codex"</span>, <span class="str">"cursor"</span>],
+  <span class="str">"canonical"</span>: {
+    <span class="str">"rootContext"</span>: <span class="str">"CONTEXT.md"</span>,
+    <span class="str">"docsDir"</span>: <span class="str">".context/docs"</span>,
+    <span class="str">"agentsDir"</span>: <span class="str">".context/agents"</span>,
+    <span class="str">"guidesDir"</span>: <span class="str">".context/guides"</span>
+  },
+  <span class="str">"generation"</span>: {
+    <span class="str">"claude"</span>: {
+      <span class="str">"rootContext"</span>: <span class="str">"CLAUDE.md"</span>,
+      <span class="str">"method"</span>: <span class="str">"sed-copy"</span>
+    },
+    <span class="str">"codex"</span>: {
+      <span class="str">"rootContext"</span>: <span class="str">"AGENTS.md"</span>,
+      <span class="str">"method"</span>: <span class="str">"sed-copy"</span>
+    }
+  },
+  <span class="str">"discoveryOrder"</span>: [
+    <span class="str">"CONTEXT.md"</span>,
+    <span class="str">"surfcontext.json"</span>,
+    <span class="str">".context/docs/"</span>,
+    <span class="str">".context/guides/"</span>,
+    <span class="str">".context/agents/"</span>,
+    <span class="str">"plans/"</span>
+  ]
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step-card">
+                <div class="card-step">
+                    <span class="card-step-number">4</span>
+                    <h2 style="font-size: 1.25rem; font-weight: 700;">Generate platform files (optional)</h2>
+                </div>
+                <p class="card-body" style="margin-bottom: 16px;">
+                    Generate platform-specific config files from your canonical context.
+                    For now, a simple copy works. The SurfContext CLI will automate this.
+                </p>
+                <div class="code-block">
+                    <div class="code-header">Terminal</div>
+<pre><code><span class="cm"># Copy CONTEXT.md to generate platform files</span>
+cp CONTEXT.md CLAUDE.md
+cp CONTEXT.md AGENTS.md
+
+<span class="cm"># Add a generated-file header (optional but recommended)</span>
+<span class="cm"># You can also use the SurfContext CLI when available:</span>
+<span class="cm"># npx surfcontext generate</span></code></pre>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="step-card">
+                <div class="card-step">
+                    <span class="card-step-number">5</span>
+                    <h2 style="font-size: 1.25rem; font-weight: 700;">Open in your AI tool</h2>
+                </div>
+                <p class="card-body" style="margin-bottom: 16px;">
+                    Open your project in Claude Code, Cursor, Codex CLI, or any supported
+                    tool. The AI agent will automatically discover and read your project context.
+                </p>
+                <div class="callout callout-info" style="margin-bottom: 16px;">
+                    <strong>That's it.</strong> Your final project structure looks like this:
+                </div>
+                <div class="code-block">
+                    <div class="code-header">Final Structure</div>
+<pre><code>my-project/
+  CONTEXT.md              <span class="cm"># Your canonical context (source of truth)</span>
+  surfcontext.json        <span class="cm"># Platform targeting + discovery order</span>
+  .context/
+    agents/
+      code-reviewer.md    <span class="cm"># Your agent definition</span>
+    docs/                 <span class="cm"># Evergreen knowledge docs</span>
+    guides/               <span class="cm"># Living how-to documents</span>
+  CLAUDE.md               <span class="cm"># Generated for Claude Code</span>
+  AGENTS.md               <span class="cm"># Generated for Codex CLI</span></code></pre>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Next Steps CTA -->
+<section class="section cta-section">
+    <div class="section-inner">
+        <div class="cta-content">
+            <h2 class="section-headline">Next steps</h2>
+            <ul style="text-align: left; list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; margin-top: 24px;">
+                <li style="display: flex; gap: 12px; align-items: flex-start;">
+                    <span style="color: var(--accent); font-weight: 700; flex-shrink: 0;">&#8594;</span>
+                    <span>Read the <a href="/spec" style="color: var(--accent);">full specification</a> for detailed requirements and examples</span>
+                </li>
+                <li style="display: flex; gap: 12px; align-items: flex-start;">
+                    <span style="color: var(--accent); font-weight: 700; flex-shrink: 0;">&#8594;</span>
+                    <span>Add knowledge docs to <code>.context/docs/</code> for architecture decisions, API references, and domain knowledge</span>
+                </li>
+                <li style="display: flex; gap: 12px; align-items: flex-start;">
+                    <span style="color: var(--accent); font-weight: 700; flex-shrink: 0;">&#8594;</span>
+                    <span>Define more agents in <code>.context/agents/</code> for specialized tasks</span>
+                </li>
+                <li style="display: flex; gap: 12px; align-items: flex-start;">
+                    <span style="color: var(--accent); font-weight: 700; flex-shrink: 0;">&#8594;</span>
+                    <span>Add living guides to <code>.context/guides/</code> for implementation how-tos with gotcha callouts (<a href="/whats-new" style="color: var(--accent);">new in v3</a>)</span>
+                </li>
+                <li style="display: flex; gap: 12px; align-items: flex-start;">
+                    <span style="color: var(--accent); font-weight: 700; flex-shrink: 0;">&#8594;</span>
+                    <span>Check out the <a href="/tools" style="color: var(--accent);">tools page</a> for automated setup options</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script>
+function toggleStack(btn) {
+    btn.classList.toggle('selected');
+    var selected = [];
+    document.querySelectorAll('.stack-btn.selected').forEach(function(el) {
+        selected.push(el.getAttribute('data-stack'));
+    });
+    document.getElementById('stack-input').value = selected.join(',');
+}
+</script>

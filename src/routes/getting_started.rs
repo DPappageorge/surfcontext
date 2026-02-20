@@ -1,12 +1,14 @@
-use askama::Template;
 use axum::{Router, response::Html, routing::get};
 
-#[derive(Template)]
-#[template(path = "getting_started.html")]
-struct GettingStartedTemplate;
+use crate::html;
 
 async fn getting_started_page() -> Html<String> {
-    Html(GettingStartedTemplate.render().unwrap_or_default())
+    Html(html::page(
+        "Getting Started - SurfContext",
+        "Set up SurfContext in your project in under 5 minutes. No dependencies required.",
+        "",
+        include_str!("../../content/getting_started.html"),
+    ))
 }
 
 pub fn router() -> Router {

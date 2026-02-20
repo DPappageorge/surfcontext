@@ -3,7 +3,7 @@ WORKDIR /app
 COPY Cargo.toml Cargo.lock ./
 RUN mkdir src && echo "fn main() {}" > src/main.rs && cargo build --release && rm -rf src
 COPY src/ src/
-COPY templates/ templates/
+COPY content/ content/
 RUN touch src/main.rs && cargo build --release
 
 FROM debian:bookworm-slim
@@ -12,7 +12,7 @@ WORKDIR /app
 COPY --from=builder /app/target/release/surfcontext-website /usr/local/bin/surfcontext-website
 COPY static/ /app/static/
 COPY assets/ /app/assets/
-COPY templates/ /app/templates/
+
 
 ENV HOST=0.0.0.0
 ENV PORT=3000

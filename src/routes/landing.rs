@@ -1,12 +1,14 @@
-use askama::Template;
 use axum::{Router, response::Html, routing::get};
 
-#[derive(Template)]
-#[template(path = "landing.html")]
-struct LandingTemplate;
+use crate::html;
 
 async fn landing_page() -> Html<String> {
-    Html(LandingTemplate.render().unwrap_or_default())
+    Html(html::page(
+        "SurfContext — One Spec. Every AI Coding Tool.",
+        "One format. Every AI coding agent. Define your project context once — Claude Code, Cursor, Codex, and Copilot understand it automatically.",
+        "",
+        include_str!("../../content/landing.html"),
+    ))
 }
 
 pub fn router() -> Router {

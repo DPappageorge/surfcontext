@@ -1,12 +1,14 @@
-use askama::Template;
 use axum::{Router, response::Html, routing::get};
 
-#[derive(Template)]
-#[template(path = "spec.html")]
-struct SpecTemplate;
+use crate::html;
 
 async fn spec_page() -> Html<String> {
-    Html(SpecTemplate.render().unwrap_or_default())
+    Html(html::page(
+        "Specification — SurfContext ARDS v3.0",
+        "The complete ARDS v3.0 specification for AI-readable project documentation",
+        r#"<link rel="stylesheet" href="/static/css/spec.css">"#,
+        include_str!("../../content/spec.html"),
+    ))
 }
 
 pub fn router() -> Router {
