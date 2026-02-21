@@ -1,6 +1,6 @@
 # surfcontext.org
 
-The official documentation site for **SurfContext** -- the open standard for AI-readable project documentation (ARDS v2.0).
+The official documentation site for **SurfContext** -- the open standard for AI-readable project documentation (ARDS v3.0).
 
 ## Development
 

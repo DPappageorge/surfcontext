@@ -5,7 +5,7 @@ import { CodeBlock } from "@/components/code-block";
 export const metadata: Metadata = {
   title: "Tools - SurfContext",
   description:
-    "Tools for creating and managing SurfContext projects: TaskSurf export, CLI, and manual setup.",
+    "Tools for creating and managing SurfContext projects: SurfDoc export, CLI, and manual setup.",
 };
 
 const cliInitExample = `# Initialize a new SurfContext project
@@ -44,13 +44,13 @@ export default function ToolsPage() {
         </p>
       </div>
 
-      {/* TaskSurf */}
+      {/* SurfDoc */}
       <section className="mb-12">
         <div className="rounded-lg border border-border overflow-hidden">
           <div className="bg-muted/50 border-b border-border px-6 py-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-bold text-foreground">TaskSurf</h2>
+                <h2 className="text-lg font-bold text-foreground">SurfDoc</h2>
                 <p className="text-sm text-muted-foreground mt-1">
                   Export your workspace as a SurfContext package
                 </p>
@@ -63,8 +63,8 @@ export default function ToolsPage() {
           </div>
           <div className="px-6 py-5">
             <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-              TaskSurf is an AI-native task management platform that can export
-              your entire workspace -- tasks, team context, agent configurations
+              SurfDoc is a typed document format and workspace that can export
+              your entire workspace -- docs, tasks, team context, agent configurations
               -- as a SurfContext-conformant package. The exported{" "}
               <code className="font-mono text-accent-foreground bg-accent/10 px-1 rounded text-xs">
                 CONTEXT.md
@@ -82,12 +82,12 @@ export default function ToolsPage() {
               <li>Maps team knowledge to .context/docs/ format</li>
             </ul>
             <a
-              href="https://tasksurf.com"
+              href="https://doc.surf"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 transition-colors"
             >
-              Visit tasksurf.com
+              Visit doc.surf
             </a>
           </div>
         </div>

@@ -66,7 +66,7 @@ Describe your system architecture at a high level. Include frameworks, data flow
 
 ## SurfContext Navigation
 
-This repo uses **SurfContext/ARDS v2.0**. When exploring, follow this discovery order:
+This repo uses **SurfContext/ARDS v3.0**. When exploring, follow this discovery order:
 
 1. **Start with \`CONTEXT.md\`** (this file) -- project overview, key files table, architecture
 2. **Check \`surfcontext.json\`** -- machine-readable config with platform targets

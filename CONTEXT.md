@@ -1,13 +1,13 @@
 # SurfContext Documentation Site
 
-The official documentation and specification site for SurfContext -- the open standard for AI-readable project documentation (ARDS v2.0).
+The official documentation and specification site for SurfContext -- the open standard for AI-readable project documentation (ARDS v3.0).
 
 ## Key Files
 
 | Path | Purpose |
 |------|---------|
 | `app/page.tsx` | Landing page |
-| `app/spec/page.tsx` | ARDS v2.0 specification |
+| `app/spec/page.tsx` | ARDS v3.0 specification |
 | `app/getting-started/page.tsx` | Quick start guide |
 | `app/tools/page.tsx` | Tools and integrations |
 | `app/layout.tsx` | Root layout with nav, footer, theme |
