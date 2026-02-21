@@ -18,23 +18,21 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "SurfContext - The Open Standard for Agent-Ready Project Documentation",
   description:
-    "One format. Every AI coding agent. Define your project context once — Claude Code, Cursor, Codex, and Copilot understand it automatically.",
+    "One format. Every AI coding agent. Define your project context once — all major AI coding agents understand it automatically.",
   keywords: [
     "AI",
     "documentation",
     "standard",
-    "CLAUDE.md",
-    "AGENTS.md",
-    "cursor",
-    "copilot",
-    "codex",
+    "AI coding agents",
     "project context",
     "developer tools",
+    "agent-ready",
+    "ARDS",
   ],
   openGraph: {
     title: "SurfContext - The Open Standard for Agent-Ready Project Documentation",
     description:
-      "One format. Every AI coding agent. Define your project context once — Claude Code, Cursor, Codex, and Copilot understand it automatically.",
+      "One format. Every AI coding agent. Define your project context once — all major AI coding agents understand it automatically.",
     url: "https://surfcontext.org",
     siteName: "SurfContext",
     type: "website",

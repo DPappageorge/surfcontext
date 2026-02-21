@@ -112,8 +112,8 @@ const finalStructure = `my-project/
       code-reviewer.md    # Your agent definition
     docs/                 # Evergreen knowledge docs
     guides/               # Living how-to documents
-  CLAUDE.md               # Generated for Claude Code
-  AGENTS.md               # Generated for Codex CLI`;
+  CLAUDE.md               # Platform-specific (generated)
+  AGENTS.md               # Platform-specific (generated)`;
 
 export default function GettingStartedPage() {
   return (
@@ -158,7 +158,7 @@ export default function GettingStartedPage() {
               <span className="font-mono text-accent-foreground text-xs mt-0.5 shrink-0">
                 3.
               </span>
-              Open your project in Claude Code, Cursor, or any supported AI tool
+              Open your project in any supported AI coding agent
               -- it discovers your context automatically
             </li>
           </ol>
@@ -282,9 +282,8 @@ export default function GettingStartedPage() {
           </h2>
         </div>
         <p className="text-muted-foreground leading-relaxed mb-4 ml-11">
-          Open your project in Claude Code, Cursor, Codex CLI, or any supported
-          tool. The AI agent will automatically discover and read your project
-          context.
+          Open your project in any supported AI coding agent. It will
+          automatically discover and read your project context.
         </p>
         <div className="ml-11">
           <div className="rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground">

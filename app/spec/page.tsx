@@ -37,8 +37,8 @@ const fileHierarchyRequired = `project-root/
 const fileHierarchyFull = `project-root/
   CONTEXT.md                          # Root context (canonical)
   surfcontext.json                    # ARDS configuration
-  CLAUDE.md                           # Generated for Claude Code
-  AGENTS.md                           # Generated for Codex CLI
+  CLAUDE.md                           # Platform-specific (generated)
+  AGENTS.md                           # Platform-specific (generated)
   .context/
     agents/                           # Agent definitions
       agent-name.md
@@ -448,9 +448,9 @@ export default function SpecPage() {
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
               CONTEXT.md is the single most important file in any ARDS-compliant
-              repository. It is auto-loaded by Claude Code every turn (as
-              CLAUDE.md), read first by Codex (as AGENTS.md), and serves as the
-              primary orientation for any AI agent or human contributor.
+              repository. It is auto-loaded by AI agents every turn through
+              platform-specific files (CLAUDE.md, AGENTS.md, etc.) and serves as
+              the primary orientation for any AI agent or human contributor.
             </p>
 
             <h3 id="context-md-structure" className="text-lg font-semibold text-foreground mt-8 mb-3">
@@ -650,7 +650,7 @@ export default function SpecPage() {
                     ["Primary purpose", "Independent parallel workers", "Reusable expertise"],
                     ["Execution model", "Forked subagent (isolated context)", "Inline or forked"],
                     ["Best for", "Long analysis, strategy", "Code patterns, templates"],
-                    ["Cross-platform", "Claude Code only", "Claude Code + Codex"],
+                    ["Cross-platform", "Single platform", "Multi-platform"],
                     ["Invocation", "Description match", "Description match or /command"],
                   ].map(([prop, agents, skills], i, arr) => (
                     <tr key={prop} className={i < arr.length - 1 ? "border-b border-border" : ""}>
@@ -1018,7 +1018,7 @@ export default function SpecPage() {
                 </thead>
                 <tbody className="text-muted-foreground">
                   <tr className="border-b border-border"><td className="px-4 py-2 font-medium text-foreground">No misattribution</td><td className="px-4 py-2">IP is never attributed to another company</td></tr>
-                  <tr className="border-b border-border"><td className="px-4 py-2 font-medium text-foreground">No AI co-author</td><td className="px-4 py-2">No Co-Authored-By: Claude or AI credits in commits</td></tr>
+                  <tr className="border-b border-border"><td className="px-4 py-2 font-medium text-foreground">No AI co-author</td><td className="px-4 py-2">No AI co-author credits in commits</td></tr>
                   <tr className="border-b border-border"><td className="px-4 py-2 font-medium text-foreground">No leaked secrets</td><td className="px-4 py-2">No API keys, tokens, passwords, or credentials</td></tr>
                   <tr className="border-b border-border"><td className="px-4 py-2 font-medium text-foreground">No internal paths</td><td className="px-4 py-2">No absolute local filesystem paths in public content</td></tr>
                   <tr><td className="px-4 py-2 font-medium text-foreground">No competitor branding</td><td className="px-4 py-2">Materials never carry competitor branding</td></tr>
@@ -1176,14 +1176,14 @@ export default function SpecPage() {
             </h2>
             <div className="space-y-4">
               {[
-                { name: "Claude Code (Anthropic)", details: "Auto-loads CLAUDE.md every turn. Agents from .claude/agents/ dispatched by description match. Skills invoked by /command. ~200K token context." },
-                { name: "Codex CLI (OpenAI)", details: "Reads AGENTS.md as project context. Supports Agent Skills (SKILL.md). Reads PLANS.md for multi-hour problems. 32 KiB default limit. Sandboxed." },
-                { name: "Cursor", details: ".cursor/rules/*.mdc with YAML frontmatter and glob scoping. Rules scoped to file patterns. No agent dispatch." },
-                { name: "GitHub Copilot", details: ".github/copilot-instructions.md (workspace-wide). .github/instructions/*.instructions.md (path-specific with applyTo). No agent dispatch." },
-                { name: "Windsurf", details: ".windsurfrules at repo root. Single context file, no agent dispatch." },
+                { name: "CLAUDE.md", details: "Auto-loaded every turn. Agents dispatched from .claude/agents/ by description match. Skills invoked by /command." },
+                { name: "AGENTS.md", details: "Read as project context on start. Supports Agent Skills (SKILL.md). PLANS.md for multi-step problems." },
+                { name: ".cursorrules", details: ".cursor/rules/*.mdc with YAML frontmatter and glob scoping. Rules scoped to file patterns." },
+                { name: "copilot-instructions.md", details: ".github/copilot-instructions.md (workspace-wide). .github/instructions/*.instructions.md (path-specific with applyTo)." },
+                { name: ".windsurfrules", details: ".windsurfrules at repo root. Single context file." },
               ].map((p) => (
                 <div key={p.name} className="rounded-lg border border-border bg-card p-4">
-                  <p className="font-semibold text-foreground mb-1">{p.name}</p>
+                  <p className="font-semibold text-foreground mb-1 font-mono text-sm">{p.name}</p>
                   <p className="text-sm text-muted-foreground">{p.details}</p>
                 </div>
               ))}
@@ -1214,7 +1214,7 @@ export default function SpecPage() {
                     ["AGENTS.md (AAIF)", "Single root context", "Maps to ARDS Root Context"],
                     ["Agent Skills", "Cross-platform skills", "Maps to ARDS Skill Configs"],
                     ["MCP", "Agent tool access", "Orthogonal: MCP = tools, ARDS = knowledge"],
-                    ["PLANS.md (Codex)", "Problem-solving context", "Maps to ARDS Plan Docs"],
+                    ["PLANS.md", "Problem-solving context", "Maps to ARDS Plan Docs"],
                     ["llms.txt", "LLM-readable site summary", "Orthogonal: site-level, not repo-level"],
                   ].map(([standard, covers, rel], i, arr) => (
                     <tr key={standard} className={i < arr.length - 1 ? "border-b border-border" : ""}>

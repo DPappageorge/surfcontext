@@ -11,39 +11,19 @@ const directoryTree = `project-root/
     queue.md              # Task queue`;
 
 const platforms = [
-  {
-    name: "Claude Code",
-    file: "CLAUDE.md",
-    status: "Supported",
-  },
-  {
-    name: "Codex CLI",
-    file: "AGENTS.md",
-    status: "Supported",
-  },
-  {
-    name: "Cursor",
-    file: ".cursorrules",
-    status: "Supported",
-  },
-  {
-    name: "GitHub Copilot",
-    file: ".github/copilot-instructions.md",
-    status: "Supported",
-  },
-  {
-    name: "Windsurf",
-    file: ".windsurfrules",
-    status: "Supported",
-  },
+  { file: "CLAUDE.md", status: "Supported" },
+  { file: "AGENTS.md", status: "Supported" },
+  { file: ".cursorrules", status: "Supported" },
+  { file: ".github/copilot-instructions.md", status: "Supported" },
+  { file: ".windsurfrules", status: "Supported" },
 ];
 
 const fragmentation = [
-  { platform: "Claude Code", file: "CLAUDE.md" },
-  { platform: "Codex CLI", file: "AGENTS.md" },
-  { platform: "Cursor", file: ".cursorrules" },
-  { platform: "GitHub Copilot", file: ".github/copilot-instructions.md" },
-  { platform: "Windsurf", file: ".windsurfrules" },
+  { file: "CLAUDE.md" },
+  { file: "AGENTS.md" },
+  { file: ".cursorrules" },
+  { file: ".github/copilot-instructions.md" },
+  { file: ".windsurfrules" },
 ];
 
 export default function Home() {
@@ -69,7 +49,7 @@ export default function Home() {
 
               <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg">
                 One format. Every AI coding agent. Define your project context
-                once — Claude Code, Cursor, Codex, and Copilot understand it
+                once — all major AI coding agents understand it
                 automatically.
               </p>
 
@@ -115,18 +95,13 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {fragmentation.map((item) => (
                 <div
-                  key={item.platform}
+                  key={item.file}
                   className="flex items-center gap-3 rounded-lg border border-border bg-card p-3"
                 >
                   <span className="inline-block w-2 h-2 rounded-full bg-red-500/80 shrink-0" />
-                  <div>
-                    <p className="text-sm font-medium text-card-foreground">
-                      {item.platform}
-                    </p>
-                    <p className="text-xs font-mono text-muted-foreground">
-                      {item.file}
-                    </p>
-                  </div>
+                  <p className="text-sm font-mono text-muted-foreground">
+                    {item.file}
+                  </p>
                 </div>
               ))}
             </div>
@@ -247,9 +222,6 @@ export default function Home() {
                 <thead>
                   <tr className="border-b border-border bg-muted/50">
                     <th className="text-left px-4 py-3 font-medium text-foreground">
-                      Platform
-                    </th>
-                    <th className="text-left px-4 py-3 font-medium text-foreground">
                       Generated File
                     </th>
                     <th className="text-left px-4 py-3 font-medium text-foreground">
@@ -260,17 +232,14 @@ export default function Home() {
                 <tbody>
                   {platforms.map((p, i) => (
                     <tr
-                      key={p.name}
+                      key={p.file}
                       className={
                         i < platforms.length - 1
                           ? "border-b border-border"
                           : ""
                       }
                     >
-                      <td className="px-4 py-3 font-medium text-foreground">
-                        {p.name}
-                      </td>
-                      <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
+                      <td className="px-4 py-3 font-mono text-sm text-foreground">
                         {p.file}
                       </td>
                       <td className="px-4 py-3">

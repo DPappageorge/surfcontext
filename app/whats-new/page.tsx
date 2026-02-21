@@ -81,7 +81,7 @@ const supersetItems = [
   { label: "Agents / Skills", maps: "Agent Skills (SKILL.md), .cursor/rules/*.mdc", color: "#a855f7", unique: false },
   { label: "Knowledge Docs", maps: "unique to ARDS", color: "#f59e0b", unique: true },
   { label: "Living Guides", maps: "unique to ARDS", color: "#22c55e", unique: true },
-  { label: "Plan Docs", maps: "PLANS.md (Codex)", color: "#06b6d4", unique: false },
+  { label: "Plan Docs", maps: "PLANS.md", color: "#06b6d4", unique: false },
   { label: "Research Docs", maps: "unique to ARDS", color: "#8b5cf6", unique: true },
   { label: "Session Checkpoints", maps: "unique to ARDS", color: "#3b82f6", unique: true },
   { label: "Cross-Repo Refs", maps: "unique to ARDS", color: "#06b6d4", unique: true },
@@ -345,9 +345,9 @@ export default function WhatsNewPage() {
                     <th className="text-center px-2 py-3 font-bold text-accent-foreground">ARDS</th>
                     <th className="text-center px-2 py-3 font-medium text-muted-foreground text-xs">AGENTS.md</th>
                     <th className="text-center px-2 py-3 font-medium text-muted-foreground text-xs">CLAUDE.md</th>
-                    <th className="text-center px-2 py-3 font-medium text-muted-foreground text-xs">Cursor</th>
-                    <th className="text-center px-2 py-3 font-medium text-muted-foreground text-xs">Copilot</th>
-                    <th className="text-center px-2 py-3 font-medium text-muted-foreground text-xs">Gemini</th>
+                    <th className="text-center px-2 py-3 font-medium text-muted-foreground text-xs">.cursorrules</th>
+                    <th className="text-center px-2 py-3 font-medium text-muted-foreground text-xs">copilot-inst.</th>
+                    <th className="text-center px-2 py-3 font-medium text-muted-foreground text-xs">.gemini</th>
                   </tr>
                 </thead>
                 <tbody>
