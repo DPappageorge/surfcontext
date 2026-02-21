@@ -8,7 +8,7 @@ accent: #3b82f6
 font: inter
 ::
 
-::hero[badge="ARDS v3.0 Specification" align=left image="/assets/structure-preview.svg"]
+::hero[badge="ARDS v3.0 Specification"]
 # The open standard for agent-ready project documentation
 
 One format. Every AI coding agent. Define your project context once — all major AI coding agents understand it automatically.
@@ -22,13 +22,13 @@ One format. Every AI coding agent. Define your project context once — all majo
 
 Every AI coding agent invented its own way to read project context. Your team maintains duplicate files that drift out of sync.
 
-::before-after[transition="SurfContext"]
+::before-after[transition="replaced by"]
 ### Before
-- CLAUDE.md
-- AGENTS.md
-- .cursorrules
-- .github/copilot-instructions.md
-- .windsurfrules
+- Claude Code | CLAUDE.md
+- Codex CLI | AGENTS.md
+- Cursor | .cursorrules
+- GitHub Copilot | .github/copilot-instructions.md
+- Windsurf | .windsurfrules
 
 ### After
 - SurfContext | CONTEXT.md + .context/ + surfcontext.json
