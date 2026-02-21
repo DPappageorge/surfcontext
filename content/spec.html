@@ -195,8 +195,8 @@
                 <pre><code>project-root/
   CONTEXT.md                          # Root context (canonical)
   surfcontext.json                    # ARDS configuration
-  CLAUDE.md                           # Generated for Claude Code
-  AGENTS.md                           # Generated for Codex CLI
+  CLAUDE.md                           # Platform-specific (generated)
+  AGENTS.md                           # Platform-specific (generated)
   .context/
     agents/                           # Agent definitions
       agent-name.md
@@ -274,8 +274,8 @@
             <h2>Root Context (CONTEXT.md)</h2>
             <p>
                 CONTEXT.md is the single most important file in any ARDS-compliant
-                repository. It is auto-loaded by Claude Code every turn (as
-                CLAUDE.md), read first by Codex (as AGENTS.md), and serves as the
+                repository. It is auto-loaded by AI agents every turn through
+                platform-specific files (CLAUDE.md, AGENTS.md, etc.) and serves as the
                 primary orientation for any AI agent or human contributor.
             </p>
 
@@ -674,8 +674,8 @@ model: opus
                         </tr>
                         <tr>
                             <td class="text-strong">Cross-platform</td>
-                            <td>Claude Code only</td>
-                            <td>Claude Code + Codex</td>
+                            <td>Single platform</td>
+                            <td>Multi-platform</td>
                         </tr>
                         <tr>
                             <td class="text-strong">Invocation</td>
@@ -1205,7 +1205,7 @@ Check CloudWatch logs before assuming the issue is in your code.
                         </tr>
                         <tr>
                             <td class="text-strong">No AI co-author</td>
-                            <td>No Co-Authored-By: Claude or AI credits in commits</td>
+                            <td>No AI co-author credits in commits</td>
                         </tr>
                         <tr>
                             <td class="text-strong">No leaked secrets</td>
@@ -1424,24 +1424,24 @@ Check CloudWatch logs before assuming the issue is in your code.
             <h2>Platform Compatibility</h2>
             <div class="platform-cards">
                 <div class="platform-card">
-                    <p class="platform-card-name">Claude Code (Anthropic)</p>
-                    <p class="platform-card-detail">Auto-loads CLAUDE.md every turn. Agents from .claude/agents/ dispatched by description match. Skills invoked by /command. ~200K token context.</p>
+                    <p class="platform-card-name" style="font-family: monospace; font-size: 0.9em;">CLAUDE.md</p>
+                    <p class="platform-card-detail">Auto-loaded every turn. Agents dispatched from .claude/agents/ by description match. Skills invoked by /command.</p>
                 </div>
                 <div class="platform-card">
-                    <p class="platform-card-name">Codex CLI (OpenAI)</p>
-                    <p class="platform-card-detail">Reads AGENTS.md as project context. Supports Agent Skills (SKILL.md). Reads PLANS.md for multi-hour problems. 32 KiB default limit. Sandboxed.</p>
+                    <p class="platform-card-name" style="font-family: monospace; font-size: 0.9em;">AGENTS.md</p>
+                    <p class="platform-card-detail">Read as project context on start. Supports Agent Skills (SKILL.md). PLANS.md for multi-step problems.</p>
                 </div>
                 <div class="platform-card">
-                    <p class="platform-card-name">Cursor</p>
-                    <p class="platform-card-detail">.cursor/rules/*.mdc with YAML frontmatter and glob scoping. Rules scoped to file patterns. No agent dispatch.</p>
+                    <p class="platform-card-name" style="font-family: monospace; font-size: 0.9em;">.cursorrules</p>
+                    <p class="platform-card-detail">.cursor/rules/*.mdc with YAML frontmatter and glob scoping. Rules scoped to file patterns.</p>
                 </div>
                 <div class="platform-card">
-                    <p class="platform-card-name">GitHub Copilot</p>
-                    <p class="platform-card-detail">.github/copilot-instructions.md (workspace-wide). .github/instructions/*.instructions.md (path-specific with applyTo). No agent dispatch.</p>
+                    <p class="platform-card-name" style="font-family: monospace; font-size: 0.9em;">copilot-instructions.md</p>
+                    <p class="platform-card-detail">.github/copilot-instructions.md (workspace-wide). .github/instructions/*.instructions.md (path-specific with applyTo).</p>
                 </div>
                 <div class="platform-card">
-                    <p class="platform-card-name">Windsurf</p>
-                    <p class="platform-card-detail">.windsurfrules at repo root. Single context file, no agent dispatch.</p>
+                    <p class="platform-card-name" style="font-family: monospace; font-size: 0.9em;">.windsurfrules</p>
+                    <p class="platform-card-detail">.windsurfrules at repo root. Single context file.</p>
                 </div>
             </div>
         </section>
@@ -1480,7 +1480,7 @@ Check CloudWatch logs before assuming the issue is in your code.
                             <td>Orthogonal: MCP = tools, ARDS = knowledge</td>
                         </tr>
                         <tr>
-                            <td class="text-strong">PLANS.md (Codex)</td>
+                            <td class="text-strong">PLANS.md</td>
                             <td>Problem-solving context</td>
                             <td>Maps to ARDS Plan Docs</td>
                         </tr>

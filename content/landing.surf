@@ -1,6 +1,6 @@
 ---
 title: SurfContext — One Spec. Every AI Coding Tool.
-description: One format. Every AI coding agent. Define your project context once — Claude Code, Cursor, Codex, and Copilot understand it automatically.
+description: One format. Every AI coding agent. Define your project context once — all major AI coding agents understand it automatically.
 ---
 
 ::style
@@ -11,7 +11,7 @@ font: inter
 ::hero[badge="ARDS v3.0 Specification" align=left image="/assets/structure-preview.svg"]
 # The open standard for agent-ready project documentation
 
-One format. Every AI coding agent. Define your project context once — Claude Code, Cursor, Codex, and Copilot understand it automatically.
+One format. Every AI coding agent. Define your project context once — all major AI coding agents understand it automatically.
 
 [Read the Spec](/spec){primary}
 [Quick Start](/getting-started)
@@ -24,11 +24,11 @@ Every AI coding agent invented its own way to read project context. Your team ma
 
 ::before-after[transition="SurfContext"]
 ### Before
-- Claude Code | CLAUDE.md
-- Codex CLI | AGENTS.md
-- Cursor | .cursorrules
-- GitHub Copilot | .github/copilot-instructions.md
-- Windsurf | .windsurfrules
+- CLAUDE.md
+- AGENTS.md
+- .cursorrules
+- .github/copilot-instructions.md
+- .windsurfrules
 
 ### After
 - SurfContext | CONTEXT.md + .context/ + surfcontext.json
@@ -58,13 +58,13 @@ Open your project in any supported AI tool. It reads your context automatically 
 SurfContext generates the right config file for each platform from a single source of truth.
 
 ::comparison[highlight="Status"]
-| Platform | Generated File | Status |
-|----------|---------------|--------|
-| Claude Code | CLAUDE.md | yes |
-| Codex CLI | AGENTS.md | yes |
-| Cursor | .cursorrules | yes |
-| GitHub Copilot | .github/copilot-instructions.md | yes |
-| Windsurf | .windsurfrules | yes |
+| Generated File | Status |
+|---------------|--------|
+| CLAUDE.md | yes |
+| AGENTS.md | yes |
+| .cursorrules | yes |
+| .github/copilot-instructions.md | yes |
+| .windsurfrules | yes |
 ::
 ::
 

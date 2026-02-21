@@ -84,7 +84,7 @@ Research Doc | research/**/* | Versioned | On demand
 ARDS is the only format covering the full documentation architecture. It generates files for every other format.
 
 ::comparison[highlight="ARDS"]
-| Feature | ARDS | AGENTS.md | CLAUDE.md | Cursor | Copilot | Gemini |
+| Feature | ARDS | AGENTS.md | CLAUDE.md | .cursorrules | copilot-inst. | .gemini |
 |---------|------|-----------|-----------|--------|---------|--------|
 | Root context file | yes | yes | yes | no | yes | yes |
 | Agent definitions | yes | no | yes | no | no | no |

@@ -11,7 +11,7 @@ pub fn page(title: &str, description: &str, extra_head: &str, content: &str) -> 
     <title>{title}</title>
     <meta name="description" content="{description}">
     <meta property="og:title" content="SurfContext — The Open Standard for Agent-Ready Project Documentation">
-    <meta property="og:description" content="One format. Every AI coding agent. Define your project context once — Claude Code, Cursor, Codex, and Copilot understand it automatically.">
+    <meta property="og:description" content="One format. Every AI coding agent. Define your project context once — all major AI coding agents understand it automatically.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://surfcontext.org">
     <meta property="og:site_name" content="SurfContext">
