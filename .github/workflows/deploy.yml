@@ -1,5 +1,4 @@
 name: Deploy
-# CloudSurf Software LLC — surfcontext.org CI/CD
 
 on:
   push:
@@ -53,16 +52,17 @@ jobs:
     name: Smoke test (${{ github.ref_name }})
     runs-on: ubuntu-latest
     needs: deploy
+    if: github.ref_name == 'develop' || github.ref_name == 'staging'
     steps:
+      - uses: actions/checkout@v4
+
       - name: Set target URL
         id: url
         run: |
           if [ "${{ github.ref_name }}" = "develop" ]; then
             echo "target=https://surfcontext-develop.fly.dev" >> "$GITHUB_OUTPUT"
-          elif [ "${{ github.ref_name }}" = "staging" ]; then
-            echo "target=https://surfcontext-staging.fly.dev" >> "$GITHUB_OUTPUT"
           else
-            echo "target=https://surfcontext.fly.dev" >> "$GITHUB_OUTPUT"
+            echo "target=https://surfcontext-staging.fly.dev" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Wait for deploy health
@@ -71,7 +71,7 @@ jobs:
           for i in $(seq 1 12); do
             if curl -sf "${{ steps.url.outputs.target }}/" > /dev/null 2>&1; then
               echo "Deploy healthy after $((i * 5))s"
-              exit 0
+              break
             fi
             if [ "$i" = "12" ]; then
               echo "Deploy not healthy after 60s"
@@ -81,18 +81,8 @@ jobs:
             sleep 5
           done
 
-      - name: Verify key routes
-        run: |
-          TARGET="${{ steps.url.outputs.target }}"
-          for path in "/" "/spec" "/getting-started" "/tools" "/whats-new"; do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$TARGET$path")
-            if [ "$STATUS" != "200" ]; then
-              echo "FAIL: $path returned $STATUS"
-              exit 1
-            fi
-            echo "OK: $path → $STATUS"
-          done
-          echo "All routes healthy"
+      - name: Run smoke tests
+        run: bash scripts/smoke-test.sh ${{ steps.url.outputs.target }}
 
   rollback:
     name: Rollback on failure
