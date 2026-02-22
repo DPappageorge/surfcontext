@@ -61,28 +61,47 @@ WaveSite at wave.site builds websites from SurfDoc files. Every WaveSite project
 
 Command-line tool for initializing and managing projects.
 
-::product-card[badge="Coming April 2026" badge-color=blue]
+::product-card[badge="Available" badge-color=green]
 ## Surf CLI
 
-Quick project scaffolding, platform file generation, and structure validation
+Project scaffolding, AI chat, and CloudSurf account access from the terminal
 
-The Surf CLI provides quick project scaffolding, platform file generation, and structure validation from the command line.
+The Surf CLI manages SurfContext projects and connects to CloudSurf services — all from the command line.
 
-- `init` — Scaffold a new SurfContext project with interactive prompts
-- `generate` — Generate platform files from CONTEXT.md using surfcontext.json config
-- `validate` — Check project structure against ARDS v3.0 requirements
-- `sync` — Detect drift between canonical and generated files
+- `init` / `sync` / `validate` — Scaffold, sync, and validate SurfContext projects
+- `login` / `whoami` — Authenticate with your CloudSurf account
+- `chat` / `ask` — Interactive AI chat or one-shot queries
+- `tasks` / `docs` / `status` — Manage workspace tasks and documents
 ::
 
-::code[lang=bash file="Terminal"]
+::code[lang=bash file="Install"]
+# macOS / Linux — one-line install
+curl -fsSL https://raw.githubusercontent.com/cloudsurf-software/surfcontext-cli/main/scripts/install.sh | sh
+
+# macOS — Homebrew
+brew install cloudsurf-software/tap/surf
+
+# From source
+cargo install --git https://github.com/cloudsurf-software/surfcontext-cli
+::
+
+::code[lang=bash file="Usage"]
 # Initialize a new SurfContext project
 surf init
 
-# Generate platform files from CONTEXT.md
-surf generate
+# Sign in to your CloudSurf account
+surf login
 
-# Validate your SurfContext structure
-surf validate
+# Start an AI chat session
+surf chat
+
+# Ask a one-shot question
+surf ask "How do I add a contact form?"
+
+# Manage tasks
+surf tasks
+surf tasks create "Build landing page"
+surf tasks done 3
 ::
 ::
 
