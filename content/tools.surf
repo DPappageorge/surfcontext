@@ -1,6 +1,6 @@
 ---
 title: Tools - SurfContext
-description: Tools for creating and managing SurfContext projects — SurfTask export, CLI, MCP server, and manual setup.
+description: Tools for creating and managing SurfContext projects — SurfDoc, WaveSite, Surf CLI, and Surf MCP Server.
 ---
 
 ::style
@@ -11,41 +11,62 @@ font: inter
 ::hero[align=center]
 # Tools
 
-Create and manage SurfContext projects with these tools, or set everything up by hand.
+Create and manage SurfContext projects with these tools.
 ::
 
 ::section
-## SurfTask
+## SurfDoc
 
-Export your workspace as a SurfContext package.
+The document workspace with native SurfContext support.
 
 ::product-card[badge="Available" badge-color=green]
-## SurfTask
+## SurfDoc
 
 Export your workspace as a SurfContext package
 
-SurfTask is an AI-native task management platform that can export your entire workspace — tasks, team context, agent configurations — as a SurfContext-conformant package. The exported `CONTEXT.md` and `.context/` directory can be dropped directly into any code repository.
+SurfDoc is a typed document format and workspace at doc.surf. Export your entire workspace — docs, tasks, team context, agent configurations — as a SurfContext-conformant package. The exported `CONTEXT.md` and `.context/` directory can be dropped directly into any code repository.
 
 - Generates ARDS v3.0 conformant output
 - Includes version ledger for change tracking
 - Exports agent definitions with proper frontmatter
 - Maps team knowledge to .context/docs/ format
 
-[Visit tasksurf.com](https://tasksurf.com)
+[Visit doc.surf](https://doc.surf)
 ::
 ::
 
 ::section[bg=dark]
-## SurfContext CLI
+## WaveSite
+
+Build websites from SurfDoc files with SurfContext built in.
+
+::product-card[badge="Available" badge-color=green]
+## WaveSite
+
+AI website builder with native .surf format and SurfContext integration
+
+WaveSite at wave.site builds websites from SurfDoc files. Every WaveSite project uses the .surf format natively, and SurfContext can be used to define project context for AI-assisted site generation and management.
+
+- Builds sites from .surf files with 37 typed block types
+- AI chat generates SurfDoc specs, compiler builds the site
+- Custom domains, SEO, contact forms, visitor chat
+- Free tier + Pro at $12/mo
+
+[Visit wave.site](https://wave.site)
+::
+::
+
+::section
+## Surf CLI
 
 Command-line tool for initializing and managing projects.
 
 ::product-card[badge="Coming April 2026" badge-color=blue]
-## SurfContext CLI
+## Surf CLI
 
 Quick project scaffolding, platform file generation, and structure validation
 
-The SurfContext CLI will provide quick project scaffolding, platform file generation, and structure validation from the command line.
+The Surf CLI provides quick project scaffolding, platform file generation, and structure validation from the command line.
 
 - `init` — Scaffold a new SurfContext project with interactive prompts
 - `generate` — Generate platform files from CONTEXT.md using surfcontext.json config
@@ -55,27 +76,27 @@ The SurfContext CLI will provide quick project scaffolding, platform file genera
 
 ::code[lang=bash file="Terminal"]
 # Initialize a new SurfContext project
-npx surfcontext init
+surf init
 
 # Generate platform files from CONTEXT.md
-npx surfcontext generate
+surf generate
 
 # Validate your SurfContext structure
-npx surfcontext validate
+surf validate
 ::
 ::
 
-::section
-## MCP Server
+::section[bg=dark]
+## Surf MCP Server
 
 Expose .context/ content as MCP tools for any AI agent.
 
 ::product-card[badge="Coming Q2 2026" badge-color=blue]
-## MCP Server
+## Surf MCP Server
 
 Bridges ARDS documentation into any MCP-compatible AI agent
 
-The SurfContext MCP server bridges ARDS documentation into any MCP-compatible AI agent. It exposes your project context, agents, docs, guides, and plans as standardized tools.
+The Surf MCP Server bridges ARDS documentation into any MCP-compatible AI agent. It exposes your project context, agents, docs, guides, and plans as standardized tools.
 
 - surfcontext_read_context — Read the root context file
 - surfcontext_list_agents — List available agent definitions
@@ -83,42 +104,6 @@ The SurfContext MCP server bridges ARDS documentation into any MCP-compatible AI
 - surfcontext_list_guides — List guides with confidence levels
 - surfcontext_list_plans — List plans by category
 - surfcontext_search — Search across all ARDS content
-::
-::
-
-::section[bg=dark]
-## Manual Setup
-
-Create files by hand following the specification.
-
-::product-card[badge="Available" badge-color=green]
-## Manual Setup
-
-SurfContext requires no dependencies or tooling
-
-You can set up a conforming project with just a text editor and a terminal. No build system, no package manager, no lock-in.
-
-- Create CONTEXT.md in your project root
-- Create .context/ directory with agents, docs, skills
-- Add surfcontext.json manifest
-- Copy CONTEXT.md to generate platform files
-
-[Getting Started Guide](/getting-started)
-::
-
-::code[lang=bash file="Terminal"]
-# 1. Create the root context
-touch CONTEXT.md
-
-# 2. Create the context directory structure
-mkdir -p .context/agents .context/docs .context/skills
-
-# 3. Create the manifest
-touch surfcontext.json
-
-# 4. (Optional) Generate platform files
-cp CONTEXT.md CLAUDE.md
-cp CONTEXT.md AGENTS.md
 ::
 ::
 
