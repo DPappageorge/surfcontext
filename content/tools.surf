@@ -96,14 +96,12 @@ Expose .context/ content as MCP tools for any AI agent.
 
 Bridges ARDS documentation into any MCP-compatible AI agent
 
-The Surf MCP Server bridges ARDS documentation into any MCP-compatible AI agent. It exposes your project context, agents, docs, guides, and plans as standardized tools.
+The Surf MCP Server exposes your project context, agents, docs, guides, and plans as standardized MCP tools that any compatible AI agent can call.
 
-- surfcontext_read_context — Read the root context file
-- surfcontext_list_agents — List available agent definitions
-- surfcontext_list_docs — List knowledge docs
-- surfcontext_list_guides — List guides with confidence levels
-- surfcontext_list_plans — List plans by category
-- surfcontext_search — Search across all ARDS content
+- Read context, agents, docs, guides, and plans via MCP tools
+- Search across all ARDS content in your project
+- Works with any MCP-compatible AI agent or IDE
+- Zero configuration — auto-discovers .context/ directory
 ::
 ::
 

@@ -897,6 +897,29 @@
     margin-bottom: 24px;
 }
 
+.surfdoc-product-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border-radius: var(--radius);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--accent);
+    text-decoration: none;
+    margin-top: 16px;
+    transition: all 150ms ease;
+}
+
+.surfdoc-product-cta:hover {
+    background: var(--accent-hover);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
 /* Data tables */
 .surfdoc-data {
     max-width: 960px;
