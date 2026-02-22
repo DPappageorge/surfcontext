@@ -785,8 +785,49 @@
 }
 
 .surfdoc-check {
-    color: #22c55e;
-    font-weight: 700;
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background: #22c55e;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0;
+    vertical-align: middle;
+    position: relative;
+}
+
+.surfdoc-check::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 8px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.surfdoc-dash {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background: var(--border);
+    border-radius: 50%;
+    font-size: 0;
+    vertical-align: middle;
+    position: relative;
+}
+
+.surfdoc-dash::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 6px;
+    width: 10px;
+    height: 2px;
+    background: var(--text-muted);
+    border-radius: 1px;
 }
 
 /* Before-After */
