@@ -692,8 +692,8 @@ dependencies = [
 
 [[package]]
 name = "surf-parse"
-version = "0.5.0"
-source = "git+https://github.com/cloudsurf-software/surf-parse?branch=main#ab919dc60131fff2fc74bbd3ff97c76212c295b6"
+version = "0.5.1"
+source = "git+https://github.com/cloudsurf-software/surf-parse?branch=main#c3e106c8a01e4c8933bd0eea830d7e6c09ed061a"
 dependencies = [
  "axum",
  "colored",
