@@ -1,6 +1,6 @@
 ---
 name: check-deployment
-description: Check AWS Amplify deployment status for a CloudSurf app
+description: Check Fly.io deployment status for a CloudSurf app
 allowed-tools: Bash
 argument-hint: [app-name]
 user-invocable: true
@@ -9,57 +9,36 @@ disable-model-invocation: false
 
 **SCRIPT DELEGATION**: Run `./scripts/check-deploy.sh [app-name]` from the strategy repo root. Do not replicate this logic with AI — the script is the source of truth. Display its output to the user.
 
-Check the deployment status for a CloudSurf app.
+Check the deployment status for a CloudSurf app on Fly.io.
 
 ## App Registry
 
-| App Name | Amplify App ID | Branch | Repo | Region |
-|----------|---------------|--------|------|--------|
-| TaskSurf | dj0ge89b3sux | main | remote-flow-web | us-west-2 |
-| Wavesite | d2q3eceb4k0m7f | main | wavesite | us-west-2 |
-| CloudSurf Web | d2s55yqar56k3k | main | cloudsurf-web-26 | us-west-2 |
-| SurfCloud HQ | d13dqxc440m2xv | main | cloudsurf-hq | us-west-1 |
-| Sin City | d1em6sfjqgb6tv | main | sin-city | us-west-2 |
-| SurfContext | d1ngtv56vr5ldb | main | surfcontext | us-west-1 |
+| Display Name | Fly App | Production URL |
+|--------------|---------|----------------|
+| surf-app (prod) | `surf-app` | https://app.surf |
+| surf-app (develop) | `surf-app-develop` | https://surf-app-develop.fly.dev |
+| WaveSite | `wavesite` | https://wave.site |
+| SurfDoc | `tasksurf-app` | https://doc.surf |
+| CloudSurf Website | `cloudsurf-website` | https://cloudsurf.com |
+| SurfContext | `surfcontext` | https://surfcontext.org |
+| Surf Server | `surf-server` | https://notesurf.io |
 
-## AWS Config
+The script accepts: fly app name, display-name substring, or registry number (e.g. `surf-app`, `surf`, `1`).
 
-- **Profile**: `default`
-- **Default Region**: `us-west-2` (use per-app region from registry when specified)
+## Deploy pipelines (context, not actions)
 
-## Instructions
+- **surf-app** is deployed by the `surf-build` worker pipeline: surf-app's own API exposes `build_jobs`, a gx10 Linux runner (`surf-build` daemon, `JobKind::RepoDeploy`) claims them, and runs `flyctl deploy --remote-only --strategy bluegreen` against `fly.production.toml` or `fly.develop.toml`. Source of truth for "is it live" is Fly itself — this skill checks Fly state, not the build-job queue.
+- **Emergency fallback** for surf-app is GH Actions `bootstrap-deploy.yml` (`workflow_dispatch`, prod/dev choice). The canonical `deploy.yml` was deprecated 2026-05-17 in favor of the surf-build pipeline.
+- The other apps (Wavesite, SurfDoc, surfcontext, etc.) deploy directly via `flyctl deploy` from their own repos or GH Actions; the script is agnostic to who pushed the release.
 
-1. If `$ARGUMENTS` is provided, match it to an app in the registry above (fuzzy match is fine — "tasksurf", "task", "ts" all match TaskSurf).
-2. If no argument, check **all** apps.
-3. For each app, run (using the app's region from the registry):
-   ```
-   aws amplify list-jobs --app-id <APP_ID> --branch-name main --max-items 3 --profile default --region <REGION> --output json
-   ```
-4. Parse and report:
-   - **Status**: RUNNING / SUCCEED / FAILED
-   - **Commit message** (first 80 chars)
-   - **Started**: timestamp
-   - **Duration**: if ended, calculate duration; if running, show elapsed time
+## What the script reports per app
 
-## Output Format
+- `fly status` — machine count + health
+- `fly releases` (last 3) — version, status, when, who
+- `GET <url>/healthz` — HTTP code
 
-```
-## [App Name] Deployment Status
+Requires `flyctl` installed and authenticated (`~/.fly/config.yml` access_token or `FLY_API_TOKEN`).
 
-| Field | Value |
-|-------|-------|
-| Status | SUCCEED / RUNNING / FAILED |
-| Job ID | # |
-| Commit | message |
-| Started | timestamp |
-| Duration | Xm Ys |
-| Branch | main |
+## When the script isn't enough
 
-Previous 2 builds: [status] [date], [status] [date]
-```
-
-If FAILED, also run:
-```
-aws amplify get-job --app-id <APP_ID> --branch-name main --job-id <JOB_ID> --profile default
-```
-and report the failure reason from the build steps.
+If you need to inspect a **failed/in-flight surf-build job** (e.g. the deploy never reached Fly because the worker rejected the job), query surf-app's API instead — `GET /api/builds` (user-scoped) or check the gx10 worker's systemd logs (`journalctl --user -u surf-build`). The skill does not cover this — it's strictly Fly-state.
