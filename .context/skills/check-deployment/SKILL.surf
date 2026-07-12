@@ -17,6 +17,8 @@ Check the deployment status for a CloudSurf app on Fly.io.
 |--------------|---------|----------------|
 | surf-app (prod) | `surf-app` | https://app.surf |
 | surf-app (develop) | `surf-app-develop` | https://surf-app-develop.fly.dev |
+| surf-next backend | `surf-web` | https://surf-web.fly.dev |
+| surf-next frontend | `surf-next-web` | https://surf-next-web.fly.dev |
 | WaveSite | `wavesite` | https://wave.site |
 | SurfDoc | `tasksurf-app` | https://doc.surf |
 | CloudSurf Website | `cloudsurf-website` | https://cloudsurf.com |
@@ -29,7 +31,12 @@ The script accepts: fly app name, display-name substring, or registry number (e.
 
 - **surf-app** is deployed by the `surf-build` worker pipeline: surf-app's own API exposes `build_jobs`, a gx10 Linux runner (`surf-build` daemon, `JobKind::RepoDeploy`) claims them, and runs `flyctl deploy --remote-only --strategy bluegreen` against `fly.production.toml` or `fly.develop.toml`. Source of truth for "is it live" is Fly itself — this skill checks Fly state, not the build-job queue.
 - **Emergency fallback** for surf-app is GH Actions `bootstrap-deploy.yml` (`workflow_dispatch`, prod/dev choice). The canonical `deploy.yml` was deprecated 2026-05-17 in favor of the surf-build pipeline.
+- **surf-next** (the `surf` repo at `repos/surf`, app crate `frontend/`) deploys the same way (CB-13 cutover, live 2026-06-10): **push to `main`** → GitHub webhook → `build_jobs (RepoDeploy)` → gx10 `surf-build` → `flyctl deploy --remote-only` to **both** `surf-web` (`fly.production.toml`) and `surf-next-web` (`fly.front.toml`). No staging gate; `deploy.yml` is `workflow_dispatch`-only. To ship a surf-next branch, use **`/deploy-surf-prod`** (runs the local QA gate — the only pre-prod gate — then generates the merge+push+monitor script).
 - The other apps (Wavesite, SurfDoc, surfcontext, etc.) deploy directly via `flyctl deploy` from their own repos or GH Actions; the script is agnostic to who pushed the release.
+
+### Shared-crate (git-dependency) fan-out
+
+Several apps build shared crates from a git monorepo (`cloudsurf-crates.git` — e.g. `cloudsurf-llm`, `cloudsurf-auth`, `cloudsurf-rate-limiter`). Dependents pin them by **commit hash** in `Cargo.lock`, so pushing the crate repo does NOT change any app's prod. To ship a shared-crate change you must, per dependent app: `cargo update -p <crate>` (bumps `Cargo.lock`), commit, and redeploy that app. `cloudsurf-llm` alone has ~9 dependents (surf, surf-app, wavesite-4, surf-app-deploy, …). NB: the live source is `cloudsurf-crates/crates/<name>`; standalone per-crate repos like `repos/cloudsurf-llm` are **orphaned** — edits there never ship.
 
 ## What the script reports per app
 
