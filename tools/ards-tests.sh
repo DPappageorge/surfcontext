@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MIT
-# ards-tests.sh — the SurfContext ARDS v5.1 tools battery.
+# ards-tests.sh — the SurfContext ARDS v5.2 tools battery.
 #
 # Every check prints PASS or FAIL on one line; the script exits non-zero if any
 # check FAILs.
@@ -80,7 +80,7 @@ else:
 EOF
 }
 
-echo "SurfContext ARDS v5.1 tools battery — repo: $REPO"
+echo "SurfContext ARDS v5.2 tools battery — repo: $REPO"
 echo "----------------------------------------------------------------------"
 
 # ── 1. connector generation lints guaranteed ─────────────────────────────────
@@ -101,11 +101,11 @@ if [ -n "${F1:-}" ]; then
   SHA="$(py_core_sha "$F1/CONTEXT.surf")"
   STAMP_OK=1; LAST=""
   for f in CLAUDE.md AGENTS.md; do
-    s="$(sed -n 's/^<!-- ards-core: sha256:\([0-9a-f]*\), ards v5\.1 -->$/\1/p' "$F1/$f" 2>/dev/null | head -1)"
+    s="$(sed -n 's/^<!-- ards-core: sha256:\([0-9a-f]*\), ards v5\.2 -->$/\1/p' "$F1/$f" 2>/dev/null | head -1)"
     [ "$s" = "$SHA" ] || { STAMP_OK=0; LAST="$f carries ${s:-none}"; }
   done
   if [ -n "$SHA" ] && [ "$STAMP_OK" -eq 1 ]; then
-    pass "sync: CLAUDE.md and AGENTS.md both stamped v5.1 sha256:$SHA"
+    pass "sync: CLAUDE.md and AGENTS.md both stamped v5.2 sha256:$SHA"
   else
     fail "sync stamps both roots" "${LAST:-no sha computed}"
   fi
@@ -177,10 +177,10 @@ if [ -n "${F1:-}" ]; then
   else
     fail "session-start.sh bounds" "exit=$SS_RC lines=$SS_LINES"
   fi
-  if printf '%s\n' "$SS_OUT" | grep -q '^ards-receipt: v5\.1 core sha256:[0-9a-f]* tier:guaranteed status:verified$'; then
-    pass "session-start.sh: v5.1 receipt line, tier guaranteed, status verified"
+  if printf '%s\n' "$SS_OUT" | grep -q '^ards-receipt: v5\.2 core sha256:[0-9a-f]* tier:guaranteed status:verified$'; then
+    pass "session-start.sh: v5.2 receipt line, tier guaranteed, status verified"
   else
-    fail "session-start.sh receipt" "no verified v5.1 receipt line"
+    fail "session-start.sh receipt" "no verified v5.2 receipt line"
   fi
   if printf '%s\n' "$SS_OUT" | grep -q '^ards-digest: NO-DIGEST'; then
     pass "session-start.sh: NO-DIGEST offline line when the key env var is unset"
@@ -192,8 +192,8 @@ if [ -n "${F1:-}" ]; then
             | bash .context/tools/hooks/stop.sh 2>/dev/null)"; ST_RC=$?
   if [ "$ST_RC" -eq 0 ] \
      && printf '%s\n' "$ST_OUT" | grep -q '^ards-write-path:' \
-     && printf '%s\n' "$ST_OUT" | grep -q '^ards-receipt: v5\.1 core sha256:'; then
-    pass "stop.sh: exit 0, write-path reminder + v5.1 receipt printed"
+     && printf '%s\n' "$ST_OUT" | grep -q '^ards-receipt: v5\.2 core sha256:'; then
+    pass "stop.sh: exit 0, write-path reminder + v5.2 receipt printed"
   else
     fail "stop.sh" "exit=$ST_RC or missing reminder/receipt"
   fi

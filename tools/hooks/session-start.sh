@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MIT
-# session-start.sh — SurfContext ARDS v5.1 harness binding (SessionStart).
+# session-start.sh — SurfContext ARDS v5.2 harness binding (SessionStart).
 #
 # Two jobs, in order:
 #   1. Emit the conformance receipt: recompute the CONTEXT.surf "## Core" sha,
@@ -23,7 +23,7 @@
 
 set -u
 
-ARDS_VERSION="5.1"
+ARDS_VERSION="5.2"
 MAX_LINES=60
 WALL_SECONDS=10
 
@@ -49,7 +49,14 @@ ards_sha256_16() {
   fi
 }
 
-ards_core_sha() {  # $1 = CONTEXT.surf path
+ards_root_context() {  # echo the root context: .surf first, .md alias second (SPEC 45.3)
+  for c in CONTEXT.surf CONTEXT.md; do
+    [ -f "$c" ] && { echo "$c"; return 0; }
+  done
+  return 1
+}
+
+ards_core_sha() {  # $1 = root context path
   local tmp
   tmp="$(mktemp "${TMPDIR:-/tmp}/ards-core.XXXXXX")" || { echo "NO-TMP"; return 0; }
   awk '
@@ -69,7 +76,8 @@ ards_report() {
   # --- 1. receipt -----------------------------------------------------------
   local sha stamp status tier
   sha="NO-CONTEXT"
-  [ -f CONTEXT.surf ] && sha="$(ards_core_sha CONTEXT.surf)"
+  ards_ctx="$(ards_root_context || true)"
+  [ -n "$ards_ctx" ] && sha="$(ards_core_sha "$ards_ctx")"
   stamp="$(sed -n 's/^<!-- ards-core: sha256:\([0-9a-f]*\),.*/\1/p' CLAUDE.md 2>/dev/null | head -1)"
   if [ -n "$stamp" ] && [ "$stamp" = "$sha" ]; then
     status="verified"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MIT
-# make-connector.sh — generate a SurfContext ARDS v5.1 connector directory.
+# make-connector.sh — generate a SurfContext ARDS v5.2 connector directory.
 #
 # A connector is not a library. The workspace holds the prose canon; the
 # directory holds only what must be local: the hand-authored "## Core", the
@@ -11,7 +11,7 @@
 #   <dir>/
 #     CONTEXT.surf            hand-authored ## Core (copied from --core)
 #     CLAUDE.md, AGENTS.md    GENERATED from the Core, stamped, lint-checked
-#     surfcontext.json        version 5.1, home surfspace, workspace + projects
+#     surfcontext.json        version 5.2, home surfspace, workspace + projects
 #     .mcp.json               project-scoped MCP entry (env-var reference only)
 #     .claude/settings.json   SessionStart + Stop bindings
 #     .context/tools/         vendored copy of tools/
@@ -167,7 +167,7 @@ STAMP_TMP="$(mktemp "${TMPDIR:-/tmp}/sc-stamp.XXXXXX")"
     echo "# SPDX-License-Identifier: MIT"
     echo "# Vendored SurfContext tools. Regenerate with tools/make-connector.sh;"
     echo "# do not edit in place — edits are overwritten on the next generation."
-    echo "surfcontext-version: 5.1"
+    echo "surfcontext-version: 5.2"
     echo "surfcontext-commit: $SC_SHA"
 } > "$STAMP_TMP"
 write_if_changed "$STAMP_TMP" "$VENDOR/.vendor-stamp"

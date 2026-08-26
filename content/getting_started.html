@@ -79,7 +79,7 @@
                 </div>
 
                 <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 16px;">
-                    Generates CONTEXT.md, CLAUDE.md, AGENTS.md, surfcontext.json, and .context/ directory
+                    Generates CONTEXT.surf, CLAUDE.md, AGENTS.md, surfcontext.json, and .context/ directory
                 </p>
                 <button type="submit" class="btn btn-primary">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -96,7 +96,7 @@
             <strong>After downloading:</strong>
             <ol style="margin: 8px 0 0; padding-left: 20px; color: var(--text-muted);">
                 <li>Unzip into your project root</li>
-                <li>Edit CONTEXT.md with your full project details</li>
+                <li>Edit CONTEXT.surf with your full project details, keeping the <code>## Core</code> section</li>
                 <li>Open your project in any supported AI coding agent — it discovers your context automatically</li>
             </ol>
         </div>
@@ -117,17 +117,34 @@
             <div class="step-card">
                 <div class="card-step">
                     <span class="card-step-number">1</span>
-                    <h2 style="font-size: 1.25rem; font-weight: 700;">Create CONTEXT.md</h2>
+                    <h2 style="font-size: 1.25rem; font-weight: 700;">Create CONTEXT.surf</h2>
                 </div>
                 <p class="card-body" style="margin-bottom: 16px;">
-                    Create a <code>CONTEXT.md</code> file in your project root. This is your canonical project context —
-                    the single source of truth that all AI agents will read.
+                    Create a <code>CONTEXT.surf</code> file in your project root. This is your canonical project context —
+                    the single source of truth that all AI agents will read. SurfDoc (<code>.surf</code>) is the
+                    native format; <code>CONTEXT.md</code> remains a supported alias if you declare
+                    <code>"format": ".md"</code>.
                 </p>
                 <div class="code-block">
-                    <div class="code-header">CONTEXT.md</div>
-<pre><code><span class="cm"># My Project</span>
+                    <div class="code-header">CONTEXT.surf</div>
+<pre><code><span class="attr">---</span>
+<span class="attr">title</span>: "My Project"
+<span class="attr">type</span>: doc
+<span class="attr">updated</span>: 2026-08-26
+<span class="attr">---</span>
+
+<span class="cm"># My Project</span>
 
 Brief description of what this project does and why it exists.
+
+<span class="cm">## Core</span>
+
+The guaranteed-context head. Sync copies this section verbatim into
+CLAUDE.md and AGENTS.md with a hash stamp, so the rules ride the
+harness's auto-load path instead of waiting to be discovered.
+
+- Verify remembered facts against the live source before acting on them
+- CONTEXT.surf is canonical; never edit a generated file
 
 <span class="cm">## Key Files</span>
 
@@ -175,7 +192,7 @@ frameworks, data flow, and deployment targets.
                     Add your first agent definition:
                 </p>
                 <div class="code-block">
-                    <div class="code-header">.context/agents/code-reviewer.md</div>
+                    <div class="code-header">.context/agents/code-reviewer.surf</div>
 <pre><code><span class="attr">---</span>
 <span class="attr">name</span>: code-reviewer
 <span class="attr">description</span>: Reviews code for quality, security, and best practices
@@ -215,11 +232,12 @@ You review pull requests and code changes for:
                 <div class="code-block">
                     <div class="code-header">surfcontext.json</div>
 <pre><code>{
-  <span class="str">"version"</span>: <span class="str">"3.0"</span>,
+  <span class="str">"version"</span>: <span class="str">"5.2"</span>,
   <span class="str">"source"</span>: <span class="str">"manual"</span>,
+  <span class="str">"format"</span>: <span class="str">".surf"</span>,
   <span class="str">"platforms"</span>: [<span class="str">"claude"</span>, <span class="str">"codex"</span>, <span class="str">"cursor"</span>],
   <span class="str">"canonical"</span>: {
-    <span class="str">"rootContext"</span>: <span class="str">"CONTEXT.md"</span>,
+    <span class="str">"rootContext"</span>: <span class="str">"CONTEXT.surf"</span>,
     <span class="str">"docsDir"</span>: <span class="str">".context/docs"</span>,
     <span class="str">"agentsDir"</span>: <span class="str">".context/agents"</span>,
     <span class="str">"guidesDir"</span>: <span class="str">".context/guides"</span>
@@ -227,15 +245,15 @@ You review pull requests and code changes for:
   <span class="str">"generation"</span>: {
     <span class="str">"claude"</span>: {
       <span class="str">"rootContext"</span>: <span class="str">"CLAUDE.md"</span>,
-      <span class="str">"method"</span>: <span class="str">"sed-copy"</span>
+      <span class="str">"method"</span>: <span class="str">"core-distillate"</span>
     },
     <span class="str">"codex"</span>: {
       <span class="str">"rootContext"</span>: <span class="str">"AGENTS.md"</span>,
-      <span class="str">"method"</span>: <span class="str">"sed-copy"</span>
+      <span class="str">"method"</span>: <span class="str">"core-distillate"</span>
     }
   },
   <span class="str">"discoveryOrder"</span>: [
-    <span class="str">"CONTEXT.md"</span>,
+    <span class="str">"CONTEXT.surf"</span>,
     <span class="str">"surfcontext.json"</span>,
     <span class="str">".context/docs/"</span>,
     <span class="str">".context/guides/"</span>,
@@ -253,18 +271,22 @@ You review pull requests and code changes for:
                     <h2 style="font-size: 1.25rem; font-weight: 700;">Generate platform files (optional)</h2>
                 </div>
                 <p class="card-body" style="margin-bottom: 16px;">
-                    Generate platform-specific config files from your canonical context.
-                    For now, a simple copy works. The SurfContext CLI will automate this.
+                    Generate platform-specific config files from your canonical context. The
+                    generated root file must carry the <code>## Core</code> section inline with a hash
+                    stamp — a file that merely points at CONTEXT.surf is non-conformant. Use the
+                    reference sync (or the SurfContext CLI) rather than a plain copy.
                 </p>
                 <div class="code-block">
                     <div class="code-header">Terminal</div>
-<pre><code><span class="cm"># Copy CONTEXT.md to generate platform files</span>
-cp CONTEXT.md CLAUDE.md
-cp CONTEXT.md AGENTS.md
+<pre><code><span class="cm"># Inject the "## Core" section into every harness root file,</span>
+<span class="cm"># stamped with its sha256 so drift is detectable.</span>
+bash tools/surfcontext-sync.sh
 
-<span class="cm"># Add a generated-file header (optional but recommended)</span>
+<span class="cm"># Verify: the linter is a separate invocation from the generator.</span>
+python3 tools/ards-lint.py
+
 <span class="cm"># You can also use the SurfContext CLI when available:</span>
-<span class="cm"># npx surfcontext generate</span></code></pre>
+<span class="cm"># surf sync</span></code></pre>
                 </div>
             </div>
 
@@ -284,11 +306,11 @@ cp CONTEXT.md AGENTS.md
                 <div class="code-block">
                     <div class="code-header">Final Structure</div>
 <pre><code>my-project/
-  CONTEXT.md              <span class="cm"># Your canonical context (source of truth)</span>
+  CONTEXT.surf            <span class="cm"># Your canonical context (source of truth)</span>
   surfcontext.json        <span class="cm"># Platform targeting + discovery order</span>
   .context/
     agents/
-      code-reviewer.md    <span class="cm"># Your agent definition</span>
+      code-reviewer.surf  <span class="cm"># Your agent definition</span>
     docs/                 <span class="cm"># Evergreen knowledge docs</span>
     guides/               <span class="cm"># Living how-to documents</span>
   CLAUDE.md               <span class="cm"># Platform-specific (generated)</span>
@@ -320,7 +342,7 @@ cp CONTEXT.md AGENTS.md
                 </li>
                 <li style="display: flex; gap: 12px; align-items: flex-start;">
                     <span style="color: var(--accent); font-weight: 700; flex-shrink: 0;">&#8594;</span>
-                    <span>Add living guides to <code>.context/guides/</code> for implementation how-tos with gotcha callouts (<a href="/whats-new" style="color: var(--accent);">new in v3</a>)</span>
+                    <span>Add living guides to <code>.context/guides/</code> for implementation how-tos with gotcha callouts (<a href="/whats-new" style="color: var(--accent);">what's new in v5.2</a>)</span>
                 </li>
                 <li style="display: flex; gap: 12px; align-items: flex-start;">
                     <span style="color: var(--accent); font-weight: 700; flex-shrink: 0;">&#8594;</span>

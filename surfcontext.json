@@ -1,24 +1,41 @@
 {
-  "version": "2.0",
+  "version": "5.2",
   "source": "manual",
+  "format": ".surf",
+  "home": "local",
   "platforms": ["claude", "codex", "cursor"],
   "canonical": {
-    "rootContext": "CONTEXT.md",
+    "rootContext": "CONTEXT.surf",
     "docsDir": ".context/docs",
-    "agentsDir": ".context/agents"
+    "agentsDir": ".context/agents",
+    "skillsDir": ".context/skills"
   },
   "generation": {
     "claude": {
       "rootContext": "CLAUDE.md",
-      "method": "sed-copy"
+      "method": "core-distillate",
+      "rootContextMethod": "core-distillate"
     },
     "codex": {
       "rootContext": "AGENTS.md",
-      "method": "sed-copy"
+      "method": "core-distillate"
     },
     "cursor": {
       "rootContext": ".cursorrules",
-      "method": "sed-copy"
+      "method": "core-distillate"
     }
-  }
+  },
+  "coreInjection": {
+    "budget": 2000,
+    "sourceSection": "## Core",
+    "stamp": true
+  },
+  "discoveryOrder": [
+    "CONTEXT.surf",
+    "surfcontext.json",
+    "SPEC.surf",
+    ".context/skills/",
+    "content/",
+    "src/"
+  ]
 }

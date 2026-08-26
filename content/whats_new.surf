@@ -1,6 +1,6 @@
 ---
-title: What's New in ARDS v3.0 - SurfContext
-description: Nine new capabilities for structuring AI-agent-ready repositories. Living guides, session checkpoints, evidence epistemology, IP safety, context budget management, and more.
+title: What's New in ARDS v5.2 - SurfContext
+description: SurfDoc is now the native format of the standard. CONTEXT.surf is the canonical root context, Markdown stays a supported alias, and the guarantee ladder from v5.0 and v5.1 carries forward unchanged.
 ---
 
 ::style
@@ -8,131 +8,140 @@ accent: #3b82f6
 font: inter
 ::
 
-::hero[badge="ARDS v3.0 — February 2026" align=center]
-# What's new in ARDS v3.0
+::hero[badge="ARDS v5.2 — August 2026" align=center]
+# What's new in ARDS v5.2
 
-Nine new capabilities for structuring AI-agent-ready repositories. Living guides, session checkpoints, evidence epistemology, IP safety, context budget management, and more.
+SurfDoc is now the native format of the standard. `CONTEXT.surf` is the canonical root context, every `.context/` document is a typed SurfDoc, and Markdown remains a fully conformant alias for any project that declares it.
 
 [Read the Full Spec](/spec){primary}
 [Quick Start](/getting-started)
 ::
 
 ::stats
-- 1,398 {label="Spec lines" color="#3b82f6"}
-- 27 {label="Sections" color="#a855f7"}
-- 9 {label="New in v3" color="#22c55e"}
+- 2,842 {label="Spec lines" color="#3b82f6"}
+- 45 {label="Sections" color="#a855f7"}
+- 10 {label="New since v4" color="#22c55e"}
 - 7 {label="Doc types" color="#f59e0b"}
 - 6+ {label="Platforms" color="#ec4899"}
-- 17 {label="OSS files" color="#06b6d4"}
+- 3 {label="Conformance tiers" color="#06b6d4"}
 ::
 
 ::section
-## 9 new capabilities
+## SurfDoc-native context
 
-Each addresses a real problem discovered in 3+ months of daily production use across 15 repositories with 54 AI agents.
+v3.1 added `.surf` as an option. v5.2 makes it the format of the standard and demotes Markdown to a declared alias. Nothing is removed, and no existing project is invalidated.
 
 ::features[cols=3]
-### Living Guides {icon=book}
-How-to docs with confidence levels and gotcha callouts that grow with each implementation. Located in `.context/guides/`.
+### Canonical root {icon=file}
+`CONTEXT.surf` is the canonical root context filename. A project may keep `CONTEXT.md` by declaring the `.md` format — it stays conformant at every tier.
 
-### Session Checkpoints {icon=file}
-Structured handoff protocol for context boundary crossings — conversation ends, agent swaps, machine switches.
+### Native .context/ tree {icon=book}
+Knowledge docs, guides, agent configs, skills, plans and checkpoints are typed SurfDoc files with validated frontmatter.
 
-### Evidence Epistemology {icon=info}
-4-tier claim tagging, evidence hierarchy, bias ledger. Prevents strategy built on unverified claims.
+### Alias resolution {icon=search}
+Tooling resolves `.surf` first and falls back to `.md`. A tool that reads only one of the two extensions is non-conformant.
 
-### IP Safety {icon=check}
-Pre-write verification checks — no misattribution, no AI co-author, no leaked secrets, no internal paths.
+### Exactly one root {icon=check}
+Two root context files are two edit surfaces with no merge rule. Carrying both is a lint failure, not a style preference.
 
-### Context Budget Management {icon=settings}
-Treats context window as finite computational resource. Budget allocation and progressive disclosure.
+### Version-aware defaults {icon=settings}
+An omitted `format` field resolves by manifest version — `.surf` at 5.2 and above, `.md` below it. Upgrade nothing and nothing breaks.
 
-### Multi-Agent Coordination {icon=user}
-Task queue format, agent contracts, cross-agent handoff, parallel execution rules.
-
-### Cross-Repo References {icon=globe}
-Hub-and-spoke model with repo registry, explicit relative paths, no-duplication rules.
-
-### Discovery Order {icon=search}
-Formalized 10-step navigation sequence with token-aware loading strategy.
-
-### MCP Integration {icon=code}
-Standard tool names for exposing .context/ content as MCP tools. Bridges knowledge to capabilities.
+### New lint rule {icon=info}
+A manifest declaring the `.surf` format while carrying a Markdown root now warns: the declared format and the file on disk disagree.
 ::
 ::
 
 ::section[bg=dark]
+## Why the format is the standard's business
+
+ARDS has always specified structure and left rendering to the reader. SurfDoc is not a rendering choice — it is a typed format with validated frontmatter, which is what makes relevance hooks, version stamps and a reliable block-level parse enforceable rather than conventional. Declaring the native format is how the standard stops specifying a contract it cannot check.
+
+::comparison[highlight="SurfDoc"]
+| Capability | SurfDoc root | Markdown root |
+|-----------|--------------|---------------|
+| Root context | yes | yes |
+| Core injection with hash stamp | yes | yes |
+| Generated harness files | yes | yes |
+| Validated frontmatter | yes | no |
+| Relevance hooks scored by the rubric | yes | partial |
+| Block-level parse a generator can rely on | yes | no |
+::
+::
+
+::section
 ## 7 document types
 
-Each type has a distinct purpose, mutability pattern, and read frequency. Agents load them at different times to optimize context window usage.
+Each type has a distinct purpose, mutability pattern, and read frequency. Agents load them at different times to manage context window usage.
 
 ::data[format=table sortable]
 Type | Location | Mutability | Read Frequency
-Root Context | CONTEXT.md | Updated weekly | Every turn
-Agent Config | .context/agents/*.md | Stable | On dispatch
-Skill Config | .context/skills/*/SKILL.md | Stable | On invocation
-Knowledge Doc | .context/docs/*.md | Updated on change | On demand
-Guide | .context/guides/*.md | Living (grows) | On demand
-Plan Doc | plans/**/*.md | Immutable | On demand
+Root Context | CONTEXT.surf | Updated weekly | Every turn
+Agent Config | .context/agents/*.surf | Stable | On dispatch
+Skill Config | .context/skills/*/SKILL.surf | Stable | On invocation
+Knowledge Doc | .context/docs/*.surf | Updated on change | On demand
+Guide | .context/guides/*.surf | Living (grows) | On demand
+Plan Doc | plans/**/*.surf | Immutable | On demand
 Research Doc | research/**/* | Versioned | On demand
 ::
 ::
 
+::section[bg=dark]
+## The v5 line
+
+v5.2 is the third release in the guaranteed-context line. The guarantees below carry forward unchanged.
+
+::features[cols=3]
+### Core Injection Contract {icon=check}
+A root file that merely points at the context is non-conformant. The rules live in the file the harness actually loads, stamped so drift is detectable.
+
+### Harness Binding Profiles {icon=settings}
+Generate enforcement configuration — hooks, always-apply rules, launcher prompt composition — not merely documents.
+
+### Write-Path Contract {icon=file}
+No durable fact may be recoverable only from agent-local memory. Memory is a pointer; the tree is the source.
+
+### Relevance Hooks {icon=search}
+`answers:` frontmatter moves connections from inference to lookup, and propagates into generated index views.
+
+### Conformance Linting {icon=info}
+Three tiers — guaranteed, injected, discovered — with CI exit codes. A project's tier is the minimum across its platform matrix.
+
+### Workspace Push Channel {icon=globe}
+The workspace Core rides the MCP server instructions field, reaching connected agents regardless of vendor, machine, or file layout.
+::
+::
+
 ::section
-## Feature comparison
+## Fully backward-compatible
 
-ARDS is the only format covering the full documentation architecture. It generates files for every other format.
+A valid v5.1 project is a valid v5.2 project. A Markdown-rooted project stays conformant for as long as it declares the `.md` format.
 
-::comparison[highlight="ARDS"]
-| Feature | ARDS | AGENTS.md | CLAUDE.md | .cursorrules | copilot-inst. | .gemini |
-|---------|------|-----------|-----------|--------|---------|--------|
-| Root context file | yes | yes | yes | no | yes | yes |
-| Agent definitions | yes | no | yes | no | no | no |
-| Skill/rule definitions | yes | no | yes | yes | yes | no |
-| Knowledge doc hierarchy | yes | no | no | no | no | no |
-| Living guides | yes | no | no | no | no | no |
-| Session checkpoints | yes | no | no | no | no | no |
-| Cross-repo references | yes | no | no | no | no | no |
-| Evidence epistemology | yes | no | no | no | no | no |
-| IP safety rules | yes | no | no | no | no | no |
-| Token budget guidance | yes | no | no | no | no | no |
-| Discovery order | yes | no | no | no | no | yes |
-| Quality scoring rubric | yes | no | no | no | no | no |
-| Multi-platform generation | yes | no | no | no | no | no |
-| Machine-readable config | yes | no | no | yes | no | yes |
+::steps
+### Bump the version {time="30 sec"}
+Change `version` in surfcontext.json from "5.1" to "5.2"
+
+### Choose a format {time="30 sec"}
+Set `"format": ".surf"` to adopt the native format, or `".md"` to pin the alias explicitly
+
+### Rename the root {time="2 min"}
+Rename CONTEXT.md to CONTEXT.surf with SurfDoc frontmatter and the `## Core` section intact
+
+### Rename the .context/ tree {time="10 min"}
+Move docs, guides, agents, skills and plans to the .surf extension
+
+### Re-run sync {time="1 min"}
+Generated harness root files pick up the new source path and re-stamp the Core
+
+### Lint {time="30 sec"}
+Confirm no both-roots failure and no format-mismatch warning
 ::
 ::
 
 ::section[bg=dark]
-## Fully backward-compatible
+## Ready to upgrade to v5.2?
 
-All v3 additions are optional. A valid v2 project is already a valid v3 project. Adopt features incrementally.
-
-::steps
-### Bump version {time="30 sec"}
-Change version in surfcontext.json from "2.0" to "3.0"
-
-### Add guides directory {time="2 min"}
-Create .context/guides/ and add guidesDir to surfcontext.json
-
-### Add discovery order {time="1 min"}
-Document your project's navigation sequence in surfcontext.json
-
-### Start checkpointing {time="Ongoing"}
-Write session checkpoints to plans/sessions/ when context gets long
-
-### Tag evidence {time="Ongoing"}
-Add [verified], [unverified], [assumption] tags to claims
-
-### Configure IP safety {time="1 min"}
-Add ipSafety block to surfcontext.json if relevant
-::
-::
-
-::section
-## Ready to upgrade to v3?
-
-All new features are opt-in. Start with a version bump and adopt capabilities as you need them.
+Backward-compatible by design. Declare a format, rename the root, re-run sync.
 
 ::cta[label="Get Started" href="/getting-started" primary icon=arrow-right]
 ::

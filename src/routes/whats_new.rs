@@ -6,8 +6,8 @@ async fn whats_new_page() -> Html<String> {
     let result = surf_parse::parse(include_str!("../../content/whats_new.surf"));
     let content = result.doc.to_html();
     Html(html::page(
-        "What's New in ARDS v3.0 - SurfContext",
-        "Nine new capabilities for structuring AI-agent-ready repositories. Living guides, session checkpoints, evidence epistemology, IP safety, context budget management, and more.",
+        "What's New in ARDS v5.2 - SurfContext",
+        "SurfDoc is now the native format of the standard. CONTEXT.surf is the canonical root context, Markdown stays a supported alias, and the v5 guarantee ladder carries forward unchanged.",
         "",
         &content,
     ))

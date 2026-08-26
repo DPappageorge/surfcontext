@@ -1,6 +1,6 @@
 {
-  "_license": "SPDX-License-Identifier: MIT — SurfContext ARDS v5.1 template, (c) CloudSurf Software LLC",
-  "version": "5.1",
+  "_license": "SPDX-License-Identifier: MIT — SurfContext ARDS v5.2 template, (c) CloudSurf Software LLC",
+  "version": "5.2",
   "home": "__HOME__",
   "format": ".surf",
   "platforms": [

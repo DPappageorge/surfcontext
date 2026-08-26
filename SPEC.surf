@@ -1,7 +1,7 @@
 ---
 title: "Agent-Ready Documentation Standard (ARDS)"
 type: specification
-version: 5.1
+version: 5.2
 created: 2026-01-15
 updated: 2026-08-26
 author: "K. Brady Davis, CloudSurf Software LLC"
@@ -10,7 +10,7 @@ license: CC-BY-SA 4.0
 tags: [ards, specification, ai-agents, documentation, workspace]
 ---
 
-# Agent-Ready Documentation Standard (ARDS) v5.1
+# Agent-Ready Documentation Standard (ARDS) v5.2
 
 ## Abstract
 
@@ -28,6 +28,8 @@ Version 5.0 makes context **guaranteed**. v1–v3 made context canonical; v4 mad
 
 Version 5.1 extends the guarantee past the file harness. Section 42 promotes the reserved workspace push channel to normative: the workspace's MCP server ships the workspace Core in its server `instructions` field, an unconditional channel that reaches MCP-connected agents regardless of vendor, machine, or file layout. Section 43 adds `home` — a project declares whether its canon lives in the workspace or in the local tree, resolving the contradiction a v4 project could hold where the root context claimed the repo was authoritative while Section 31 claimed the workspace was. Section 44 makes **skills** a first-class workspace type, versioned and materialized into each harness as a regenerable cache rather than hand-edited files. v5.1 also formalizes the `projects[]` array that lets one connector directory serve several repositories, a workspace folder, a message channel, and a set of deployable apps. **A valid v5.0 project is a valid v5.1 project.**
 
+Version 5.2 makes SurfDoc the native format of the standard: `CONTEXT.surf` is the canonical root context and every `.context/` document, agent, skill, guide and plan is a SurfDoc (`.surf`) file; `CONTEXT.md` and Markdown remain valid legacy aliases. The change is one of default and of discovery order, not of capability — discovery resolves `CONTEXT.surf` before `CONTEXT.md` (Section 13), `surfcontext.json` defaults `format` to `".surf"` and `canonical.rootContext` to `CONTEXT.surf` (Section 5), and the linter WARNs when a project that declares the `.surf` format still carries a Markdown root (Section 40). Section 45 is the normative statement. **A valid v5.1 project is a valid v5.2 project** — no v5.1 project is invalidated, and a Markdown-rooted project stays conformant for as long as it declares the `.md` format.
+
 ---
 
 ## Table of Contents
@@ -35,7 +37,7 @@ Version 5.1 extends the guarantee past the file harness. Section 42 promotes the
 1. [Introduction](#1-introduction)
 2. [Design Principles](#2-design-principles)
 3. [File Hierarchy](#3-file-hierarchy)
-4. [Root Context (CONTEXT.md)](#4-root-context)
+4. [Root Context (CONTEXT.surf)](#4-root-context-contextsurf)
 5. [Configuration (surfcontext.json)](#5-configuration)
 6. [Agent Configs (.context/agents/)](#6-agent-configs)
 7. [Skill Configs (.context/skills/)](#7-skill-configs)
@@ -77,10 +79,11 @@ Version 5.1 extends the guarantee past the file harness. Section 42 promotes the
 42. [Workspace-Scope Push Channel](#42-workspace-scope-push-channel)
 43. [Workspace Home](#43-workspace-home)
 44. [Skills as a Workspace Type](#44-skills-as-a-workspace-type)
-45. [Appendix A: Anti-Patterns](#appendix-a-anti-patterns)
-46. [Appendix B: Changelog](#appendix-b-changelog)
-47. [Appendix C: Conversation Artifacts (Ratified — see 12a)](#appendix-c-conversation-artifacts)
-48. [Appendix D: User-Level Context (Ratified — see 30)](#appendix-d-user-level-context)
+45. [SurfDoc-Native Context](#45-surfdoc-native-context)
+46. [Appendix A: Anti-Patterns](#appendix-a-anti-patterns)
+47. [Appendix B: Changelog](#appendix-b-changelog)
+48. [Appendix C: Conversation Artifacts (Ratified — see 12a)](#appendix-c-conversation-artifacts)
+49. [Appendix D: User-Level Context (Ratified — see 30)](#appendix-d-user-level-context)
 
 ---
 
@@ -153,7 +156,7 @@ ARDS solves this with a **write-once, generate-many** architecture. Project docu
 
 ```
 project-root/
-  CONTEXT.md                          # Root context (required)
+  CONTEXT.surf                        # Root context (required)
   surfcontext.json                    # Configuration (recommended)
   .context/
     agents/                           # Agent definitions (1 file per agent)
@@ -167,7 +170,7 @@ project-root/
 
 ```
 project-root/
-  CONTEXT.md                          # Root context (canonical)
+  CONTEXT.surf                        # Root context (canonical)
   surfcontext.json                    # ARDS configuration
   CLAUDE.md                           # Generated for Claude Code
   AGENTS.md                           # Generated for Codex CLI
@@ -238,7 +241,7 @@ project-root/
 
 ### SurfDoc File Extension
 
-**New in v3.1.** ARDS files default to `.md` (Markdown). Projects using SurfDoc format may use the `.surf` extension instead, configured via the `format` field in `surfcontext.json`:
+**New in v3.1. Default reversed in v5.2.** ARDS files default to `.surf` (SurfDoc); a project may use `.md` (Markdown) instead. Either way the choice is declared with the `format` field in `surfcontext.json`:
 
 ```json
 {
@@ -246,7 +249,7 @@ project-root/
 }
 ```
 
-When `format` is set to `".surf"`, all ARDS-managed files use the `.surf` extension:
+Under the `.surf` format — the v5.2 default — all ARDS-managed files use the `.surf` extension, and under `".md"` they all use `.md`:
 
 | File Type | Default (`.md`) | SurfDoc (`.surf`) |
 |-----------|----------------|-------------------|
@@ -266,15 +269,17 @@ When `format` is set to `".surf"`, all ARDS-managed files use the `.surf` extens
 | Platform memory files | Claude Code expects `MEMORY.md` |
 | `.claude/commands/*.md` | Claude Code command stubs (see Section 7) |
 
-The `format` field is optional. When absent, `.md` is assumed. Tooling should read the `format` field before generating file paths.
+The `format` field is optional. When absent, the default follows the manifest's `version`: `.surf` at version 5.2 or above, `.md` below it, so an unmodified pre-5.2 project keeps its Markdown paths (Section 45.5). Tooling MUST read `format` and `version` before generating file paths, and MUST resolve `.surf` before `.md` when reading (Section 45.3).
 
 SurfDoc files use YAML frontmatter for metadata instead of blockquote headers. See Sections 10 and 12 for examples of both formats.
 
 ---
 
-## 4. Root Context
+## 4. Root Context (CONTEXT.surf)
 
-CONTEXT.md is the single most important file in any ARDS-compliant repository. It is auto-loaded by Claude Code every turn (as CLAUDE.md), read first by Codex (as AGENTS.md), and serves as the primary orientation for any AI agent or human contributor.
+CONTEXT.surf is the single most important file in any ARDS-compliant repository. It is auto-loaded by Claude Code every turn (as CLAUDE.md), read first by Codex (as AGENTS.md), and serves as the primary orientation for any AI agent or human contributor.
+
+**Alias rule (v5.2).** `CONTEXT.surf` is the canonical root context filename. `CONTEXT.md` remains a valid legacy alias: a project that declares `"format": ".md"` in `surfcontext.json`, or that predates v5.2, is fully conformant with a Markdown root. Tooling MUST resolve `CONTEXT.surf` first and fall back to `CONTEXT.md`; a project MUST NOT carry both (Appendix A). Everything this section says about the root context applies to whichever of the two the project uses. See Section 45.
 
 ### Token Budget
 
@@ -325,7 +330,7 @@ Strategy/command center repos may include additional sections:
 - **Principles** — decision-making rules shaping agent behavior
 - **Commands** — slash commands or trigger phrases
 
-### What Does NOT Belong in CONTEXT.md
+### What Does NOT Belong in the Root Context
 
 | Content | Belongs In | Reason |
 |---------|-----------|--------|
@@ -397,16 +402,16 @@ This pattern generalizes to any append-only context stream (decision logs, incid
 
 The `surfcontext.json` file at the repository root declares how the project is structured and which platforms to generate for.
 
-### Schema (v5.1)
+### Schema (v5.2)
 
 ```json
 {
-  "version": "5.1",
+  "version": "5.2",
   "home": "surfspace",
-  "format": ".md",
+  "format": ".surf",
   "platforms": ["claude", "codex"],
   "canonical": {
-    "rootContext": "CONTEXT.md",
+    "rootContext": "CONTEXT.surf",
     "agentsDir": ".context/agents",
     "docsDir": ".context/docs",
     "skillsDir": ".context/skills",
@@ -430,7 +435,7 @@ The `surfcontext.json` file at the repository root declares how the project is s
     }
   },
   "discoveryOrder": [
-    "CONTEXT.md",
+    "CONTEXT.surf",
     "surfcontext.json",
     ".context/docs/",
     ".context/guides/",
@@ -772,7 +777,7 @@ done
 
 ## 8. Knowledge Docs
 
-Knowledge docs in `.context/docs/*.md` store evergreen reference material too detailed for CONTEXT.md but essential for agent work. Read on demand, not every turn.
+Knowledge docs in `.context/docs/` store evergreen reference material too detailed for the root context but essential for agent work. Read on demand, not every turn. Under a `.surf` project (Section 45) these are `.surf` files; a `.md` project keeps `.md`.
 
 ### File Format
 
@@ -805,7 +810,7 @@ Knowledge docs in `.context/docs/*.md` store evergreen reference material too de
 
 ### When to Create
 
-- Content exceeds 20 lines and would bloat CONTEXT.md
+- Content exceeds 20 lines and would bloat CONTEXT.surf
 - Content is evergreen (not time-stamped analysis)
 - Multiple agents need the same information
 
@@ -813,7 +818,7 @@ Knowledge docs in `.context/docs/*.md` store evergreen reference material too de
 
 - Content is time-stamped analysis → use `plans/`
 - Content is specific to one agent → put in agent body
-- Content is a one-liner → put in CONTEXT.md
+- Content is a one-liner → put in CONTEXT.surf
 
 ---
 
@@ -876,7 +881,7 @@ patterns accumulate here.
 Guides are consulted **before** agents because an agent working in a domain should load the relevant guide into context before starting work:
 
 ```
-CONTEXT.md → surfcontext.json → docs/ → guides/ → agents/ → skills/ → queue → plans/
+CONTEXT.surf → surfcontext.json → docs/ → guides/ → agents/ → skills/ → queue → plans/
 ```
 
 ---
@@ -1163,7 +1168,8 @@ Remaining open questions (token limits, MCP conversation search, cross-repo sync
 ### Default Discovery Order
 
 ```
-1. CONTEXT.md          — Project identity, key files, architecture, active state
+1. CONTEXT.surf        — Project identity, key files, architecture, active state
+   (CONTEXT.md)        — legacy alias, checked only when CONTEXT.surf is absent
 2. surfcontext.json    — Machine-readable config, platform targets, discovery hints
 3. .context/docs/      — Evergreen knowledge (architecture, conventions, schemas)
 4. .context/guides/    — Living how-to documents (implementation patterns, gotchas)
@@ -1172,7 +1178,7 @@ Remaining open questions (token limits, MCP conversation search, cross-repo sync
 7. .context/queue.md   — Task queue (if multi-agent coordination is active)
 8. plans/              — Time-stamped work (glob for recent, relevant files)
 9. research/           — Academic manuscripts (only when research-related)
-10. Source code         — Follow architecture guidelines from CONTEXT.md
+10. Source code         — Follow architecture guidelines from the root context
 ```
 
 ### Excluded from Discovery
@@ -1186,7 +1192,7 @@ businessDirs       — read only when the task explicitly names them (Section 28
 
 ### Workspace-Connected Discovery
 
-**New in v4.0.** When an agent is connected to a workspace layer (Sections 30–31), the workspace's context entry point is served FIRST — before the repo's `CONTEXT.md` — and workspace docs replace steps 3–4 for any artifact class whose disposition (Section 5, `workspace.dispositions`) is `workspace`. The repo file layer remains the fallback for headless and offline operation.
+**New in v4.0.** When an agent is connected to a workspace layer (Sections 30–31), the workspace's context entry point is served FIRST — before the repo's `CONTEXT.surf` — and workspace docs replace steps 3–4 for any artifact class whose disposition (Section 5, `workspace.dispositions`) is `workspace`. The repo file layer remains the fallback for headless and offline operation.
 
 ### Token-Aware Loading
 
@@ -1194,7 +1200,7 @@ Not all files should be loaded at once. The discovery order implies a loading st
 
 | Step | Loading | Rationale |
 |------|---------|-----------|
-| 1. CONTEXT.md | **Always** (auto-loaded per turn) | Identity and map |
+| 1. CONTEXT.surf | **Always** (auto-loaded per turn) | Identity and map |
 | 2. surfcontext.json | **Always** (if tooling reads it) | Configuration |
 | 3-4. docs/ + guides/ | **On demand** (when topic matches) | Deep context |
 | 5-6. agents/ + skills/ | **On dispatch** (single file) | Agent/skill activation |
@@ -1209,7 +1215,7 @@ Projects can override the default via `surfcontext.json`:
 ```json
 {
   "discoveryOrder": [
-    "CONTEXT.md",
+    "CONTEXT.surf",
     "surfcontext.json",
     ".context/docs/",
     ".context/guides/",
@@ -1378,7 +1384,7 @@ Always use explicit relative paths from repo root:
 ../strategy-repo/.context/docs/company-overview.md
 
 # From strategy → product:
-../product-repo/CONTEXT.md
+../product-repo/CONTEXT.surf
 ../product-repo/package.json
 ```
 
@@ -1518,7 +1524,7 @@ AI agents operate within fixed context windows (typically 128K-200K tokens). Eve
 
 | Content Class | Budget Share | Loading Strategy |
 |--------------|-------------|-----------------|
-| System prompt + CONTEXT.md | 5-10% | Always loaded |
+| System prompt + CONTEXT.surf | 5-10% | Always loaded |
 | Active working files | 30-50% | Loaded for current task |
 | Reference docs + guides | 10-20% | On demand |
 | Agent/skill definitions | 5-10% | On dispatch |
@@ -1526,15 +1532,15 @@ AI agents operate within fixed context windows (typically 128K-200K tokens). Eve
 
 ### Progressive Disclosure Protocol
 
-1. **Load CONTEXT.md** — provides the map.
+1. **Load CONTEXT.surf** — provides the map.
 2. **Identify needed docs** — from key files table and task requirements.
 3. **Load only relevant docs/guides** — not the entire `.context/` directory.
 4. **Checkpoint when long** — save state before context fills (see Section 12).
 5. **Prune completed context** — when a subtask finishes, its context can be released.
 
-### CONTEXT.md as Budget-Aware Index
+### CONTEXT.surf as Budget-Aware Index
 
-CONTEXT.md serves as a token-efficient index. By maintaining a key files table with one-line descriptions, agents can decide which files to load without reading them all:
+CONTEXT.surf serves as a token-efficient index. By maintaining a key files table with one-line descriptions, agents can decide which files to load without reading them all:
 
 ```markdown
 ## Key Files
@@ -1556,8 +1562,8 @@ An agent needing to deploy reads `deploying.md`. An agent fixing a bug reads `ar
 
 | Content | Lines | Tokens | 30-Turn Cost |
 |---------|-------|--------|-------------|
-| CONTEXT.md (200 lines) | 200 | ~800 | ~24,000 |
-| CONTEXT.md (300 lines) | 300 | ~1,200 | ~36,000 |
+| CONTEXT.surf (200 lines) | 200 | ~800 | ~24,000 |
+| CONTEXT.surf (300 lines) | 300 | ~1,200 | ~36,000 |
 | Agent config (100 lines) | 100 | ~400 | ~400 (once) |
 | Knowledge doc (150 lines) | 150 | ~600 | ~600 (once) |
 | Guide (200 lines) | 200 | ~800 | ~800 (once) |
@@ -1565,10 +1571,10 @@ An agent needing to deploy reads `deploying.md`. An agent fixing a bug reads `ar
 
 ### Optimization Strategies
 
-1. **Move rarely-needed content to `.context/docs/`.** If agents read it < 20% of sessions, extract from CONTEXT.md.
+1. **Move rarely-needed content to `.context/docs/`.** If agents read it < 20% of sessions, extract from CONTEXT.surf.
 2. **Use tables over prose.** A 3-column table conveys the same info at ~1/3 the tokens.
 3. **Link, don't summarize.** Path + one-line description, not a summary.
-4. **Prune Active Work.** Remove completed items from CONTEXT.md.
+4. **Prune Active Work.** Remove completed items from CONTEXT.surf.
 5. **Limit plan references to 5-6.** Agents can glob `plans/` for the rest.
 
 ---
@@ -1656,7 +1662,7 @@ Each dimension scores 0-3:
 | 1 | Minimally compliant |
 | 0 | Missing |
 
-### CONTEXT.md (max 27)
+### CONTEXT.surf (max 27)
 
 | Dimension | Max |
 |-----------|-----|
@@ -1708,7 +1714,7 @@ Each dimension scores 0-3:
 | YYYY-MM-DD naming | 3 |
 | Header metadata | 3 |
 | Category subdirectories | 3 |
-| Active plans referenced in CONTEXT.md | 3 |
+| Active plans referenced in CONTEXT.surf | 3 |
 
 ### Total: up to 87 points (product) or 99 points (command center with guides + plans)
 
@@ -1726,7 +1732,7 @@ Each dimension scores 0-3:
 
 | Document Type | Threshold | Action When Exceeded |
 |--------------|-----------|---------------------|
-| CONTEXT.md | 7 days | Review Active Work; prune completed items |
+| CONTEXT.surf | 7 days | Review Active Work; prune completed items |
 | Agent Config | 30 days | Verify scope, tools, model still match |
 | Knowledge Doc | 30 days | Update or add `[STALE]` warning |
 | Guide | 30 days | Review confidence; flag for re-validation |
@@ -1805,7 +1811,7 @@ The file layer is unchanged — a valid v3 project is a valid v4 project with ze
 ### From platform-specific to ARDS
 
 1. Create `.context/` with `agents/` and `docs/`
-2. Write `CONTEXT.md` from existing root context
+2. Write `CONTEXT.surf` from existing root context (`CONTEXT.md` for a Markdown project)
 3. Move agent/doc files to `.context/`
 4. Create `surfcontext.json`
 5. Set up generation (symlinks or sync script)
@@ -1867,7 +1873,7 @@ Required, one line per move, `SOURCE -> DEST`. Agents reading MANIFEST.txt can r
 
 | File | Role | Required? |
 |------|------|-----------|
-| `CONTEXT.md` / `CONTEXT.surf` | Root context | Yes |
+| `CONTEXT.surf` (canonical) / `CONTEXT.md` (legacy alias) | Root context | Yes |
 | `surfcontext.json` | ARDS config | Strongly recommended |
 | `SPEC.*` / `CHANGELOG.*` | Spec + version history | Spec repos only / recommended |
 | `README.md` | GitHub convention | Recommended |
@@ -2193,6 +2199,7 @@ The **Core** is a marked section of the canonical root context (by default the s
   Tools, papers, and marketing cite the tier, not just the version number.
 - **40.5** A multi-platform project's tier is the **minimum** across its declared platform matrix, never the maximum. `--tier` reports per-platform and aggregate results. A repository that is `guaranteed` on one harness and `discovered` on another is `discovered`.
 - **40.6** **Smoke conformance** (`--smoke`, normative-optional). An end-to-end canary: launch each configured harness headless with a prompt asking for the receipt line and a named Core rule, and assert both appear in the reply. This is the only check that proves the channel *delivers*, rather than proving the files are well-formed. Tier `guaranteed` SHOULD require a passing smoke.
+- **40.7** *(New in v5.2.)* Lint MUST **WARN** when a project whose manifest declares `"format": ".surf"` still carries a Markdown root context (`CONTEXT.md` present, `CONTEXT.surf` absent): the declared format and the file on disk disagree, and tooling that resolves `CONTEXT.surf` first will read nothing. This is a WARN, not a FAIL — a `.md` root is conformant under Section 45.3 for a project that declares the `.md` format, so the defect is the mismatch, not the extension. Lint MUST **FAIL** when both roots are present (45.4).
 
 ---
 
@@ -2245,11 +2252,33 @@ The **Core** is a marked section of the canonical root context (by default the s
 
 ---
 
+## 45. SurfDoc-Native Context
+
+**New in v5.2.** v3.1 added `.surf` as an *option* selected by the `format` field; every default in the standard still pointed at Markdown. That split the standard against its own file layer: the reference implementation, the templates, and the linter all resolve `CONTEXT.surf`, while the specification's defaults, examples, and discovery order still named `CONTEXT.md`. v5.2 closes the gap by making SurfDoc the native format and demoting Markdown to a declared, fully supported alias. Nothing is removed and no project is invalidated — this section changes which filename is reached for *first*, and what a project gets when it declares nothing.
+
+- **45.1** **Canonical root.** The canonical root context filename is `CONTEXT.surf`. A project MAY use `CONTEXT.md` instead by declaring `"format": ".md"` in `surfcontext.json`; such a project is fully conformant at every tier (Section 40.4). `CONTEXT.md` is a legacy alias, not a deprecated file.
+
+- **45.2** **Native `.context/` tree.** Under the default format, every document the standard governs is a SurfDoc: knowledge docs (Section 8), guides (Section 9), agent configs (Section 6), skill definitions (Section 7), plans (Section 10), checkpoints (Section 12), conversation artifacts (Section 12a), and the task queue (Section 15) all carry the `.surf` extension and YAML frontmatter. The *SurfDoc File Extension* table in Section 3 gives the full mapping; the exceptions in that table (`README.md`, platform memory files, `.claude/commands/*.md`) are unchanged and remain `.md` regardless of format.
+
+- **45.3** **Alias resolution.** Tooling MUST resolve the root context by checking `CONTEXT.surf` first and falling back to `CONTEXT.md`. The same first-`.surf`-then-`.md` order applies to every governed path in 45.2. Discovery order (Section 13) is stated in these terms. A tool that resolves only one of the two extensions is non-conformant.
+
+- **45.4** **Exactly one root.** A project MUST NOT carry both `CONTEXT.surf` and `CONTEXT.md` at its root. Two roots are two edit surfaces, and the standard has no merge rule for them; the failure mode is silent divergence, where an agent reads the one its resolver reached and a human edits the other. Lint FAILs on both-present (40.7).
+
+- **45.5** **Configuration defaults.** When `surfcontext.json` omits `format`, the default is `".surf"`. When it omits `canonical.rootContext`, the default is `CONTEXT.surf`. A v5.1-or-earlier manifest that omits `format` was defaulted to `".md"` under Section 3; tooling reading a manifest whose `version` is below `5.2` MUST keep the old default, so a project that upgrades nothing keeps working. Declaring `format` explicitly is the way to be version-independent.
+
+- **45.6** **Generated files are exempt.** The harness root files a project generates — `CLAUDE.md`, `AGENTS.md`, `.cursorrules`, `.github/copilot-instructions.md`, `.windsurfrules` — keep the names their harnesses require, whatever the project format. Section 36's Core injection contract is unchanged: the Core body is copied from the canonical root context into those files with a hash stamp, and the canonical root is the `.surf` file under the default format.
+
+- **45.7** **Why the format is the standard's business.** ARDS has always specified structure and left rendering to the reader. SurfDoc is not a rendering choice: it is a typed document format with validated frontmatter, which is what makes `answers:` hooks (Section 39), version stamps (Section 24), and the block-level parse a generator can rely on (Section 35) enforceable rather than conventional. Declaring the native format is how the standard stops specifying a contract it cannot check. A Markdown project keeps the whole standard minus the parts that need a typed parse, which is the honest description of what it gives up.
+
+- **45.8** **Migration.** A v5.1 project adopts v5.2 by bumping `version` to `"5.2"`, renaming `CONTEXT.md` to `CONTEXT.surf` with SurfDoc frontmatter and its `## Core` section intact, renaming the `.context/` tree per 45.2, and re-running sync so the generated harness roots pick up the new source path. A project that does none of this stays conformant by declaring `"format": ".md"`.
+
+---
+
 ## Appendix A: Anti-Patterns
 
 | Anti-Pattern | Fix |
 |-------------|-----|
-| Monolithic CONTEXT.md (300+ lines in product repo) | Split into CONTEXT.md + `.context/docs/` |
+| Monolithic CONTEXT.surf (300+ lines in product repo) | Split into CONTEXT.surf + `.context/docs/` |
 | Missing agents | Bootstrap 3-5 stack-appropriate agents |
 | Vague agent descriptions | Rewrite: verb + domain + specifics |
 | Duplicated company context | Reference strategy repo |
@@ -2267,6 +2296,7 @@ The **Core** is a marked section of the canonical root context (by default the s
 | Untagged claims in strategy docs | Add evidence tags |
 | 20+ loose image files at repo root | Move to a brand/assets dir or archive (Section 27) |
 | Duplicate `CLAUDE.md` and `CLAUDE.surf` | Keep only the one tooling reads |
+| Both `CONTEXT.surf` and `CONTEXT.md` at the repository root | Keep one root context; `CONTEXT.surf` is canonical and `CONTEXT.md` is the legacy alias, never both (Section 45.4) |
 | Undeclared top-level directories | Declare in `businessDirs` or archive (Section 28) |
 | Editing the frozen git copy of a workspace doc | The workspace is the source of truth; the git copy is archive (Section 31) |
 | Agent moving its own task to `done` | `done` is above the stage-authority ceiling — a human closes work (Section 33) |
@@ -2282,6 +2312,18 @@ The **Core** is a marked section of the canonical root context (by default the s
 ## Appendix B: Changelog
 
 Full changelog: `CHANGELOG.surf`
+
+### v5.2 (2026-08-26)
+
+**The SurfDoc-native release.** v3.1 made `.surf` an option; v5.2 makes it the format of the standard and Markdown the declared alias.
+
+- **SurfDoc-Native Context (Section 45)** — `CONTEXT.surf` is the canonical root context and the `.context/` tree is native SurfDoc; `CONTEXT.md` and Markdown remain valid legacy aliases behind an explicit `"format": ".md"` declaration; alias resolution order fixed at `.surf` then `.md`; exactly one root context permitted
+- **Root Context (Section 4)** — retitled to name the canonical file, with the alias rule stated at the head of the section
+- **Discovery Order (Section 13)** — resolves `CONTEXT.surf` before `CONTEXT.md`; the Markdown root is a fallback, not a peer
+- **Configuration (Section 5)** — schema relabelled to v5.2; `format` defaults to `".surf"` and `canonical.rootContext` to `CONTEXT.surf` for manifests at version 5.2 or above, with the pre-5.2 `.md` default preserved for older manifests (45.5)
+- **Conformance and Drift Linting (Section 40)** — new 40.7: WARN when a manifest declaring the `.surf` format carries a Markdown root, FAIL when both roots are present
+
+**Breaking changes:** None. A valid v5.1 project is a valid v5.2 project, and a Markdown-rooted project remains conformant at every tier for as long as it declares the `.md` format.
 
 ### v5.1 (2026-08-26)
 
@@ -2470,7 +2512,7 @@ What triggered this conversation and why it matters.
 Conversations are **on-demand** artifacts — they are NOT loaded automatically. They sit outside the default discovery sequence:
 
 ```
-CONTEXT.md → surfcontext.json → docs/ → guides/ → agents/ → skills/ → queue → plans/
+CONTEXT.surf → surfcontext.json → docs/ → guides/ → agents/ → skills/ → queue → plans/
                                                                                   ↑
                                                             conversations referenced from plans
 ```
@@ -2710,7 +2752,7 @@ This isolation is especially important for IP safety. A developer working on bot
 When user-level context exists, the discovery order extends:
 
 ```
-1. Repo CONTEXT.md                       # Repo identity
+1. Repo CONTEXT.surf                     # Repo identity
 2. Repo surfcontext.json                 # Repo config
 3. ~/.context/preferences.json           # User preferences (if present)
 4. Repo .context/docs/                   # Repo knowledge

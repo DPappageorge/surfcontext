@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MIT
-# stop.sh — SurfContext ARDS v5.1 harness binding (Stop).
+# stop.sh — SurfContext ARDS v5.2 harness binding (Stop).
 #
 # Three jobs:
 #   1. Print the write-path rule at the moment it is about to be violated: a
@@ -18,7 +18,7 @@
 
 set -u
 
-ARDS_VERSION="5.1"
+ARDS_VERSION="5.2"
 MAX_LINES=24
 
 TOOLS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." 2>/dev/null && pwd)" || TOOLS_DIR=""
@@ -103,7 +103,9 @@ ards_stop_report() {
   # --- receipt --------------------------------------------------------------
   local sha stamp status tier
   sha="NO-CONTEXT"
-  [ -f CONTEXT.surf ] && sha="$(ards_core_sha CONTEXT.surf)"
+  for ards_ctx in CONTEXT.surf CONTEXT.md; do   # .surf first, .md alias second (SPEC 45.3)
+    [ -f "$ards_ctx" ] && { sha="$(ards_core_sha "$ards_ctx")"; break; }
+  done
   stamp="$(sed -n 's/^<!-- ards-core: sha256:\([0-9a-f]*\),.*/\1/p' CLAUDE.md 2>/dev/null | head -1)"
   if [ -n "$stamp" ] && [ "$stamp" = "$sha" ]; then
     status="verified"

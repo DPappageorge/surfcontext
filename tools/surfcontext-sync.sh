@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MIT
-# surfcontext-sync.sh — SurfContext ARDS v5.1 reference sync (surfcontext.org)
+# surfcontext-sync.sh — SurfContext ARDS v5.2 reference sync (surfcontext.org)
 #
 # Generates the root files every harness auto-loads (CLAUDE.md for Claude Code,
 # AGENTS.md for Codex) from the hand-authored "## Core" section of CONTEXT.surf,
@@ -55,7 +55,7 @@ cd "$ROOT"
 
 say() { [ "$QUIET" -eq 1 ] || echo "$@"; }
 
-ARDS_VERSION="5.1"
+ARDS_VERSION="5.2"
 
 say "SurfContext Sync — ARDS v${ARDS_VERSION}"
 say "root: $ROOT"
@@ -91,7 +91,7 @@ SKILLEOF
 done
 say "  Synced $SKILL_COUNT skill(s) to .claude/commands/"
 
-# --- ARDS v5.1 Core injection ------------------------------------------------
+# --- ARDS v5.2 Core injection ------------------------------------------------
 ARDS_BEGIN="<!-- ards-core: begin (generated from CONTEXT.surf ## Core - edit THERE, never here) -->"
 ARDS_END="<!-- ards-core: end -->"
 ARDS_POINTER="Full rules and context: CONTEXT.surf (canonical - this file is generated)."
@@ -107,19 +107,33 @@ ards_sha256_16() {  # portable: macOS ships shasum, most Linux ships sha256sum
     fi
 }
 
+# Root context resolution (SPEC v5.2 45.3): CONTEXT.surf is canonical, CONTEXT.md
+# is the legacy alias. Resolve .surf first so a v5.2 project always wins, and fall
+# back to .md so a v5.1 project that renamed nothing still syncs.
+ARDS_ROOT_CTX=""
+for ards_ctx_candidate in CONTEXT.surf CONTEXT.md; do
+    if [ -f "$ards_ctx_candidate" ]; then
+        ARDS_ROOT_CTX="$ards_ctx_candidate"
+        break
+    fi
+done
+if [ -f "CONTEXT.surf" ] && [ -f "CONTEXT.md" ]; then
+    say "  [WARN] both CONTEXT.surf and CONTEXT.md exist — using CONTEXT.surf (SPEC 45.4: keep exactly one)"
+fi
+
 say ""
-say "[Core] Core injection — CONTEXT.surf '## Core' -> CLAUDE.md, AGENTS.md"
-if [ ! -f "CONTEXT.surf" ]; then
-    say "  [WARN] no CONTEXT.surf — skipping Core injection"
-elif ! grep -qx '## Core' CONTEXT.surf; then
-    say "  [WARN] CONTEXT.surf has no exact '## Core' heading — skipping Core injection"
+say "[Core] Core injection — ${ARDS_ROOT_CTX:-CONTEXT.surf} '## Core' -> CLAUDE.md, AGENTS.md"
+if [ -z "$ARDS_ROOT_CTX" ]; then
+    say "  [WARN] no CONTEXT.surf (or legacy CONTEXT.md) — skipping Core injection"
+elif ! grep -qx '## Core' "$ARDS_ROOT_CTX"; then
+    say "  [WARN] $ARDS_ROOT_CTX has no exact '## Core' heading — skipping Core injection"
 else
     CORE_TMP="$(mktemp "${TMPDIR:-/tmp}/ards-core.XXXXXX")"
     awk '
       $0 == "## Core" { inblk = 1; next }
       inblk && /^## / { exit }
       inblk { print }
-    ' CONTEXT.surf > "$CORE_TMP"
+    ' "$ARDS_ROOT_CTX" > "$CORE_TMP"
     CORE_STAMP="$(ards_sha256_16 "$CORE_TMP")"
     CORE_BYTES="$(wc -c < "$CORE_TMP" | tr -d ' ')"
     say "  Core body: ${CORE_BYTES} bytes · sha256:${CORE_STAMP}"
@@ -195,7 +209,7 @@ say "========================================"
 say "Sync complete."
 say ""
 say "Source of truth (edit these):"
-say "  CONTEXT.surf            (incl. the '## Core' section — the injected block)"
+say "  ${ARDS_ROOT_CTX:-CONTEXT.surf}            (incl. the '## Core' section — the injected block)"
 say "  .context/skills/*/SKILL.surf"
 say ""
 say "Generated (do not edit):"

@@ -1,5 +1,5 @@
 ---
-title: "SurfContext tools — ARDS v5.1 reference implementation"
+title: "SurfContext tools — ARDS v5.2 reference implementation"
 type: spec
 status: active
 updated: 2026-08-26
@@ -15,7 +15,7 @@ answers:
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 (this document) -->
 <!-- The tools it describes are MIT. (c) CloudSurf Software LLC. -->
 
-# SurfContext tools — ARDS v5.1
+# SurfContext tools — ARDS v5.2
 
 The reference implementation of the standard: everything a project needs to make
 its rules **pushed context** rather than discovered context, and to make the
@@ -33,7 +33,7 @@ excluding the first later line starting `## `. The **stamp** is the sha256 of
 exactly those bytes, truncated to 16 hex characters, rendered as:
 
 ```
-<!-- ards-core: sha256:XXXXXXXXXXXXXXXX, ards v5.1 -->
+<!-- ards-core: sha256:XXXXXXXXXXXXXXXX, ards v5.2 -->
 ```
 
 Four implementations must agree byte-for-byte: the awk block in
@@ -67,7 +67,7 @@ emits:
 <dir>/
   CONTEXT.surf            hand-authored ## Core — the ONLY prose that stays local
   CLAUDE.md, AGENTS.md    GENERATED from the Core, stamped, lint-checked
-  surfcontext.json        version 5.1, home surfspace, workspace + projects
+  surfcontext.json        version 5.2, home surfspace, workspace + projects
   .mcp.json               project-scoped MCP entry — an env-var REFERENCE, never a key
   .claude/settings.json   SessionStart and Stop bindings
   .context/tools/         a vendored copy of this directory, so the connector stands alone
@@ -98,7 +98,7 @@ exit status is always 0. A bug in a hook must never block a session.
 **SessionStart** prints the receipt:
 
 ```
-ards-receipt: v5.1 core sha256:<16 hex> tier:<guaranteed|injected|discovered> status:<verified|STALE-RUN-SYNC>
+ards-receipt: v5.2 core sha256:<16 hex> tier:<guaranteed|injected|discovered> status:<verified|STALE-RUN-SYNC>
 ```
 
 `status:verified` means the stamp in `CLAUDE.md` equals a freshly recomputed sha;

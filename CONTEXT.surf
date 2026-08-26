@@ -1,0 +1,116 @@
+---
+title: "SurfContext Documentation Site"
+type: doc
+version: 1
+updated: 2026-08-26
+status: active
+tags: [context, entry-point, ards, surfcontext]
+answers:
+  - What does this repository build and serve?
+  - Where does the specification text actually live, and how does the site render it?
+  - Which files are the source of truth versus generated or unserved remnants?
+  - How do I build, test and run the site locally?
+---
+
+# SurfContext Documentation Site
+
+The official documentation and specification site for SurfContext — the open standard
+for agent-ready project documentation (ARDS v5.2). The site is a Rust/Axum server that
+renders SurfDoc source through `surf-parse`; it is served at surfcontext.org.
+
+This file is the canonical root context for this repository. The `## Core` section below
+is the guaranteed-context head: `tools/surfcontext-sync.sh` extracts it byte-for-byte and
+injects a stamped copy into the root files each harness auto-loads. Edit the rules here
+and re-run the sync; never edit a generated block.
+
+## Core
+
+### Absolute rules
+
+1. **Git & deploy** — never run `git add`, `git commit`, `git push`, or any deploy
+   command; never amend, rebase, or force-push. Work stays in the working tree and the
+   repository owner runs the commands.
+2. **Attribution** — never add an AI co-author trailer or any other AI-assistant
+   attribution to commits, code, docs, or files. The repository owner is the sole author.
+3. **Verification** — verify every remembered fact against the live source before acting
+   on it: read the file, run the command, fetch the page. When memory and the source
+   disagree, the source wins, and the stale memory is corrected in the same pass.
+4. **Source of truth** — `CONTEXT.surf` plus the canonical tree named in
+   `surfcontext.json` are the single source of truth. `SPEC.surf` is the specification;
+   the `/spec` page is a rendered view of it and is never hand-authored.
+5. **Format** — all documentation in this repository is SurfDoc (`.surf`). `README.md`
+   stays Markdown by GitHub convention (SPEC Section 3, Exceptions).
+6. **No third-party framing** — never describe SurfContext, SurfDoc or ARDS as based on,
+   like, or inspired by another company's product. Harness file names the standard must
+   name (`CLAUDE.md`, `AGENTS.md`, `.cursorrules`, `copilot-instructions.md`) are file
+   names, not comparisons.
+
+### The one rule that is easy to get wrong
+
+The `/spec` route renders `SPEC.surf` directly. There is no hand-written spec page any
+more — `content/spec.html` was deleted precisely because it drifted to ARDS v3.0 while the
+ratified spec moved on. Amend `SPEC.surf` and the site follows.
+
+## Key Files
+
+| Path | Purpose |
+|------|---------|
+| `SPEC.surf` | The ARDS specification — canonical text, rendered by `/spec` |
+| `src/main.rs` | Axum server, routes, static and asset mounts |
+| `src/routes/landing.rs` | `/` — renders `content/landing.surf` |
+| `src/routes/spec.rs` | `/spec` — renders `SPEC.surf` through `surf-parse` |
+| `src/routes/getting_started.rs` | `/getting-started` — serves `content/getting_started.html` |
+| `src/routes/tools.rs` | `/tools` — renders `content/tools.surf` |
+| `src/routes/whats_new.rs` | `/whats-new` — renders `content/whats_new.surf` |
+| `src/routes/download.rs` | `POST /api/download` — builds the starter-kit zip in memory |
+| `src/html.rs` | Base page shell: head, nav, footer, theme bootstrap |
+| `content/*.surf` | Page source for every route except getting-started |
+| `tools/ards-lint.py` | Conformance and drift linter (the CI gate) |
+| `tools/surfcontext-sync.sh` | Reference sync — Core injection into harness root files |
+| `tools/ards-tests.sh` | Tools battery; must stay green |
+| `templates/`, `playbooks/` | Starter templates and executable playbooks |
+| `surfcontext.json` | ARDS manifest (dogfooding) |
+
+## Architecture
+
+A single Rust binary. Each route is a module under `src/routes/` that parses SurfDoc
+source with `surf-parse` and wraps the rendered fragment in the shared shell from
+`src/html.rs`. No database, no authentication, no build step for content — the `.surf`
+files are compiled into the binary with `include_str!`, so a content change is a rebuild.
+
+```
+SPEC.surf          --> /spec        (surf-parse)
+content/*.surf     --> /, /tools, /whats-new  (surf-parse)
+content/*.html     --> /getting-started       (served as-is)
+src/routes/        --> route modules
+src/html.rs        --> page shell
+static/, assets/   --> mounted directories
+```
+
+## Stack & Development
+
+**Stack**: Rust (edition 2024), Axum 0.8, Tokio, tower-http, surf-parse 0.5.1
+**Build**: `cargo build --locked`
+**Test**: `cargo test --locked`
+**Tools battery**: `bash tools/ards-tests.sh`
+**Lint**: `python3 tools/ards-lint.py`
+**Run locally**: `cargo run` (listens on `PORT`, default 3000)
+**Deploy**: Fly.io — `fly.production.toml`, `fly.staging.toml`, `fly.develop.toml`
+
+## Conventions
+
+- Dark-first theming with a light toggle, persisted in `localStorage`
+- All page content is SurfDoc where a route renders it
+- No heavy images, no external runtime dependencies
+- Mobile responsive
+
+## Active Work
+
+- **ARDS v5.2 ratified** in `SPEC.surf` — SurfDoc-native context (Section 45)
+- **`/spec` repointed** from the deleted `content/spec.html` to `SPEC.surf`
+- **Open (D-SC-1)** — `README.md` is now a pointer to `README.surf`; confirm the GitHub
+  landing view reads acceptably
+- **Open (D-SC-2)** — `app/`, `components/` and `tests/*.test.tsx` are an unserved Next.js
+  remnant; decide whether to retire them
+- **Open (D-SC-3)** — `SPEC.surf` declares `type: specification`, which `surf-parse` 0.5.1
+  rejects (E002); either teach the parser the type or change the declared type

@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
-<!-- SurfContext ARDS v5.1 — surfcontext.org — (c) CloudSurf Software LLC, CC-BY-SA 4.0 -->
+<!-- SurfContext ARDS v5.2 — surfcontext.org — (c) CloudSurf Software LLC, CC-BY-SA 4.0 -->
 ---
 title: "Project Context Entry Point"
 type: context
@@ -19,7 +19,7 @@ sync; never edit the generated block.
 
 ## Core
 
-<!-- ARDS v5.1 guaranteed-context head. Canonical home: CONTEXT.surf "## Core" — edit only here. Budget: 2000 tokens / 8000 chars. -->
+<!-- ARDS v5.2 guaranteed-context head. Canonical home: CONTEXT.surf "## Core" — edit only here. Budget: 2000 tokens / 8000 chars. -->
 
 ### Absolute rules — never violated, never negotiated
 
@@ -44,7 +44,7 @@ When `surfcontext.json` sets `home: "surfspace"`, the workspace is the canon and
 
 Every session opens and closes with a conformance receipt on stdout, in exactly this shape:
 
-`ards-receipt: v5.1 core sha256:<16-hex> tier:<guaranteed|injected|discovered> status:<verified|STALE-RUN-SYNC>`
+`ards-receipt: v5.2 core sha256:<16-hex> tier:<guaranteed|injected|discovered> status:<verified|STALE-RUN-SYNC>`
 
 `status:verified` means the stamp injected into the harness root file equals a freshly recomputed sha of this `## Core` body. Anything else means the generated files are stale: re-run the sync before trusting them. The hooks that print the receipt are fail-open — they always exit 0, and their silence is never a licence to skip the rules above.
 

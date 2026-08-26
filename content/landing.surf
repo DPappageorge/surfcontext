@@ -8,7 +8,7 @@ accent: #3b82f6
 font: inter
 ::
 
-::hero[badge="ARDS v3.0 Specification"]
+::hero[badge="ARDS v5.2 Specification"]
 # The open standard for agent-ready project documentation
 
 One format. Every AI coding agent. Define your project context once — all major AI coding agents understand it automatically.
@@ -31,7 +31,7 @@ Every AI coding agent invented its own way to read project context. Your team ma
 - Windsurf | .windsurfrules
 
 ### After
-- SurfContext | CONTEXT.md + .context/ + surfcontext.json
+- SurfContext | CONTEXT.surf + .context/ + surfcontext.json
 ::
 ::
 
@@ -42,7 +42,7 @@ Three files. Universal compatibility. Zero lock-in.
 
 ::steps
 ### Write your context {time="5 min"}
-Create `CONTEXT.md` and a `.context/` directory with your agent definitions and knowledge docs.
+Create `CONTEXT.surf` and a `.context/` directory with your agent definitions and knowledge docs. SurfDoc (`.surf`) is the native format; Markdown stays a supported alias.
 
 ### Target platforms {time="2 min"}
 Add `surfcontext.json` to declare which AI platforms to generate config files for.

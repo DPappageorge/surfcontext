@@ -24,9 +24,9 @@ The document workspace with native SurfContext support.
 
 Export your workspace as a SurfContext package
 
-SurfDoc is a typed document format and workspace at doc.surf. Export your entire workspace — docs, tasks, team context, agent configurations — as a SurfContext-conformant package. The exported `CONTEXT.md` and `.context/` directory can be dropped directly into any code repository.
+SurfDoc is a typed document format and workspace at doc.surf. Export your entire workspace — docs, tasks, team context, agent configurations — as a SurfContext-conformant package. The exported `CONTEXT.surf` and `.context/` directory can be dropped directly into any code repository.
 
-- Generates ARDS v3.0 conformant output
+- Generates ARDS v5.2 conformant output
 - Includes version ledger for change tracking
 - Exports agent definitions with proper frontmatter
 - Maps team knowledge to .context/docs/ format
@@ -125,5 +125,5 @@ The Surf MCP Server exposes your project context, agents, docs, guides, and plan
 ::
 
 ::callout[type=info title="Building a tool?"]
-SurfContext is an open standard. If you are building a developer tool or AI coding agent, you can add SurfContext support by reading `CONTEXT.md` and `surfcontext.json` from the project root. The format is CC-BY-SA 4.0 licensed — free to implement and distribute.
+SurfContext is an open standard. If you are building a developer tool or AI coding agent, you can add SurfContext support by reading `CONTEXT.surf` and `surfcontext.json` from the project root — resolving `CONTEXT.surf` first and falling back to `CONTEXT.md` for legacy projects. The format is CC-BY-SA 4.0 licensed — free to implement and distribute.
 ::

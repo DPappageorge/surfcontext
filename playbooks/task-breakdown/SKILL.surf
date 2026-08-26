@@ -7,7 +7,7 @@ user-invocable: true
 disable-model-invocation: false
 ---
 
-<!-- SPDX-License-Identifier: CC-BY-SA-4.0 — SurfContext ARDS v5.1 playbook -->
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 — SurfContext ARDS v5.2 playbook -->
 
 # Task breakdown
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""ards-lint.py — SurfContext ARDS v5.1 conformance linter. stdlib only.
+"""ards-lint.py — SurfContext ARDS v5.2 conformance linter. stdlib only.
 
 Tenet 12: pushed context is the only guaranteed context. A root file that merely
 POINTS at CONTEXT.surf is non-conformant — the rules must be in the file the
@@ -48,7 +48,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-ARDS_VERSION = "5.1"
+ARDS_VERSION = "5.2"
 
 CORE_HEADING = b"\n## Core\n"
 BEGIN = "<!-- ards-core: begin (generated from CONTEXT.surf ## Core - edit THERE, never here) -->"
@@ -78,10 +78,29 @@ def parse_root(argv: list[str]) -> Path:
     return Path(os.getcwd()).resolve()
 
 
+# ── Root context resolution (SPEC v5.2 45.3) ─────────────────────────────────
+ROOT_CONTEXT_NAMES = ("CONTEXT.surf", "CONTEXT.md")
+
+
+def root_context(repo: Path) -> Path | None:
+    """The project's root context: `.surf` first, `.md` as the legacy alias.
+
+    v5.2 makes CONTEXT.surf canonical and keeps CONTEXT.md a fully conformant
+    alias, so a v5.1 project that never renamed anything still lints. Resolution
+    order is normative (45.3): a tool that reads only one extension is
+    non-conformant.
+    """
+    for name in ROOT_CONTEXT_NAMES:
+        candidate = repo / name
+        if candidate.is_file():
+            return candidate
+    return None
+
+
 # ── Core extraction ──────────────────────────────────────────────────────────
 def core_body(repo: Path) -> bytes | None:
-    ctx = repo / "CONTEXT.surf"
-    if not ctx.is_file():
+    ctx = root_context(repo)
+    if ctx is None:
         return None
     raw = ctx.read_bytes()
     i = raw.find(CORE_HEADING)
@@ -141,7 +160,9 @@ def load_config(repo: Path) -> dict:
 def check_blocks(rep: Report, repo: Path, body: bytes | None, stamp: str) -> bool:
     """FAIL checks 1-3. True when every root file's block is conformant."""
     if body is None:
-        rep.fail("CONTEXT.surf: no exact '## Core' heading — nothing to inject")
+        ctx = root_context(repo)
+        where = ctx.name if ctx is not None else "CONTEXT.surf"
+        rep.fail(f"{where}: no exact '## Core' heading — nothing to inject")
         return False
     clean = True
     for name in ROOT_FILES:
@@ -331,23 +352,54 @@ def check_fragments(rep: Report, repo: Path, cfg: dict) -> None:
 
 
 def check_updated(rep: Report, repo: Path) -> None:
-    ctx = repo / "CONTEXT.surf"
-    if not ctx.is_file():
+    ctx = root_context(repo)
+    if ctx is None:
         return
+    name = ctx.name
     m = re.search(r"^updated:\s*(\d{4}-\d{2}-\d{2})\s*$", ctx.read_text(encoding="utf-8"), re.M)
     if not m:
-        rep.warn("CONTEXT.surf: no frontmatter `updated:` date")
+        rep.warn(f"{name}: no frontmatter `updated:` date")
         return
     try:
         d = datetime.date.fromisoformat(m.group(1))
     except ValueError:
-        rep.warn(f"CONTEXT.surf: unparseable `updated: {m.group(1)}`")
+        rep.warn(f"{name}: unparseable `updated: {m.group(1)}`")
         return
     age = (datetime.date.today() - d).days
     if age > STALE_DAYS:
-        rep.warn(f"CONTEXT.surf: `updated: {m.group(1)}` is {age} days old (>{STALE_DAYS}) — re-verify the canon")
+        rep.warn(f"{name}: `updated: {m.group(1)}` is {age} days old (>{STALE_DAYS}) — re-verify the canon")
     else:
-        rep.ok(f"CONTEXT.surf: updated {m.group(1)} ({age}d old)")
+        rep.ok(f"{name}: updated {m.group(1)} ({age}d old)")
+
+
+def check_root_format(rep: Report, repo: Path, cfg: dict) -> None:
+    """SPEC v5.2 45.4 (FAIL) and 40.7 (WARN) — one root, matching the manifest.
+
+    Two root context files are two edit surfaces with no merge rule, so both
+    present is a failure. A manifest that declares the `.surf` format while the
+    tree carries a Markdown root is a warning, not a failure: the `.md` root is
+    conformant, the declaration is what disagrees with it.
+    """
+    present = [n for n in ROOT_CONTEXT_NAMES if (repo / n).is_file()]
+    if len(present) > 1:
+        rep.fail(
+            "root context: both " + " and ".join(present) +
+            " exist — keep exactly one (CONTEXT.surf is canonical, CONTEXT.md the legacy alias; SPEC 45.4)"
+        )
+        return
+    if not present:
+        return
+
+    declared = str(cfg.get("format", "")).strip()
+    if declared == ".surf" and present[0] == "CONTEXT.md":
+        rep.warn(
+            "root context: surfcontext.json declares `\"format\": \".surf\"` but the root is CONTEXT.md — "
+            "rename it or declare `\".md\"` (SPEC 40.7)"
+        )
+    elif declared == ".md" and present[0] == "CONTEXT.md":
+        rep.ok("root context: CONTEXT.md (legacy alias, declared `format: .md`)")
+    else:
+        rep.ok(f"root context: {present[0]}")
 
 
 # ── main ─────────────────────────────────────────────────────────────────────
@@ -371,6 +423,7 @@ def main(argv: list[str]) -> int:
         connector_ok = True
         check_fragments(rep, repo, cfg)
     check_updated(rep, repo)
+    check_root_format(rep, repo, cfg)
 
     failed = bool(rep.fails)
     if not failed and blocks_ok and bindings_ok and connector_ok:

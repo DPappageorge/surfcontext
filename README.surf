@@ -1,0 +1,57 @@
+---
+title: "surfcontext.org"
+type: doc
+version: 1
+updated: 2026-08-26
+status: active
+tags: [readme, surfcontext, ards]
+---
+
+# surfcontext.org
+
+The official documentation site for **SurfContext** — the open standard for agent-ready
+project documentation (ARDS v5.2).
+
+The specification itself lives in `SPEC.surf` at the repository root. The `/spec` page is
+a rendered view of that file, so the site can never drift from the ratified text.
+
+## Development
+
+```bash
+cargo run
+```
+
+Open [http://localhost:3000](http://localhost:3000). Set `PORT` to listen elsewhere.
+
+## Build and test
+
+```bash
+cargo build --locked
+cargo test --locked
+bash tools/ards-tests.sh
+python3 tools/ards-lint.py
+```
+
+## Stack
+
+- Rust (edition 2024) with Axum 0.8 and Tokio
+- `surf-parse` for SurfDoc rendering
+- Fly.io for deployment
+
+## Repository layout
+
+| Path | Purpose |
+|------|---------|
+| `SPEC.surf` | The ARDS specification — canonical text |
+| `CONTEXT.surf` | Root context for agents and contributors |
+| `src/` | Axum server, routes, page shell |
+| `content/` | Page source (`.surf`) |
+| `tools/` | Linter, sync, hooks, tools battery |
+| `templates/`, `playbooks/` | Starter templates and executable playbooks |
+
+## License
+
+Documentation content: CC-BY-SA 4.0
+Website code: MIT
+
+Created by [CloudSurf Software LLC](https://cloudsurf.com).

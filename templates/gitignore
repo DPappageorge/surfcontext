@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# SurfContext ARDS v5.1 connector — runtime state and regenerable caches.
+# SurfContext ARDS v5.2 connector — runtime state and regenerable caches.
 # The workspace is the canon; everything below is rebuilt on demand.
 
 .context/.digest-cache.json
