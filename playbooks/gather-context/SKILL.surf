@@ -1,0 +1,98 @@
+---
+name: gather-context
+description: Run the pre-build setup as its own pass — card intake, a context audit and delegation plan, target repository and branch, pre-flight checks, and test-layer triage — then write a reusable context dossier the build session starts from instead of repeating the work.
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep
+argument-hint: [feature description, or a card id]
+user-invocable: true
+disable-model-invocation: false
+---
+
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 — SurfContext ARDS v5.1 playbook -->
+
+# Gather context
+
+Phase 0 of a build, extracted so the decisions get made once and written down.
+The output is a dossier; the build session reads it and skips its own setup.
+
+## Communication discipline
+
+Report what was measured, not what is planned. One line per finding, with the
+command or file that produced it. No status monologue, no restating the request.
+
+## Cardinal rules
+
+1. Verify every remembered path, flag, command and version against the live tree
+   before writing it into the dossier. The source wins.
+2. Never commit, push, branch-force or deploy. Creating a working branch is the
+   only git write this pass may make, and only when the owner's rules allow it.
+3. Do not start building. This pass ends at the dossier.
+
+## Step 1 — Card intake
+
+When the input is a card id, read the card first: objective, source document,
+files, acceptance criteria, out-of-scope, dependencies. Read the linked
+requirements or design document before forming any opinion. If the card and the
+tree disagree, record the disagreement in the dossier rather than silently
+picking one.
+
+## Step 2 — Context audit
+
+Decide what this build actually needs loaded, and what it does not.
+
+**Audit:** the surfaces the card names; their immediate callers; the tests that
+cover them; the configuration that gates them.
+
+**Propose:** which parts are read once and summarised, which are delegated to a
+subagent, and which stay in the main thread because the build edits them
+directly.
+
+**Drop:** everything the card puts out of scope, plus any large generated
+artifact. Name what was dropped, so the build session knows it was a decision
+and not an oversight.
+
+Pause and confirm the plan with the owner when the audit proposes dropping
+something the card names, or when the build spans more than one repository.
+Skip the pause for a single-file change with an obvious blast radius.
+
+## Step 3 — The dossier
+
+Write one document with these sections: intake (card, source, objective);
+targets (repository, branch, surfaces); pre-flight (toolchain versions, whether
+the tree is clean, whether the suite is green before any change); triage (the
+test layers selected and why); delegation plan; and the handoff — the first
+three actions the build session should take, in order.
+
+Give it `answers:` frontmatter. A dossier nobody can find is a dossier nobody
+reuses.
+
+## Step 4 — Setup
+
+Detect whether a previous run of this pass already produced a dossier; if so,
+reconcile with it rather than duplicating it. Detect the target repository from
+the card's file paths, not from memory. Create the working branch only if the
+owner's rules permit it, and record the branch name in the dossier.
+
+## Step 5 — Pre-flight
+
+Run the build and the existing test suite BEFORE changing anything, and record
+the result. A suite that was already red is a fact the build session must know;
+discovering it mid-build costs a session.
+
+## Step 6 — Triage the test layers
+
+Pick the layers this change actually needs — unit, integration, end-to-end,
+manual walk — using the blast radius, not habit. A pure-presentation change does
+not need a database fixture; a migration does. Record the choice and the reason,
+and confirm it with the owner when a layer is deliberately skipped.
+
+## Step 7 — Hand off
+
+Close with: where the dossier is, the branch, the pre-flight result, the
+selected layers, and the first action for the build session. Then stop.
+
+## Anti-patterns
+
+- Loading the whole repository "for context".
+- Recording a version or a path from memory.
+- Creating a branch nobody asked for.
+- Continuing into the build because the setup went well.

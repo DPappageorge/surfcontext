@@ -1,0 +1,90 @@
+---
+name: create-surfdoc
+description: Create a well-formed SurfDoc (.surf) — YAML frontmatter, standard markdown headings and tables, and typed blocks — with the rules that keep it renderable everywhere and readable as plain text when nothing renders it.
+allowed-tools: Read, Write, Edit, Glob, Grep
+argument-hint: [path or topic]
+user-invocable: true
+disable-model-invocation: false
+---
+
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 — SurfContext ARDS v5.1 playbook -->
+
+# Create a SurfDoc
+
+A SurfDoc is markdown with two additions: required YAML frontmatter, and typed
+blocks for the things markdown has no syntax for. Everything else is ordinary
+markdown, on purpose — a SurfDoc that is never rendered is still a good
+document.
+
+## 1. Frontmatter (required)
+
+Open the file with a `---` fence on line 1. Required keys:
+
+| Key | Value |
+|---|---|
+| `title` | quoted string; the document's name |
+| `type` | what kind of document: `plan`, `spec`, `context`, `note`, `report` |
+| `status` | `draft`, `active`, `superseded`, `archived` |
+| `updated` | `YYYY-MM-DD`, the date the content was last verified |
+
+Strongly recommended:
+
+| Key | Value |
+|---|---|
+| `answers` | a list of the questions this document settles — the relevance hooks a session digest reads |
+| `tags` | a list of short lowercase labels |
+
+`answers:` is what makes a document findable by an agent that has not read it.
+Write the questions a future session would actually type, not a summary.
+
+## 2. Headings
+
+Standard markdown. One `#` title matching the frontmatter `title`, `##` for
+sections, `###` for subsections. Do not invent heading syntax; do not skip
+levels.
+
+## 3. Tables
+
+Standard markdown pipe tables. Keep them narrow enough to read unrendered — a
+table wider than about a hundred characters is a list in disguise.
+
+## 4. Typed blocks
+
+Blocks open with `::name[attributes]` and close with `::`. Use one only when
+markdown genuinely cannot express the content: a diagram, a chart, a figure, a
+callout that must survive a re-render. Attributes are `key="value"` pairs.
+
+Every block must **degrade gracefully**: a reader with no renderer sees the
+block's text content and still understands the document. Never put load-bearing
+information only inside a block's attributes.
+
+## 5. Diagrams and charts
+
+Reach for a diagram when the relationship between parts is the point — a
+sequence, a state machine, a dependency graph, a layout. Reach for a chart when
+a number's shape is the point — a trend, a distribution, a comparison. If a
+sentence says it better, write the sentence.
+
+Give every diagram a caption that states its claim, so the claim survives even
+when the drawing does not render.
+
+## 6. What not to do
+
+- No HTML in the body when markdown can express it.
+- No inline styling; the renderer owns presentation.
+- No unreferenced blocks left behind from an earlier draft.
+- No absolute machine paths, host names, credentials or internal identifiers in
+  a document that may be published.
+
+## 7. Procedure
+
+1. Decide the `type` and where the document belongs. When `home` is `surfspace`,
+   create it in the workspace; otherwise write the file into the canonical tree
+   named by `surfcontext.json`.
+2. Write the frontmatter, including `answers:`, before the body.
+3. Write the body in plain markdown; add a typed block only where it earns its
+   place.
+4. Verify every fact against a live source as you write it, and mark provenance
+   — `measured this session` versus `recorded previously, unverified`.
+5. Re-read the finished document as plain text. If it does not make sense
+   unrendered, it is not finished.

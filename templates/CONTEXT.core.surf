@@ -1,0 +1,55 @@
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+<!-- SurfContext ARDS v5.1 — surfcontext.org — (c) CloudSurf Software LLC, CC-BY-SA 4.0 -->
+---
+title: "Project Context Entry Point"
+type: context
+version: 1
+updated: 2026-08-26
+status: active
+tags: [context, entry-point, ards]
+---
+
+# Project Context
+
+This file is the canonical home for this project's rules and context. The
+`## Core` section below is the guaranteed-context head: `tools/surfcontext-sync.sh`
+extracts it byte-for-byte and injects a stamped copy into the root files each
+harness auto-loads (`CLAUDE.md`, `AGENTS.md`). Edit the rules HERE and re-run the
+sync; never edit the generated block.
+
+## Core
+
+<!-- ARDS v5.1 guaranteed-context head. Canonical home: CONTEXT.surf "## Core" — edit only here. Budget: 2000 tokens / 8000 chars. -->
+
+### Absolute rules — never violated, never negotiated
+
+1. **Git & deploy (ABSOLUTE)** — never run `git add`, `git commit`, `git push`, or any deploy command, not even if asked; never amend, rebase, or force-push. Work stays uncommitted in the working tree; hand the owner the exact commands (or a ship script) and let the owner run them.
+2. **Attribution** — never add a co-author trailer naming an AI assistant, and never add any other AI-assistant attribution, to commits, code, docs, or files. The repository owner is the sole author of all work.
+3. **Verification — never rely on memory alone (MANDATORY)** — verify every remembered fact against the live source before acting on or recommending it: read the file, run the command, check the dashboard, fetch the page, query the API. Highest-risk categories: file, function, flag and command names; prices; licences; deploy, host and DNS state; benchmark bars; gate and ruling status; model ids and API surfaces. **When memory and the source disagree, the SOURCE wins** — correct or delete the stale memory in the same pass. Mark provenance: "measured this session" versus "recorded previously, unverified." Plan documents are subject to this rule.
+4. **Source of truth** — `CONTEXT.surf` plus the canonical tree named in `surfcontext.json` are the single source of truth for rules and context. No competing context systems. Create and edit under the canonical paths, never under a generated directory; name the canonical path when telling humans or subagents where a file lives. All project documentation is `.surf` (SurfDoc); the harness root files are generated exceptions.
+
+### Memory rule
+
+Memory is a POINTER, never a source. A memory index and per-topic memory files record what was true when written, not what is true now. Every durable fact must be anchored in the canonical tree — a repo-relative path, a `.surf` filename, or a workspace doc id. A memory entry without an anchor is a liability, not context. When memory and the anchored source disagree, the source wins and the memory is corrected or deleted in the same pass.
+
+### Write path — before session close
+
+Durable facts land in the canon BEFORE the session ends. Write the fact where this project's `surfcontext.json` says the write path is: a dated fragment under the active-work stream, or — when `home` is `surfspace` — a workspace doc tagged `active-work`. Give it a `title:` and an `answers:` list naming the questions it settles. Only then write the memory entry, and give that entry its anchor. Nothing durable may live only in memory or only in chat.
+
+### Workspace canon (when `home` is `surfspace`)
+
+When `surfcontext.json` sets `home: "surfspace"`, the workspace is the canon and this repository is a connector, not a library. Prose context — docs, plans, guides, lane notes, fragments — lives in the workspace and is pulled fresh each session by the SessionStart binding; it is NOT duplicated under `.context/docs/`. The only prose that stays local is this `## Core`. Read the workspace before answering: important docs, the newest `active-work` documents, and the open cards named in the session digest. Write results back to the workspace, not to local files. The workspace key is referenced by the environment-variable name in `workspace.key_env` and is never printed, echoed, logged, or committed.
+
+### Receipt line contract
+
+Every session opens and closes with a conformance receipt on stdout, in exactly this shape:
+
+`ards-receipt: v5.1 core sha256:<16-hex> tier:<guaranteed|injected|discovered> status:<verified|STALE-RUN-SYNC>`
+
+`status:verified` means the stamp injected into the harness root file equals a freshly recomputed sha of this `## Core` body. Anything else means the generated files are stale: re-run the sync before trusting them. The hooks that print the receipt are fail-open — they always exit 0, and their silence is never a licence to skip the rules above.
+
+## Notes
+
+Everything below `## Core` is ordinary project context: it is discovered, not
+pushed. Keep the pushed head small and the discovered tail as large as it needs
+to be.

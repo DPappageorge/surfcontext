@@ -1,0 +1,58 @@
+{
+  "_license": "SPDX-License-Identifier: MIT — SurfContext ARDS v5.1 template, (c) CloudSurf Software LLC",
+  "version": "5.1",
+  "home": "__HOME__",
+  "format": ".surf",
+  "platforms": [
+    "claude",
+    "codex"
+  ],
+  "workspace": {
+    "id": "__WORKSPACE_ID__",
+    "name": "__WORKSPACE_NAME__",
+    "key_env": "__KEY_ENV__",
+    "url": "__MCP_URL__",
+    "folder_id": "__FOLDER_ID__"
+  },
+  "projects": __PROJECTS__,
+  "canonical": {
+    "rootContext": "CONTEXT.surf",
+    "skillsDir": ".context/skills",
+    "toolsDir": ".context/tools"
+  },
+  "generation": {
+    "claude": {
+      "rootContext": "CLAUDE.md",
+      "method": "core-distillate",
+      "rootContextMethod": "core-distillate"
+    },
+    "codex": {
+      "rootContext": "AGENTS.md",
+      "method": "core-distillate"
+    }
+  },
+  "coreInjection": {
+    "budget": 2000,
+    "sourceSection": "## Core",
+    "stamp": true
+  },
+  "bindings": {
+    "claude-code": {
+      "hooks": [
+        "session-start",
+        "stop"
+      ]
+    }
+  },
+  "memoryContract": {
+    "anchorsRequired": true,
+    "localMarker": "local"
+  },
+  "conformanceTier": "guaranteed",
+  "discoveryOrder": [
+    "CONTEXT.surf",
+    "surfcontext.json",
+    ".context/skills/",
+    ".context/tools/"
+  ]
+}

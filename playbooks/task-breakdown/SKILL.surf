@@ -1,0 +1,83 @@
+---
+name: task-breakdown
+description: Decompose a requirements deliverable into single-session, single-agent cards, sized so one agent finishes one card in one session inside half its context window, each card naming its source, its files, its acceptance criteria and what it must not touch.
+allowed-tools: Read, Glob, Grep, Bash
+argument-hint: [path or id of the requirements document]
+user-invocable: true
+disable-model-invocation: false
+---
+
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 — SurfContext ARDS v5.1 playbook -->
+
+# Task breakdown
+
+Turns a requirements deliverable into a board of cards a build session can pick
+up cold. It is the bridge between requirements gathering and building.
+
+## What it produces
+
+- One card per unit of work, each independently executable.
+- A backlog index document listing the cards, their waves and their dependencies.
+
+## Cardinal rules
+
+1. **One session, one agent, one card.** If a card cannot plausibly be finished
+   in one session using less than half a context window, it is too big — split it.
+2. **Every card names its source.** A card with no link back to the requirements
+   document is unreviewable.
+3. **Every card names its files.** Guessing which files to touch is the single
+   largest source of wasted sessions.
+4. **Every card states what it must NOT do.** Scope creep is prevented at the
+   card, not in the session.
+5. **No card invents requirements.** If the requirements are silent, the card
+   says so and the question goes back to the owner.
+
+## Phase 0 — Load the deliverable
+
+Read the requirements document end to end before splitting anything. Extract the
+numbered chunks it already proposes, and note the acceptance criteria attached
+to each. Verify any path, flag or command name it cites against the live tree —
+requirements documents go stale, and the source wins.
+
+## Phase 1 — Size every unit
+
+Sort each chunk S, M, L or XL by the work one agent can verify in one session.
+
+- **Split an XL** along the seam that produces two independently testable
+  halves — usually a data-layer change and the surface that consumes it. Never
+  split so that neither half can be verified alone.
+- **Merge trivial units** only when they touch the same files; two small cards
+  in different files stay two cards.
+- **Order into waves.** Wave 1 is everything with no dependency. A card in wave
+  N names the cards it depends on, and depends only on earlier waves.
+
+## Phase 2 — Write the cards
+
+Each card carries, in this order:
+
+- **Objective** — one sentence, in the imperative.
+- **Source** — the requirements document and the section it comes from.
+- **Target** — the repository and the surface being changed.
+- **Files to touch** — concrete paths; mark any that is a guess.
+- **Acceptance criteria** — checkable statements, each with the command that
+  checks it.
+- **Out of scope** — the adjacent work this card must not do.
+- **Depends on** — card ids, or none.
+- **Single-session guarantee** — one line saying why this fits in one session.
+- **How to run it** — the exact commands to build and verify.
+
+Create the cards on the board when a board is reachable; otherwise write them
+into the backlog document and hand the owner the list.
+
+## Phase 3 — Backlog index
+
+One document listing every card by wave, with its one-line objective and its
+dependencies, and a short note on what the breakdown deliberately deferred.
+Give it `answers:` frontmatter so a future session can find it.
+
+## Anti-patterns
+
+- A card whose acceptance criterion is "it works".
+- A card that depends on a later wave.
+- A card that spans repositories with no seam between them.
+- A backlog that renumbers on every run — card ids are stable once issued.

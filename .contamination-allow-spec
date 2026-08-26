@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: MIT
+# .contamination-allow-spec — exact SPEC.surf lines the commit door permits:
+# harness vendor names the spec binds to, placeholder all-zero ids, and the
+# spec's own anti-misattribution examples. Door:
+#   bash tools/contamination-gate.sh SPEC.surf --allow .contamination-allow-spec
+      "app_ids": ["00000000-0000-0000-0000-000000000000"]
+      "channel_id": "00000000-0000-0000-0000-000000000000",
+      "folder_id": "00000000-0000-0000-0000-000000000000",
+    "id": "00000000-0000-0000-0000-000000000000",
+### Claude Code (Anthropic)
+### Codex CLI (OpenAI)
+### TASK-001: [Title]
+| **No AI co-author lines** | No `Co-Authored-By: Claude` or AI credits in commits |
+| `[verified]` | Claim backed by Tier 1-2 source | "Jira holds ~30% PM market share [verified — Gartner 2025]" |
+| `noToolMakerCredit` | Separate tool usage from ownership. "Uses Claude API" (tool) is correct; "Powered by Anthropic" (ownership) is not. |
+A developer's knowledge doesn't live in one repo. They work across multiple projects, organizations, and teams — often in a single day. Today that cross-cutting context exists nowhere: it's in their head, scattered across Slack threads, or lost between sessions.

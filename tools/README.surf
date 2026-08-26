@@ -1,0 +1,195 @@
+---
+title: "SurfContext tools — ARDS v5.1 reference implementation"
+type: spec
+status: active
+updated: 2026-08-26
+tags: [ards, tools, connector, hooks, gate]
+answers:
+  - Which tool do I run to generate a project connector?
+  - What exactly does the SessionStart hook print, and what does it cost?
+  - How are stage tokens counted without double-billing a streamed request?
+  - What has to pass before anything in this repository is committed?
+  - Why does the skill sync fall back to a local directory?
+---
+
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 (this document) -->
+<!-- The tools it describes are MIT. (c) CloudSurf Software LLC. -->
+
+# SurfContext tools — ARDS v5.1
+
+The reference implementation of the standard: everything a project needs to make
+its rules **pushed context** rather than discovered context, and to make the
+push verifiable.
+
+Licence: the scripts and templates in `tools/` and `templates/` are MIT; the
+prose in `tools/README.surf` and `playbooks/` is CC-BY-SA 4.0. Both are the work
+of CloudSurf Software LLC.
+
+## The one contract everything shares
+
+`CONTEXT.surf` holds a section whose heading line is exactly `## Core`. The
+**Core body** is the bytes after the newline that terminates that line, up to but
+excluding the first later line starting `## `. The **stamp** is the sha256 of
+exactly those bytes, truncated to 16 hex characters, rendered as:
+
+```
+<!-- ards-core: sha256:XXXXXXXXXXXXXXXX, ards v5.1 -->
+```
+
+Four implementations must agree byte-for-byte: the awk block in
+`surfcontext-sync.sh`, the python twin in `ards-lint.py`, and the extractor in
+each hook. A later `## Core Principles` heading must never match. The battery
+checks the agreement on every run.
+
+## Tools
+
+| Tool | What it does |
+|---|---|
+| `surfcontext-sync.sh` | Generates `CLAUDE.md` and `AGENTS.md` from the Core, stamped and idempotent, and materializes user-invocable skills into `.claude/commands/`. `--root <dir>` (default cwd), `--smoke`, `--quiet`. |
+| `ards-lint.py` | Conformance linter. Fails on a missing, stale, or hand-edited block, an over-budget Core, an unmaterialized binding, and — in connector mode — a missing `workspace.key_env` or `.mcp.json`. `--root`, `--tier`, `--quiet`. |
+| `make-connector.sh` | Generates a whole connector directory and refuses to finish unless it lints `guaranteed`. |
+| `sync-skills.sh` | Fills the regenerable skill cache at `.context/skills/`. |
+| `surfspace-mcp.py` | Stdlib-only JSON-RPC client for the workspace MCP server. Library calls return errors instead of raising, so a fail-open hook stays fail-open. |
+| `transcript-tokens.py` | Sums harness-transcript tokens since the last marker, keyed on unique request id. |
+| `task-flip.sh` | Flips one board card to a new stage carrying `stage_tokens`, then advances the marker. `--dry-run` posts nothing. |
+| `hooks/session-start.sh` | SessionStart binding: receipt plus the workspace digest. |
+| `hooks/stop.sh` | Stop binding: write-path reminder, token line, receipt. |
+| `contamination-gate.sh` | The commit door for a public tree. |
+| `ards-tests.sh` | The battery. Fixtures are built from scratch under `mktemp -d`. |
+
+## The connector layout
+
+`make-connector.sh <dir> --workspace-id <id> --workspace-name <name>
+--key-env <VAR> --core <file> [--folder-id <id>] [--projects <file>] [--url <url>]`
+emits:
+
+```
+<dir>/
+  CONTEXT.surf            hand-authored ## Core — the ONLY prose that stays local
+  CLAUDE.md, AGENTS.md    GENERATED from the Core, stamped, lint-checked
+  surfcontext.json        version 5.1, home surfspace, workspace + projects
+  .mcp.json               project-scoped MCP entry — an env-var REFERENCE, never a key
+  .claude/settings.json   SessionStart and Stop bindings
+  .context/tools/         a vendored copy of this directory, so the connector stands alone
+  .context/skills/        regenerable skill cache (gitignored)
+  .gitignore              runtime state and the cache
+```
+
+A connector is not a library. Docs, plans and fragments live in the workspace and
+are pulled fresh each session; duplicating them locally is what the linter warns
+about in connector mode.
+
+Every emitted file is compare-then-write and carries no timestamp, so a second
+generation over the same inputs changes nothing on disk. `--core` is copied
+verbatim and is rejected outright when it has no exact `## Core` heading line:
+generating a connector around an unextractable Core would produce a directory
+that can never reach `guaranteed`.
+
+The vendored tree is stamped in `.context/tools/.vendor-stamp` with this
+repository's commit sha, or with an explicit unknown marker when the source is
+not a git checkout. Vendored files are overwritten on the next generation — edit
+them here, never there.
+
+## Hook contracts
+
+Both hooks are **fail-open**: every step is wrapped, output is bounded, and the
+exit status is always 0. A bug in a hook must never block a session.
+
+**SessionStart** prints the receipt:
+
+```
+ards-receipt: v5.1 core sha256:<16 hex> tier:<guaranteed|injected|discovered> status:<verified|STALE-RUN-SYNC>
+```
+
+`status:verified` means the stamp in `CLAUDE.md` equals a freshly recomputed sha;
+the tier is whatever `ards-lint.py --tier` measures, not a literal. In connector
+mode it then appends a bounded workspace digest: important documents (capped at
+eight, with the first two `answers:` lines when they are cheap to fetch), the
+newest `active-work` documents, the open cards in `build` and `verify`, and a
+repo roll-call over `projects[]` that WARNs when a repository expected on the
+workspace remote is not on it. Ten seconds of wall clock, sixty lines of stdout,
+both hard caps. The digest is cached at `.context/.digest-cache.json`; when the
+workspace is unreachable the hook prints that cache behind a `STALE-CACHE` line
+with its age, and when there is no cache it prints the `NO-DIGEST` line and the
+session simply works offline from the Core.
+
+The key is read from the environment variable **named** in `workspace.key_env`.
+The name lives in the manifest; the key never does, and is never echoed, logged,
+or written to the cache.
+
+**Stop** prints the write-path reminder — worded for the workspace in connector
+mode and for the local fragment stream otherwise — then one token line, then the
+receipt again, so a Core edit made mid-session cannot leave the root files
+silently stale. It reads its JSON payload on stdin for `transcript_path` and
+`session_id`.
+
+## Counting stage tokens
+
+`transcript-tokens.py` reads the harness transcript, one JSON object per line,
+and selects assistant entries recorded after the marker in
+`.context/.token-marker.json`.
+
+**The trap it exists for:** a streamed request appears as SEVERAL lines that
+share one `requestId` and carry IDENTICAL usage. Summing per line multiplies the
+bill. Every sum is therefore keyed on the unique request id, and each request is
+counted exactly once. The transcript format is version-specific, so every field
+is read defensively and an unrecognised shape is skipped rather than fatal.
+
+The result is written to `.context/.session-tokens.json`; `task-flip.sh` posts it
+as `stage_tokens` and only then advances the marker, so a failed post is retried
+against the same window rather than silently losing it.
+
+## The commit door
+
+Two gates, both of which must pass before anything here is committed:
+
+```bash
+bash tools/contamination-gate.sh     # public-tree contamination
+python3 tools/ards-lint.py           # conformance
+bash tools/ards-tests.sh             # the battery (runs both of the above)
+```
+
+`contamination-gate.sh` greps `tools/`, `templates/` and `playbooks/` — or the
+paths you name — for the classes defined in `tools/.contamination-terms`: tailnet
+and local host forms, cloud resource ids, money amounts, absolute paths under a
+user home or an external volume, harness transcript project keys, UUIDs (which is
+how workspace, document and folder ids leak), card ids, third-party company
+names, AI-attribution strings, and secrets by prefix. It exits 1 listing every
+hit by file and line.
+
+Site-specific rosters — machine nicknames, owner prefixes, internal code names —
+are deliberately **absent** from this public repository. Supply them at run time:
+
+```bash
+bash tools/contamination-gate.sh --terms /path/to/private-roster
+bash tools/contamination-gate.sh --allow /path/to/permitted-lines
+```
+
+Two self-exemptions are structural: the pattern definitions and any `--terms`
+file describe the contamination rather than containing it, and would otherwise
+report themselves on every run. The public product endpoint and the owner's own
+domain are allowed explicitly, since the host classes would otherwise swallow
+them.
+
+## Skills
+
+`sync-skills.sh --root <dir> [--from <dir>]` fills `.context/skills/<name>/SKILL.surf`.
+
+It probes the MCP server ONCE with `tools/list` and caches the advertised roster
+for the run. `list_skills` and `read_skill` **do not exist on the workspace
+server yet**; the probe is there to find them absent and fall through silently to
+the `--from` directory, copying every immediate-child `SKILL.surf` that opens
+with YAML frontmatter, bytes preserved exactly. When the verbs ship, the same
+command starts pulling from the workspace with no change here.
+
+It prints one summary line naming the source (`mcp` or `local`) and the count,
+and writes `.context/skills/.sync-manifest.json`. It **never deletes a file it
+did not write**: a stale skill is a far smaller problem than a blanket wipe of a
+directory someone put work in.
+
+## Playbooks
+
+`playbooks/` holds the generic, publishable session playbooks — `checkpoint`,
+`create-surfdoc`, `task-breakdown`, `gather-context`, `machine-handoff` — in the
+same `SKILL.surf` frontmatter contract the sync consumes. They are starting
+points: copy one into a project's skill source and specialise it there.

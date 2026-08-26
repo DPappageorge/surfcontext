@@ -1,0 +1,78 @@
+---
+name: machine-handoff
+description: Survey every local checkout read-only, then produce a handoff document and a single review-then-run script the owner executes, so work moves between machines without the agent ever committing, pushing or stashing.
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep
+argument-hint: [optional context about the current work]
+user-invocable: true
+disable-model-invocation: false
+---
+
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 — SurfContext ARDS v5.1 playbook -->
+
+# Machine handoff
+
+Moves a session from one machine to another. The agent surveys and writes; the
+owner runs. The agent never commits, never pushes, never stashes — it lists
+every repository that would be updated and emits one script for the owner to
+read before running.
+
+## Phase 0 — Locate the checkouts
+
+Drive this off the live filesystem, never off a remembered registry: enumerate
+every git directory under the connector root (or under the repository root named
+in `surfcontext.json` `projects[]`). A repository that was added since the last
+handoff must show up without anyone editing this playbook.
+
+## Phase 1 — Survey, read-only
+
+For each checkout: current branch; whether it tracks a remote and whether it is
+ahead, behind or diverged; `git status --short`; any stashes; and whether the
+branch exists on the remote. Read-only commands only. Record the results; do not
+act on them.
+
+## Phase 2 — List what would change
+
+Present a table: repository, branch, files changed, ahead/behind counts, and
+whether a push would create a new remote branch. The owner decides from this
+table; nothing is run yet.
+
+## Phase 3 — Write the handoff document
+
+Include: how to resume (the first three commands on the receiving machine); the
+state of every repository at handoff; the work in progress and what is blocking
+it; known issues; and — separately and prominently — any **stashes**, because a
+stash does not travel with a push and will be left behind.
+
+Give it `answers:` frontmatter, and put it where the receiving session will look:
+the workspace when `home` is `surfspace`, otherwise the checkpoints directory.
+
+## Phase 4 — Write the script (the agent writes; the OWNER runs)
+
+One script, readable top to bottom, that for each repository with work: shows the
+diff summary, stages the named paths explicitly rather than everything, commits
+with a message the owner can edit, and pushes. It must be safe to read and
+obvious to abort. Never add an AI co-author trailer or any AI attribution to a
+commit message it writes.
+
+Print the script's path and the exact command to run it. Do not run it.
+
+## Phase 5 — Receiving machine
+
+Step 1 is physical: mount the drive holding the checkouts and confirm it is
+there. Step 2: confirm the keys named by `workspace.key_env` and any other
+required environment variables are present in the login environment — not in a
+shell that happens to be open. Step 3: launch the harness in the connector
+directory and confirm the receipt line appears, with `status:verified` and the
+expected tier. If the receipt is missing or stale, run the sync before doing any
+work.
+
+## Phase 6 — Save the handoff
+
+Write the handoff document to the canon and report its id or path, the script's
+path, and the list of repositories the owner still needs to run it against.
+
+## Key principles
+
+- Survey is read-only; the only writes are the handoff document and the script.
+- Stashes are called out explicitly, every time.
+- The receiving machine is verified by the receipt line, not by assumption.

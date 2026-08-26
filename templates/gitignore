@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: MIT
+# SurfContext ARDS v5.1 connector — runtime state and regenerable caches.
+# The workspace is the canon; everything below is rebuilt on demand.
+
+.context/.digest-cache.json
+.context/.session-tokens.json
+.context/.token-marker.json
+.context/skills/
+
+# Harness-local settings that must NOT ship. The committable one is
+# .claude/settings.json — it carries the bindings.
+.claude/*
+!.claude/settings.json

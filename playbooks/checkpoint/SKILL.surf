@@ -1,0 +1,103 @@
+---
+name: checkpoint
+description: Survey what actually changed this session and write it into the canon — the session checkpoint first, then the active-work fragment, then the plan index — and finish by regenerating the harness root files so the next session starts with accurate, stamped context.
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep
+argument-hint: [optional topic label]
+user-invocable: true
+disable-model-invocation: false
+---
+
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 — SurfContext ARDS v5.1 playbook -->
+
+# Checkpoint
+
+The write-back loop that makes SurfContext work. A session that ends with its
+findings only in chat has lost them: this playbook moves them into the canon
+before the context window closes.
+
+**Design constraint:** this is usually invoked when context is nearly gone. The
+checkpoint document is the MOST IMPORTANT output — write it FIRST, make it
+self-contained, and include enough that a fresh session with zero prior context
+can resume exactly where this one stopped. Phases 1 and 2 are the minimum;
+phases 3 onward improve accuracy but are secondary.
+
+## Phase 1 — Survey (fast; minimise reads)
+
+Gather evidence of what changed, in as few tool calls as possible.
+
+1. **Repository activity.** For every checkout named in `surfcontext.json`
+   `projects[]` (or every git directory under the connector root), one batched
+   Bash call: current branch, `git status --short`, and the commits made today.
+   Do not read the diffs — counts and paths are enough.
+2. **Uncommitted work.** List new and modified files, grouped by repository.
+   Uncommitted work is the single most likely thing to be lost.
+3. **Conversation.** From the session itself, with no file reads: what was
+   decided, what was built, what was measured, what is still open.
+
+## Phase 2 — Write the checkpoint (the critical output)
+
+Write one document. When `home` is `surfspace`, create it as a workspace doc and
+attach it to the card being worked; otherwise write it to the checkpoints
+directory named in `surfcontext.json`. Frontmatter carries `title:` and an
+`answers:` list — the questions this checkpoint settles — so the next session's
+digest can surface it by relevance.
+
+Sections, in this order:
+
+- **What was accomplished** — one subsection per thing done, with the evidence
+  (command run, file changed, number measured). Mark every claim `measured this
+  session` or `recorded previously, unverified`.
+- **What remains** — unfinished work from this session, then still-open items
+  carried in from before.
+- **Files created / modified** — grouped by repository, with paths.
+- **Key decisions** — what was ruled and what it closes off. A decision recorded
+  here does not get reopened next session.
+- **Recommended next steps** — ranked, with the first step executable as written.
+- **State at checkpoint** — branch, commit, and whether the tree is clean, per
+  repository. Never commit or push to produce this; report the state as found.
+
+## Phase 2b — Bootstrap handoff (forward-looking; distinct from Phase 2)
+
+When the next session will be picked up by a different agent or on a different
+machine, add a second, forward-only document: current state as committed;
+architectural decisions that must NOT be reopened; the ranked build list; the
+files most likely to be edited next; the owner's hard rules relevant to this
+work; capabilities already shipped, so they are not rebuilt; open questions; and
+what is explicitly out of scope.
+
+## Phase 3 — Active-work fragment
+
+Append (never rewrite) a dated entry to the active-work stream: the fragments
+are the source, any rollup is a view. `title:` plus `answers:` are mandatory —
+a fragment with no relevance hooks cannot be found by the session digest.
+
+## Phase 4 — Plan index and portfolio
+
+If a plan advanced a stage, or a product's status changed, append the fragment
+that records it. Verify the current status against the live source before
+writing it down; when memory and the source disagree, the source wins and the
+stale memory is corrected in the same pass.
+
+## Phase 5 — Regenerate and verify
+
+```bash
+bash .context/tools/surfcontext-sync.sh
+python3 .context/tools/ards-lint.py
+```
+
+The lint must exit 0 and `--tier` must print `guaranteed`. Anything less means
+the next session will load stale rules.
+
+## Phase 6 — Report
+
+Close with: documents written (with ids or paths), what each one settles, the
+conformance tier, and the one command the owner should run next. Never commit,
+never push, never deploy — hand over the exact commands instead.
+
+## Key principles
+
+- The checkpoint is written FIRST, because context runs out.
+- Every durable fact lands in the canon before the session ends.
+- Memory entries come last and always carry an anchor.
+- Report real command output and real counts; never claim a gate passed without
+  running it.

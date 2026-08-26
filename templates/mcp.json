@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "__SERVER_NAME__": {
+      "type": "http",
+      "url": "__MCP_URL__",
+      "headers": {
+        "Authorization": "Bearer ${__KEY_ENV__}"
+      }
+    }
+  }
+}
