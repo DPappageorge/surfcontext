@@ -62,33 +62,71 @@ mod content_parse_tests {
         assert_parses("content/whats_new.surf", include_str!("../../content/whats_new.surf"));
     }
 
-    /// SPEC.surf carries `type: specification` in its frontmatter, which is not
-    /// one of the ten document types surf-parse 0.5.1 accepts, so the parser
-    /// rejects the frontmatter block (E002) while parsing the body normally.
+    /// SPEC.surf carries `type: specification` in its frontmatter.
     ///
-    /// This test does NOT tolerate parse errors in SPEC.surf — it pins that one
-    /// known defect exactly, by severity, code and subject, and fails on any
-    /// additional error. Resolving it needs a decision that is out of this
-    /// lane's scope (teach surf-parse the `specification` type, or change the
-    /// canon document's declared type); tracked as D-SC-3.
+    /// This used to be the site's one tolerated parse defect: the type was
+    /// outside the vocabulary surf-parse accepted, so the parser rejected the
+    /// whole frontmatter block and the test pinned that single error by code
+    /// and subject. D-SC-3 resolved it in the parser's favour — surf-parse
+    /// 0.19.1 adds `specification` to the type vocabulary additively, and the
+    /// canon document's declared type is unchanged.
+    ///
+    /// The pin therefore inverts: SPEC.surf must now yield ZERO error
+    /// diagnostics, like every other document this site serves. It is asserted
+    /// separately from the corpus above because this document is the one that
+    /// carried the defect — a regression here is a regression in the
+    /// vocabulary, not in the body.
     #[test]
-    fn spec_surf_has_exactly_the_one_known_frontmatter_defect() {
+    fn spec_surf_has_no_frontmatter_defect() {
         let errors = error_diagnostics(super::spec::SPEC_SOURCE);
-        assert_eq!(
+        assert!(
+            errors.is_empty(),
+            "SPEC.surf must parse with zero error diagnostics (D-SC-3), got {}: {}",
             errors.len(),
-            1,
-            "SPEC.surf error diagnostics changed — expected only the known \
-             frontmatter `type` defect (D-SC-3), got: {}",
             errors.join(" | ")
         );
-        let only = &errors[0];
-        assert!(
-            only.contains("E002") && only.contains("front matter"),
-            "SPEC.surf's single error is no longer the known frontmatter defect: {only}"
+    }
+
+    /// `type: specification` was never the ONLY thing keeping SPEC.surf's
+    /// frontmatter out of the parse — it was merely the first field serde
+    /// tripped on, so the old single-error pin masked what came after it.
+    ///
+    /// With the type accepted, the next field fails: `version: 5.2` is a
+    /// decimal, and `FrontMatter::version` is an integer, so the block is
+    /// still discarded — now as a P005 *warning* rather than an error. That is
+    /// why the pin above is about errors and this one is about the residual.
+    ///
+    /// SPEC.surf is a byte-identical mirror of the canon document and is not
+    /// this lane's to edit, and widening the parser's `version` field was not
+    /// ruled on, so the state is pinned honestly instead of asserted away: the
+    /// residual is exactly one warning, about `version`, and nothing else. If
+    /// the decimal-version question is later ruled on either way, this test is
+    /// what fails and points at the ruling.
+    #[test]
+    fn spec_surf_residual_is_only_the_decimal_version_warning() {
+        let parsed = surf_parse::parse(super::spec::SPEC_SOURCE);
+        let residual: Vec<String> = parsed
+            .diagnostics
+            .iter()
+            .map(|d| format!("{:?}", d))
+            .collect();
+        assert_eq!(
+            residual.len(),
+            1,
+            "SPEC.surf residual diagnostics changed, got: {}",
+            residual.join(" | ")
         );
         assert!(
-            only.contains("specification"),
-            "SPEC.surf frontmatter error is not about the `specification` type: {only}"
+            residual[0].contains("P005") && residual[0].contains("version"),
+            "SPEC.surf residual is no longer the known decimal-version warning: {}",
+            residual[0]
+        );
+        // Consequence of that residual, stated rather than hidden: the block is
+        // dropped, so the type the document declares does not reach the parse.
+        assert!(
+            parsed.doc.front_matter.is_none(),
+            "SPEC.surf frontmatter now survives — the decimal-version defect was \
+             resolved; update this pin and the `version` note in CONTEXT.surf"
         );
     }
 

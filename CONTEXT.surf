@@ -108,9 +108,21 @@ static/, assets/   --> mounted directories
 
 - **ARDS v5.2 ratified** in `SPEC.surf` — SurfDoc-native context (Section 45)
 - **`/spec` repointed** from the deleted `content/spec.html` to `SPEC.surf`
-- **Open (D-SC-1)** — `README.md` is now a pointer to `README.surf`; confirm the GitHub
-  landing view reads acceptably
-- **Open (D-SC-2)** — `app/`, `components/` and `tests/*.test.tsx` are an unserved Next.js
-  remnant; decide whether to retire them
-- **Open (D-SC-3)** — `SPEC.surf` declares `type: specification`, which `surf-parse` 0.5.1
-  rejects (E002); either teach the parser the type or change the declared type
+- **D-SC-1 closed** — `README.md` is a five-line pointer to `README.surf`, `CONTEXT.surf`
+  and `SPEC.surf`; the GitHub landing view reads acceptably. Verified, no change made
+- **D-SC-2 closed** — the unserved Next.js remnant is retired: `app/`, `components/` and
+  `tests/` (17 files) plus the eight root JS/TS configs are deleted. The Dockerfile only
+  ever copied the Cargo manifests, `src/`, `content/`, `static/` and `assets/`, and CI runs
+  `cargo` only, so nothing served changes
+- **D-SC-3 closed in the parser's favour** — `surf-parse` 0.19.1 adds `specification` to the
+  front matter type vocabulary additively; `SPEC.surf`'s declared type is unchanged. The
+  route test is now a zero-error pin instead of a tolerated-defect pin
+- **Open (D-SC-4, new)** — closing D-SC-3 uncovered what the old single-error pin was
+  masking: `SPEC.surf` declares `version: 5.2`, but `FrontMatter::version` is an integer, so
+  the whole front matter block is still discarded — now as a P005 *warning*, not an error.
+  `SPEC.surf` is a byte-identical mirror of canon and not ours to edit, so this needs a
+  ruling: widen the parser's `version` field to accept a decimal, or amend canon. Pinned by
+  `spec_surf_residual_is_only_the_decimal_version_warning`
+- **Open (ship order)** — `Cargo.toml` no longer requests the `axum` feature and the
+  stylesheet handler moved into `src/main.rs`; the git dependency must be repinned
+  (`cargo update -p surf-parse`) once `surf-parse` v0.19.1 is tagged and pushed

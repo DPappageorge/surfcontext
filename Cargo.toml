@@ -11,4 +11,4 @@ serde = { version = "1", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 zip = { version = "2", default-features = false, features = ["deflate"] }
-surf-parse = { git = "https://github.com/cloudsurf-software/surf-parse", branch = "main", features = ["axum"] }
+surf-parse = { git = "https://github.com/cloudsurf-software/surf-parse", branch = "main" }
