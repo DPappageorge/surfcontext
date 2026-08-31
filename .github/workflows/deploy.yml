@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: superfly/flyctl-actions/setup-flyctl@1.5
+      - uses: superfly/flyctl-actions/setup-flyctl@1.6
 
       - name: Deploy to develop
         if: github.ref_name == 'develop'
@@ -90,7 +90,7 @@ jobs:
     needs: smoke-test
     if: failure() && github.ref_name == 'staging'
     steps:
-      - uses: superfly/flyctl-actions/setup-flyctl@1.5
+      - uses: superfly/flyctl-actions/setup-flyctl@1.6
 
       - name: Rollback to previous release
         env:
