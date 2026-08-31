@@ -4,6 +4,9 @@ COPY Cargo.toml Cargo.lock ./
 RUN mkdir src && echo "fn main() {}" > src/main.rs && cargo build --release && rm -rf src
 COPY src/ src/
 COPY content/ content/
+# SPEC.surf is include_str!'d by src/routes/spec.rs (ARDS 5.2 renders /spec from the
+# repo-root spec); the builder stage must carry it or `cargo build` fails to read it.
+COPY SPEC.surf ./
 RUN touch src/main.rs && cargo build --release
 
 FROM debian:bookworm-slim
