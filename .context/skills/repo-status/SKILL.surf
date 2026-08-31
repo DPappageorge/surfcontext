@@ -14,13 +14,13 @@ Check git status across all CloudSurf repositories.
 
 | Repo | Path |
 |------|------|
-| cloudsurf-strategy | /Users/brady/Projects/cloudsurf/repos/cloudsurf-strategy-staging |
-| remote-flow-web (TaskSurf) | /Users/brady/Projects/cloudsurf/repos/remote-flow-web |
-| wavesite | /Users/brady/Projects/cloudsurf/repos/wavesite |
-| wavesite-mobile | /Users/brady/Projects/cloudsurf/repos/wavesite-mobile |
-| cloudsurf-amplify-backend | /Users/brady/Projects/cloudsurf/repos/cloudsurf-amplify-backend |
-| cloudsurf-web-26 | /Users/brady/Projects/cloudsurf/repos/cloudsurf-web-26 |
-| cloudsurf-hq | /Users/brady/Projects/cloudsurf/repos/cloudsurf-hq |
+| cloudsurf-strategy | /Volumes/Dev/cloudsurf/repos/cloudsurf-strategy-staging |
+| remote-flow-web (TaskSurf) | /Volumes/Dev/cloudsurf/repos/remote-flow-web |
+| wavesite | /Volumes/Dev/cloudsurf/repos/wavesite |
+| wavesite-mobile | /Volumes/Dev/cloudsurf/repos/wavesite-mobile |
+| cloudsurf-amplify-backend | /Volumes/Dev/cloudsurf/repos/cloudsurf-amplify-backend |
+| cloudsurf-web-26 | /Volumes/Dev/cloudsurf/repos/cloudsurf-web-26 |
+| cloudsurf-hq | /Volumes/Dev/cloudsurf/repos/cloudsurf-hq |
 
 ## Instructions
 
