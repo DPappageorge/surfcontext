@@ -20,7 +20,7 @@ A short tour: the problem, the three files, what goes in .context/, and how each
 ## 5 AI tools. 5 config formats. 0 standards.
 - Claude Code reads `CLAUDE.md`
 - Codex CLI reads `AGENTS.md`
-- Cursor reads `.cursorrules`
+- Cursor reads `.cursor/rules/*.mdc`
 - GitHub Copilot reads `.github/copilot-instructions.md`
 - Windsurf reads `.windsurfrules`
 
@@ -55,7 +55,7 @@ Teams keep duplicate files, and the copies drift apart.
   "generation": {
     "claude": { "rootContext": "CLAUDE.md" },
     "codex":  { "rootContext": "AGENTS.md" },
-    "cursor": { "rootContext": ".cursorrules" }
+    "cursor": { "rootContext": ".cursor/rules/context.mdc" }
   }
 }
 ```
