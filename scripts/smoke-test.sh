@@ -38,6 +38,9 @@ check "Landing page" "$BASE/" 200 "SurfContext"
 check "Spec page" "$BASE/spec" 200 "ARDS"
 check "Getting started" "$BASE/getting-started" 200 "SurfContext"
 check "What's new" "$BASE/whats-new" 200
+check "Talks index" "$BASE/talks" 200 "ARDS in Ten Minutes"
+check "Talk deck" "$BASE/talks/ards-in-ten-minutes" 200 "data-slides"
+check "Unknown talk 404" "$BASE/talks/no-such-talk" 404
 
 # Static assets
 check "CSS loads" "$BASE/static/css/app.css" 200 "surfdoc"
