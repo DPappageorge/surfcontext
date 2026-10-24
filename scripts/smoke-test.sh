@@ -9,10 +9,9 @@ FAIL=0
 
 check() {
   local desc="$1" url="$2" expected_status="${3:-200}" body_contains="${4:-}"
-  local status body
+  local status
 
   status=$(curl -s -o /tmp/smoke-body -w '%{http_code}' "$url")
-  body=$(cat /tmp/smoke-body)
 
   if [ "$status" != "$expected_status" ]; then
     echo "FAIL: $desc — expected $expected_status, got $status"
@@ -20,7 +19,7 @@ check() {
     return
   fi
 
-  if [ -n "$body_contains" ] && ! echo "$body" | grep -qi "$body_contains"; then
+  if [ -n "$body_contains" ] && ! grep -qi -- "$body_contains" /tmp/smoke-body; then
     echo "FAIL: $desc — body missing '$body_contains'"
     FAIL=$((FAIL + 1))
     return
